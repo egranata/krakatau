@@ -1,0 +1,20 @@
+#ifndef ERROR_CODE
+#error "define ERROR_CODE before including this file"
+#else
+ERROR_CODE(DIV_BY_ZERO, divisionByZero, "division by zero", 0)
+ERROR_CODE(TYPE_MISMATCH, typeMismatch, "type mismatch", 1)
+ERROR_CODE(NOT_FOUND, notFound, "value not found", 2)
+ERROR_CODE(ALREADY_EXISTING, alreadyExisting, "value already present", 3)
+ERROR_CODE(INSUFFICIENT_ARGUMENTS, insufficientArguments, "insufficient arguments", 4)
+ERROR_CODE(OUT_OF_BOUNDS, outOfBounds, "out of bounds", 5)
+ERROR_CODE(SYNTAX_ERROR, syntaxError, "syntax error", 6)
+ERROR_CODE(UNEXPECTED_RESULT, unexpectedResult, "unexpected result", 7)
+ERROR_CODE(NOT_IMPLEMENTED, notImplemented, "not implemented", 8)
+#undef ERROR_CODE
+#endif
+
+#ifdef ERROR_CODE_ALIAS
+ERROR_CODE_ALIAS(MIN_VALUE, DIV_BY_ZERO)
+ERROR_CODE_ALIAS(MAX_VALUE, NOT_IMPLEMENTED)
+#undef ERROR_CODE_ALIAS
+#endif

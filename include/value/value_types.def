@@ -1,0 +1,22 @@
+#ifndef VALUE_TYPE
+#error "define VALUE_TYPE before including this file"
+#else
+VALUE_TYPE(EMPTY, empty, "empty", 1)
+VALUE_TYPE(NUMBER, number, "number", 2)
+VALUE_TYPE(BOOLEAN, boolean, "boolean", 3)
+VALUE_TYPE(BLOCK, block, "block", 4)
+VALUE_TYPE(STRING, string, "string", 5)
+VALUE_TYPE(ERROR, error, "error", 6)
+VALUE_TYPE(TUPLE, tuple, "tuple", 7)
+VALUE_TYPE(TYPE, type, "type", 8)
+VALUE_TYPE(OPERATION, operation, "operation", 9)
+VALUE_TYPE(TABLE, table, "table", 10)
+#undef VALUE_TYPE
+#endif
+
+#ifdef VALUE_TYPE_ALIAS
+VALUE_TYPE_ALIAS(NONE, 0)
+VALUE_TYPE_ALIAS(MIN_VALUE, NONE)
+VALUE_TYPE_ALIAS(MAX_VALUE, TABLE)
+#undef VALUE_TYPE_ALIAS
+#endif
