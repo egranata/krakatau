@@ -83,7 +83,7 @@ Parser::~Parser() {
 
 Token* Parser::nextToken() {
     if (mPeeked) return mPeeked.get();
-    mPeeked = std::move(yylex(mScanner));
+    mPeeked = yylex(mScanner);
     return mPeeked.get();
 }
 void Parser::consumeToken() {

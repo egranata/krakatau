@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.9)
 
+add_compile_options(-Wall -Wextra -Werror)
+add_compile_options(-std=c++17)
+add_compile_options(-Wno-return-type-c-linkage)
+
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
@@ -27,7 +31,6 @@ ADD_LIBRARY(stuff SHARED ${stuffsources} ${FLEX_stuff_OUTPUTS})
 
 target_include_directories(stuff PUBLIC include)
 target_link_libraries(stuff ${FLEX_LIBRARIES})
-target_compile_options(stuff PUBLIC -std=c++17 -Wall -Wextra -Werror)
 
 # Download and unpack googletest at configure time
 configure_file(CMakeLists.gtest.txt.in googletest-download/CMakeLists.txt)
@@ -65,16 +68,13 @@ file(GLOB_RECURSE assemblersources CONFIGURE_DEPENDS assembler/*.cpp)
 add_executable(assembler ${assemblersources})
 target_include_directories(assembler PUBLIC include)
 target_link_libraries(assembler stuff)
-target_compile_options(assembler PUBLIC -std=c++17 -Wall -Wextra -Werror)
 
 file(GLOB_RECURSE runnersources CONFIGURE_DEPENDS runner/*.cpp)
 add_executable(runner ${runnersources})
 target_include_directories(runner PUBLIC include)
 target_link_libraries(runner stuff)
-target_compile_options(runner PUBLIC -std=c++17 -Wall -Wextra -Werror)
 
 file(GLOB_RECURSE testsources CONFIGURE_DEPENDS test/*.cpp)
 add_executable(tests ${testsources})
 target_include_directories(tests PUBLIC include ${GTEST_INCLUDE_DIRS})
 target_link_libraries(tests gtest_main stuff)
-target_compile_options(tests PUBLIC -std=c++17 -Wall -Wextra -Werror)

@@ -15,6 +15,8 @@
  */
 
 %{
+#define YY_NO_INPUT
+
 #include <parser/token.h>
 #include <parser/lexer.h>
 %}

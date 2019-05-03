@@ -17,8 +17,8 @@
 #ifndef STUFF_PARSER_PARSER
 #define STUFF_PARSER_PARSER
 
-#include <parser/lexer.h>
 #include <parser/token.h>
+#include <parser/lexer.h>
 #include <string>
 #include <optional>
 #include <value/value.h>
