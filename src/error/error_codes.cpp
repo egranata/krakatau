@@ -16,7 +16,7 @@
 #include <stream/byte_stream.h>
 
 #define ERROR_CODE(SYMBOLNAME, TOKEN, DESCRIPTION, NUMERICID) \
-    case ErrorCode:: SYMBOLNAME : return DESCRIPTION;
+    case ErrorCode:: SYMBOLNAME : { static_assert(NUMERICID <= enumToNumber(std::numeric_limits<ErrorCode>::max())); return DESCRIPTION; };
 
 std::string errorCodeToString(ErrorCode ec) {
     switch (ec) {

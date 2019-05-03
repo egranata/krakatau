@@ -16,7 +16,7 @@
 #include <stream/byte_stream.h>
 
 #define OPERATION_TYPE(ID, TOKEN, STRING, NUMBER) \
-    case OperationType:: ID: return STRING;
+    case OperationType:: ID: { static_assert(NUMBER <= enumToNumber(std::numeric_limits<OperationType>::max())); return STRING; };
 
 std::string operationTypeToString(OperationType op) {
     switch (op) {

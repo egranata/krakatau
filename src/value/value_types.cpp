@@ -16,7 +16,7 @@
 #include <stream/byte_stream.h>
 
 #define VALUE_TYPE(NAME, TOKEN, STRING, VALUE) \
-    case ValueType:: NAME : return STRING;
+    case ValueType:: NAME : { static_assert(VALUE <= enumToNumber(std::numeric_limits<ValueType>::max())); return STRING; };
 
 std::string valueTypeToString(ValueType vt) {
     switch (vt) {
