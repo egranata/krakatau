@@ -24,12 +24,18 @@
 
 class MachineEventsListener : public std::enable_shared_from_this<MachineEventsListener> {
     public:
-
         virtual ~MachineEventsListener();
+
+        MachineState& getMachineState() const;
 
         virtual void onEnteringBlock(std::shared_ptr<Block>);
         virtual void onExecutingOperation(size_t);
         virtual void onLeavingBlock();
+
+    protected:
+        MachineEventsListener(MachineState&);
+
+        MachineState& mMachineState;
 };
 
 #endif

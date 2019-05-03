@@ -26,6 +26,7 @@
 TEST(Events, NumBlocksEntered) {
     class Listener : public MachineEventsListener {
         public:
+            Listener(MachineState& ms) : MachineEventsListener(ms) {}
             size_t numBlocks = 0;
 
             void onEnteringBlock(std::shared_ptr<Block>) override {
@@ -34,7 +35,7 @@ TEST(Events, NumBlocksEntered) {
     };
 
     MachineState ms;
-    auto l = std::make_shared<Listener>();
+    auto l = std::make_shared<Listener>(ms);
     ms.appendListener(l);
     Parser p("value n0 block { load n1 exec } value n1 block { dup } value main block { load n0 dup exec exec }");
     ASSERT_EQ(3, ms.load(&p));
@@ -49,6 +50,7 @@ TEST(Events, NumBlocksEntered) {
 TEST(Events, NumBlocksExited) {
     class Listener : public MachineEventsListener {
         public:
+            Listener(MachineState& ms) : MachineEventsListener(ms) {}
             size_t numBlocks = 0;
 
             void onLeavingBlock() override {
@@ -57,7 +59,7 @@ TEST(Events, NumBlocksExited) {
     };
 
     MachineState ms;
-    auto l = std::make_shared<Listener>();
+    auto l = std::make_shared<Listener>(ms);
     ms.appendListener(l);
     Parser p("value n0 block { load n1 exec } value n1 block { dup } value main block { load n0 dup exec exec }");
     ASSERT_EQ(3, ms.load(&p));
@@ -72,6 +74,7 @@ TEST(Events, NumBlocksExited) {
 TEST(Events, NumInstructionsRan) {
     class Listener : public MachineEventsListener {
         public:
+            Listener(MachineState& ms) : MachineEventsListener(ms) {}
             size_t numInstructions = 0;
 
             void onExecutingOperation(size_t) override {
@@ -80,7 +83,7 @@ TEST(Events, NumInstructionsRan) {
     };
 
     MachineState ms;
-    auto l = std::make_shared<Listener>();
+    auto l = std::make_shared<Listener>(ms);
     ms.appendListener(l);
     Parser p("value n0 block { load n1 exec } value n1 block { dup } value main block { load n0 dup exec exec }");
     ASSERT_EQ(3, ms.load(&p));
@@ -99,7 +102,7 @@ TEST(Tracer, Description) {
             size_t numInstructions = 0;
             std::string description;
 
-            Listener(std::shared_ptr<MachineTracer> t) : tracer(t) {}
+            Listener(MachineState& ms, std::shared_ptr<MachineTracer> t) : MachineEventsListener(ms), tracer(t) {}
 
             void onExecutingOperation(size_t) override {
                if (6 == ++numInstructions) description = tracer->describe();
@@ -107,8 +110,8 @@ TEST(Tracer, Description) {
     };
 
     MachineState ms;
-    auto tr = std::make_shared<MachineTracer>();
-    auto l = std::make_shared<Listener>(tr);
+    auto tr = std::make_shared<MachineTracer>(ms);
+    auto l = std::make_shared<Listener>(ms, tr);
     ms.appendListener(tr);
     ms.appendListener(l);
     Parser p("value n0 block { load n1 exec } value n1 block { dup } value main block { load n0 dup exec exec }");
@@ -117,4 +120,30 @@ TEST(Tracer, Description) {
     auto blk = runtime_ptr_cast<Value_Block>(vblk);
     blk->execute(ms);
     ASSERT_EQ("block {\n >>  dup\n}\n block {\n      load \"n1\"\n  >>  exec\n }\n  block {\n       load \"n0\"\n       dup\n   >>  exec\n       exec\n  }", l->description);
+}
+
+TEST(Events, CorrectMachineState) {
+    class Listener : public MachineEventsListener {
+        public:
+            bool check = true;
+            Listener(MachineState& ms) : MachineEventsListener(ms) {}
+            size_t numInstructions = 0;
+
+            void onExecutingOperation(size_t) override {
+                if (numInstructions++ > 1) check = check && getMachineState().stack().size() > 0;
+            }
+    };
+
+    MachineState ms;
+    auto l = std::make_shared<Listener>(ms);
+    ms.appendListener(l);
+    Parser p("value main block { push number 1 dup dup add }");
+    ASSERT_EQ(1, ms.load(&p));
+    auto vblk = ms.value_store().retrieve("main");
+    ASSERT_NE(nullptr, vblk);
+    auto blk = runtime_ptr_cast<Value_Block>(vblk);
+    ASSERT_NE(nullptr, blk);
+    blk->execute(ms);
+    ASSERT_EQ(4, l->numInstructions);
+    ASSERT_TRUE(l->check);
 }

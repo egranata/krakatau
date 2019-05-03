@@ -15,7 +15,7 @@
 #include <machine/tracer.h>
 #include <stream/indenting_stream.h>
 
-MachineTracer::MachineTracer() = default;
+MachineTracer::MachineTracer(MachineState& ms) : MachineEventsListener(ms) {}
 
 void MachineTracer::onEnteringBlock(std::shared_ptr<Block> b) {
     mRecords.push_back(ActivationRecord{

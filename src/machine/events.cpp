@@ -14,6 +14,12 @@
 
 #include <machine/events.h>
 
+MachineEventsListener::MachineEventsListener(MachineState& ms) : mMachineState(ms) {}
+
+MachineState& MachineEventsListener::getMachineState() const {
+    return mMachineState;
+}
+
 void MachineEventsListener::onEnteringBlock(std::shared_ptr<Block>) {}
 void MachineEventsListener::onExecutingOperation(size_t) {}
 void MachineEventsListener::onLeavingBlock() {}

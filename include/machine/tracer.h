@@ -31,7 +31,7 @@ class MachineTracer : public MachineEventsListener {
             size_t index;
         };
 
-        MachineTracer();
+        MachineTracer(MachineState&);
 
         void onEnteringBlock(std::shared_ptr<Block>) override;
         void onExecutingOperation(size_t) override;
