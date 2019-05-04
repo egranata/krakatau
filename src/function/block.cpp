@@ -134,3 +134,16 @@ bool Block::equals(std::shared_ptr<Operation> rhs) const {
 
     return false;
 }
+
+std::shared_ptr<ValueTable> Block::newSlot() {
+    auto vt = std::make_shared<ValueTable>();
+    mSlots.push_back(vt);
+    return vt;
+}
+void Block::dropSlot() {
+    if (mSlots.size()) mSlots.pop_back();
+}
+std::shared_ptr<ValueTable> Block::currentSlot() const {
+    if (mSlots.empty()) return nullptr;
+    return mSlots.back();
+}

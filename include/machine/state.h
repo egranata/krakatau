@@ -25,6 +25,8 @@
 #include <operations/op.h>
 #include <vector>
 #include <optional>
+#include <value/value_table.h>
+#include <stack>
 
 class Block;
 class MachineEventsListener;
@@ -54,6 +56,10 @@ class MachineState {
         size_t load(Parser*);
         size_t serialize(Serializer*);
 
+        void pushSlot(std::shared_ptr<Block>);
+        void popSlot();
+        std::shared_ptr<ValueTable> currentSlot() const;
+
         std::optional<Operation::Result> execute(const std::string& block = "main");
     private:
         bool loadOneValue(ByteStream*);
@@ -66,6 +72,7 @@ class MachineState {
         ValueStore mValueStore;
 
         std::vector<std::shared_ptr<MachineEventsListener>> mListeners;
+        std::stack<std::shared_ptr<ValueTable>> mSlots;
 };
 
 #endif

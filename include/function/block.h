@@ -22,6 +22,7 @@
 #include <machine/state.h>
 #include <vector>
 #include <string>
+#include <value/value_table.h>
 
 class Serializer;
 class ByteStream;
@@ -40,8 +41,13 @@ class Block : public Operation {
         size_t serialize(Serializer*) const override;
         bool equals(std::shared_ptr<Operation>) const override;
 
+        std::shared_ptr<ValueTable> newSlot();
+        void dropSlot();
+        std::shared_ptr<ValueTable> currentSlot() const;
+
     private:
         std::vector<std::shared_ptr<Operation>> mOperations;
+        std::vector<std::shared_ptr<ValueTable>> mSlots;
     public:
         decltype(mOperations)::const_iterator begin() const;
         decltype(mOperations)::const_iterator end() const;

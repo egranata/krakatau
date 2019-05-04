@@ -18,8 +18,11 @@
 #include <value/tuple.h>
 #include <machine/events.h>
 #include <value/block.h>
+#include <machine/slots_handler.h>
 
-MachineState::MachineState() = default;
+MachineState::MachineState() {
+    appendListener(std::make_shared<SlotsHandler>(*this));
+}
 
 Stack& MachineState::stack() {
     return mStack;
@@ -108,4 +111,15 @@ std::optional<Operation::Result> MachineState::execute(const std::string& name) 
     auto blk = runtime_ptr_cast<Value_Block>(vblk);
     if (blk == nullptr) return std::nullopt;
     return blk->execute(*this);
+}
+
+void MachineState::pushSlot(std::shared_ptr<Block> blk) {
+    mSlots.push(blk->currentSlot());
+}
+void MachineState::popSlot() {
+    if (!mSlots.empty()) mSlots.pop();
+}
+std::shared_ptr<ValueTable> MachineState::currentSlot() const {
+    if (mSlots.empty()) return nullptr;
+    return mSlots.top();
 }
