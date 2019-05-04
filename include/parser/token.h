@@ -37,6 +37,7 @@ enum class TokenKind {
     BOOLEAN,
     STRING,
     SEMICOLON,
+    KW_SLOTS,
 };
 
 std::string tokenKindToString(TokenKind tk);

@@ -96,8 +96,23 @@ std::shared_ptr<Block> Block::fromByteStream(ByteStream* bs) {
 }
 
 std::shared_ptr<Block> Block::fromParser(Parser* p) {
-    if (!p->expectedError(TokenKind::OPEN_BLOCK)) return nullptr;
     auto blk = std::make_shared<Block>();
+
+    if (p->peekIf(TokenKind::KW_SLOTS)) {
+        p->next();
+        while (true) {
+            if (p->nextIf(nullptr)) return nullptr;
+
+            if (p->peekIf(TokenKind::IDENTIFIER)) {
+                auto tok = p->next();
+                blk->addSlotValue(tok->value());
+            }
+            if (p->nextIf(TokenKind::COMMA)) continue;
+            if (p->peekIf(TokenKind::OPEN_BLOCK)) break;
+        }
+    }
+
+    if (!p->expectedError(TokenKind::OPEN_BLOCK)) return nullptr;
     while(true) {
         if (p->nextIf(TokenKind::CLOSE_BLOCK)) break;
         if (p->nextIf(TokenKind::COMMA)) continue;
@@ -146,4 +161,15 @@ void Block::dropSlot() {
 std::shared_ptr<ValueTable> Block::currentSlot() const {
     if (mSlots.empty()) return nullptr;
     return mSlots.back();
+}
+
+void Block::addSlotValue(std::string sv) {
+    mSlotNames.push_back(sv);
+}
+size_t Block::numSlotValues() const {
+    return mSlotNames.size();
+}
+std::optional<std::string> Block::slotValueAt(size_t i) const {
+    if (i >= numSlotValues()) return std::nullopt;
+    return mSlotNames.at(i);
 }

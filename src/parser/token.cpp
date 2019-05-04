@@ -35,6 +35,7 @@ std::string tokenKindToString(TokenKind tk) {
         case TokenKind::CLOSE_SQUARE: return "]";
         case TokenKind::ARROW: return "->";
         case TokenKind::SEMICOLON: return ";";
+        case TokenKind::KW_SLOTS: return "slots";
     }
 
     return "unknown";

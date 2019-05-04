@@ -22,6 +22,7 @@
 #include <machine/state.h>
 #include <vector>
 #include <string>
+#include <optional>
 #include <value/value_table.h>
 
 class Serializer;
@@ -45,9 +46,14 @@ class Block : public Operation {
         void dropSlot();
         std::shared_ptr<ValueTable> currentSlot() const;
 
+        void addSlotValue(std::string);
+        size_t numSlotValues() const;
+        std::optional<std::string> slotValueAt(size_t) const;
+
     private:
         std::vector<std::shared_ptr<Operation>> mOperations;
         std::vector<std::shared_ptr<ValueTable>> mSlots;
+        std::vector<std::string> mSlotNames;
     public:
         decltype(mOperations)::const_iterator begin() const;
         decltype(mOperations)::const_iterator end() const;

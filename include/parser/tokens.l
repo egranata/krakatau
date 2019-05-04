@@ -10,6 +10,9 @@ true            {
 false           {
                     return std::make_unique<Token>(TokenKind::BOOLEAN, yytext);
                 }
+slots           {
+                    return std::make_unique<Token>(TokenKind::KW_SLOTS, yytext);
+                }
 ->              {
                     return std::make_unique<Token>(TokenKind::ARROW, yytext);
                 }

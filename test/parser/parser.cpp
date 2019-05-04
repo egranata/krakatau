@@ -221,6 +221,32 @@ TEST(Parser, ParseBlock) {
     ASSERT_EQ("bar", runtime_ptr_cast<Store>(blk->value()->at(5))->key());
 }
 
+TEST(Parser, ParseBlockWithSlots) {
+    Parser p("value main block slots a b, c, d { }");
+    auto value = p.parseValue();
+    ASSERT_NE(nullptr, value);
+    ASSERT_TRUE(value->value->isOfClass<Value_Block>());
+    auto blk = runtime_ptr_cast<Value_Block>(value->value);
+    ASSERT_EQ(4, blk->value()->numSlotValues());
+    ASSERT_EQ("a", blk->value()->slotValueAt(0).value());
+    ASSERT_EQ("b", blk->value()->slotValueAt(1).value());
+    ASSERT_EQ("c", blk->value()->slotValueAt(2).value());
+    ASSERT_EQ("d", blk->value()->slotValueAt(3).value());
+    ASSERT_FALSE(blk->value()->slotValueAt(4).has_value());
+}
+
+TEST(Parser, ParseBlockEmptySlots) {
+    Parser p("value main block slots { push number 1 }");
+    auto value = p.parseValue();
+    ASSERT_NE(nullptr, value);
+    ASSERT_TRUE(value->value->isOfClass<Value_Block>());
+    auto blk = runtime_ptr_cast<Value_Block>(value->value);
+    ASSERT_EQ(0, blk->value()->numSlotValues());
+    ASSERT_FALSE(blk->value()->slotValueAt(0).has_value());
+    ASSERT_EQ(1, blk->value()->size());
+    ASSERT_TRUE(blk->value()->at(0)->isOfClass<Push>());
+}
+
 TEST(Parser, ParseNewlineBlock) {
     Parser p("value main block {\n  load foo\n  dup\n  add\n  resetstack\n  push empty\n  store bar\n}");
     auto value = p.parseValue();
