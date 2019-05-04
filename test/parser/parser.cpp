@@ -390,3 +390,21 @@ TEST(Parser, ConcurrentParsing) {
     ASSERT_EQ(nullptr, p1.parseValue());
     ASSERT_EQ(nullptr, p2.parseValue());
 }
+
+TEST(Parser, PeekIf) {
+    Parser p("hello , 12345 boolean");
+    ASSERT_TRUE(p.peekIf(TokenKind::IDENTIFIER));
+    ASSERT_FALSE(p.peekIf(TokenKind::COMMA));
+    ASSERT_EQ(TokenKind::IDENTIFIER, p.next()->kind());
+    ASSERT_FALSE(p.peekIf(TokenKind::IDENTIFIER));
+    ASSERT_TRUE(p.peekIf(TokenKind::COMMA));
+    ASSERT_EQ(TokenKind::COMMA, p.next()->kind());
+    ASSERT_TRUE(p.peekIf(TokenKind::NUMBER));
+    ASSERT_FALSE(p.peekIf(TokenKind::KW_BOOLEAN));
+    ASSERT_EQ("12345", p.next()->value());
+    ASSERT_TRUE(p.peekIf(TokenKind::KW_BOOLEAN));
+    ASSERT_EQ(TokenKind::KW_BOOLEAN, p.next()->kind());
+    ASSERT_FALSE(p.peekIf(TokenKind::KW_BOOLEAN));
+    ASSERT_FALSE(p.peekIf(TokenKind::COMMA));
+    ASSERT_FALSE(p.peekIf(TokenKind::IDENTIFIER));
+}

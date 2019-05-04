@@ -48,6 +48,8 @@ class Parser {
         std::optional<Token> nextIf(const Token&);
         bool nextIf(std::nullptr_t);
 
+        bool peekIf(TokenKind);
+
         std::shared_ptr<NamedValue> parseValue();
         std::shared_ptr<Value> parseValuePayload();
 

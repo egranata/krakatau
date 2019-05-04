@@ -129,6 +129,11 @@ bool Parser::nextIf(std::nullptr_t) {
     return true;
 }
 
+bool Parser::peekIf(TokenKind tk) {
+    auto tok = nextToken();
+    return (tok && tok->kind() == tk);
+}
+
 Parser::NamedValue::NamedValue(const std::string& n, std::shared_ptr<Value> v) {
     name = n;
     value = v;
