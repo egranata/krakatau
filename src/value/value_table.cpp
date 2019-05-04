@@ -19,8 +19,8 @@
 
 ValueTable::ValueTable() = default;
 
-void ValueTable::add(std::shared_ptr<Value> k, std::shared_ptr<Value> v) {
-    mMap.try_emplace(k, v);
+bool ValueTable::add(std::shared_ptr<Value> k, std::shared_ptr<Value> v) {
+    return mMap.try_emplace(k, v).second;
 }
 
 std::shared_ptr<Value> ValueTable::find(std::shared_ptr<Value> k) const {

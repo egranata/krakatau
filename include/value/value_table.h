@@ -23,7 +23,7 @@
 class ValueTable {
     public:
         ValueTable();
-        void add(std::shared_ptr<Value>, std::shared_ptr<Value>);
+        bool add(std::shared_ptr<Value>, std::shared_ptr<Value>);
         std::shared_ptr<Value> find(std::shared_ptr<Value>) const;
         size_t size() const;
         std::shared_ptr<Value> keyAt(size_t) const;

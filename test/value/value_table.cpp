@@ -43,9 +43,9 @@ TEST(ValueTable, FindExisting) {
 
 TEST(ValueTable, InsertEqual) {
     ValueTable vt;
-    vt.add(Value::empty(), Value::fromNumber(12));
+    ASSERT_TRUE(vt.add(Value::empty(), Value::fromNumber(12)));
     ASSERT_EQ(1, vt.size());
-    vt.add(Value::empty(), Value::fromBoolean(false));
+    ASSERT_FALSE(vt.add(Value::empty(), Value::fromBoolean(false)));
     ASSERT_EQ(1, vt.size());
     ASSERT_TRUE(vt.find(Value::empty())->isOfClass<Value_Number>());
     ASSERT_EQ(12, runtime_ptr_cast<Value_Number>(vt.find(Value::empty()))->value());
