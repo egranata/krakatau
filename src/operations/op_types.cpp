@@ -15,7 +15,7 @@
 #include <operations/op_types.h>
 #include <stream/byte_stream.h>
 
-#define OPERATION_TYPE(ID, TOKEN, STRING, NUMBER) \
+#define OPERATION_TYPE(ID, CLASS, TOKEN, STRING, NUMBER) \
     case OperationType:: ID: { static_assert(NUMBER <= enumToNumber(std::numeric_limits<OperationType>::max())); return STRING; };
 
 std::string operationTypeToString(OperationType op) {
@@ -38,7 +38,7 @@ std::optional<OperationType> operationTypeFromByteStream(ByteStream* bs) {
 }
 
 
-#define OPERATION_TYPE(NAME, TOKEN, STRING, VALUE) \
+#define OPERATION_TYPE(NAME, CLASS, TOKEN, STRING, VALUE) \
     if (s == #TOKEN) return OperationType:: NAME;
 
 std::optional<OperationType> operationTypeFromString(const std::string& s) {
