@@ -64,7 +64,7 @@ class Operation : public std::enable_shared_from_this<Operation> {
 template<typename T, OperationType OpType, typename Parent = Operation>
 class BaseOperation : public Operation {
     public:
-        virtual OperationType getClassId() const { return OpType; }
+        virtual OperationType getClassId() const override { return OpType; }
         static OperationType getStaticClassId() { return OpType; }
         bool isOfType(OperationType aID) const override {
             return (aID == OpType) || this->Parent::isOfType(aID);
