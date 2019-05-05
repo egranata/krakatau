@@ -79,8 +79,19 @@ std::string Block::describe() const {
 std::shared_ptr<Block> Block::fromByteStream(ByteStream* bs) {
     auto opl = OperationLoader::loader();
 
+    std::shared_ptr<Block> blk = std::make_shared<Block>();
+
+    if (auto scnt = bs->readNumber()) {
+        auto cnt = scnt.value();
+        while(cnt) {
+            if (auto oop = bs->readIdentifier()) {
+                blk->addSlotValue(oop.value());
+                --cnt;
+            } else return nullptr;
+        }
+    }
+
     if (auto ocnt = bs->readNumber()) {
-        std::shared_ptr<Block> blk = std::make_shared<Block>();
         auto cnt = ocnt.value();
         while(cnt) {
             if (auto oop = opl->fromByteStream(bs)) {
@@ -130,7 +141,11 @@ std::shared_ptr<Block> Block::fromParser(Parser* p) {
 }
 
 size_t Block::serialize(Serializer* s) const {
-    size_t wr = s->writeNumber(size());
+    size_t wr = s->writeNumber(numSlotValues());
+    for (size_t i = 0; i < numSlotValues(); ++i) {
+        wr += s->writeIdentifier(slotValueAt(i).value());
+    }
+    wr += s->writeNumber(size());
     for (size_t i = 0; i < size(); ++i) {
         wr += at(i)->serialize(s);
     }
@@ -141,6 +156,10 @@ bool Block::equals(std::shared_ptr<Operation> rhs) const {
     auto blk = runtime_ptr_cast<Block>(rhs);
     if (blk) {
         if (blk->size() != size()) return false;
+        if (blk->numSlotValues() != numSlotValues()) return false;
+        for (size_t i = 0; i < numSlotValues(); ++i) {
+            if (slotValueAt(i) != blk->slotValueAt(i)) return false;
+        }
         for(size_t i = 0; i < size(); ++i) {
             if (!at(i)->equals(blk->at(i))) return false;
         }
@@ -172,4 +191,19 @@ size_t Block::numSlotValues() const {
 std::optional<std::string> Block::slotValueAt(size_t i) const {
     if (i >= numSlotValues()) return std::nullopt;
     return mSlotNames.at(i);
+}
+
+bool Block::loadSlots(MachineState& ms) const {
+    if (!ms.stack().hasAtLeast(numSlotValues())) {
+        ms.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
+        return false;
+    }
+
+    auto slot = ms.currentSlot();
+
+    for(size_t i = 0; i < numSlotValues(); ++i) {
+        slot->add(Value::fromString(slotValueAt(i).value()), ms.stack().pop());
+    }
+
+    return true;
 }

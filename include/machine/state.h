@@ -33,7 +33,7 @@ class MachineEventsListener;
 
 class MachineState {
     public:
-        static constexpr uint32_t FORMAT_VERSION = 1;
+        static constexpr uint32_t FORMAT_VERSION = 2;
 
         MachineState();
 

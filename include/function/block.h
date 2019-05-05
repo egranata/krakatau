@@ -50,6 +50,8 @@ class Block : public Operation {
         size_t numSlotValues() const;
         std::optional<std::string> slotValueAt(size_t) const;
 
+        bool loadSlots(MachineState&) const;
+
     private:
         std::vector<std::shared_ptr<Operation>> mOperations;
         std::vector<std::shared_ptr<ValueTable>> mSlots;

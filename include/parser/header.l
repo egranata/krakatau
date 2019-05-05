@@ -24,7 +24,7 @@
 %option nounput reentrant
 
 DIGIT	[0-9] 
-ALPHA	[a-zA-Z_] 
+ALPHA	[a-zA-Z_$] 
 ALNUM	[0-9a-zA-Z] 
-IDENT	[0-9a-zA-Z_]
+IDENT	[0-9a-zA-Z$_]
 %%

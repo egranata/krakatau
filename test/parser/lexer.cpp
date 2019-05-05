@@ -22,14 +22,14 @@ TEST(Lexer, LexString) {
     std::vector<Token> expected = {
         {TokenKind::STRING, "\"test string\""},
         {TokenKind::IDENTIFIER, "_is_a_valid_prefix"},
-        {TokenKind::IDENTIFIER, "hello"},
+        {TokenKind::IDENTIFIER, "$hello"},
         {TokenKind::NUMBER, "123456"},
         {TokenKind::IDENTIFIER, "hello1234"},
         {TokenKind::KW_SLOTS, "slots"},
     };
     yyscan_t scanner;
     yylex_init(&scanner);
-    YY_BUFFER_STATE buf = yy_scan_string("slots hello1234 123456 hello _is_a_valid_prefix \"test string\"", scanner);
+    YY_BUFFER_STATE buf = yy_scan_string("slots hello1234 123456 $hello _is_a_valid_prefix \"test string\"", scanner);
     while(!expected.empty()) {
         auto parsed = yylex(scanner);
         ASSERT_NE(parsed, nullptr);

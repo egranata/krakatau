@@ -86,6 +86,7 @@ TEST(MachineState, LoadType) {
 
 TEST(MachineState, LoadBlock) {
     std::vector<uint8_t> i = {MachineState::FORMAT_VERSION, '\'', 't', 'e', 's', 't', '\'', '{',
+                                0, 0, 0, 0, 0, 0, 0, 0,
                                 0, 0, 0, 0, 0, 0, 0, 1,
                                 0, 0, 0, 24};
     auto bs = ByteStream::anonymous((uint8_t*)i.data(), i.size());

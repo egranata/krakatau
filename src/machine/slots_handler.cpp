@@ -18,6 +18,7 @@ SlotsHandler::SlotsHandler(MachineState& ms) : MachineEventsListener(ms) {}
 
 void SlotsHandler::onEnteringBlock(std::shared_ptr<Block> blk) {
     getMachineState().pushSlot((blk->newSlot(), blk));
+    blk->loadSlots(getMachineState());
 }
 void SlotsHandler::onLeavingBlock() {
     getMachineState().popSlot();

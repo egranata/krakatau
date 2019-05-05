@@ -23,6 +23,10 @@
 #include <stream/byte_stream.h>
 #include <vector>
 #include <stream/serializer.h>
+#include <machine/state.h>
+#include <operations/arith.h>
+#include <operations/loadslot.h>
+#include <parser/parser.h>
 
 TEST(Block, Size) {
     Block b;
@@ -85,9 +89,10 @@ TEST(Block, Print) {
 }
 
 TEST(Block, FromByteStream) {
-    std::vector<uint8_t> i = {0, 0, 0, 0, 0, 0, 0, 2,
+    std::vector<uint8_t> i = {  0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 0, 0, 0, 0, 0, 0, 2,
                                 0, 0, 0, 14,
-                                0, 0, 0, 23};
+                                0, 0, 0, 23 };
     auto bs = ByteStream::anonymous((uint8_t*)i.data(), i.size());
     auto blk = Block::fromByteStream(bs.get());
     ASSERT_NE(nullptr, blk);
@@ -108,6 +113,23 @@ TEST(Block, Serialize) {
     ASSERT_EQ(blk.size(), db->size());
     ASSERT_TRUE(db->at(0)->isOfClass<Dup>());
     ASSERT_TRUE(db->at(1)->isOfClass<Nop>());
+}
+
+TEST(Block, SerializeWithSlots) {
+    Serializer s;
+    Block blk;
+    blk.addSlotValue("$a");
+    blk.add(std::make_shared<Dup>());
+    blk.add(std::make_shared<Nop>());
+    blk.serialize(&s);
+    auto bs = ByteStream::anonymous(s.data(), s.size());
+    auto db = Block::fromByteStream(bs.get());
+    ASSERT_NE(db, nullptr);
+    ASSERT_EQ(blk.size(), db->size());
+    ASSERT_TRUE(db->at(0)->isOfClass<Dup>());
+    ASSERT_TRUE(db->at(1)->isOfClass<Nop>());
+    ASSERT_EQ(1, db->numSlotValues());
+    ASSERT_EQ("$a", db->slotValueAt(0).value_or(""));
 }
 
 TEST(Block, AsOperation) {
@@ -143,3 +165,71 @@ TEST(Block, EqualityFalseContent) {
     ASSERT_FALSE(blk.equals(b2));
 }
 
+TEST(Block, EqualityFalseNumSlots) {
+    auto b1 = std::make_shared<Block>();
+    auto b2 = std::make_shared<Block>();
+    b1->addSlotValue("$a");
+    b2->addSlotValue("$b");
+    b2->addSlotValue("$c");
+    ASSERT_FALSE(b1->equals(b2));
+}
+
+TEST(Block, EqualityFalseSlotNames) {
+    auto b1 = std::make_shared<Block>();
+    auto b2 = std::make_shared<Block>();
+    b1->addSlotValue("$a");
+    b2->addSlotValue("$c");
+    ASSERT_FALSE(b1->equals(b2));
+}
+
+TEST(Block, EqualityTrueSlots) {
+    auto b1 = std::make_shared<Block>();
+    auto b2 = std::make_shared<Block>();
+    b1->addSlotValue("$a");
+    b2->addSlotValue("$a");
+    ASSERT_TRUE(b1->equals(b2));
+}
+
+TEST(Block, ValidSlots) {
+    MachineState ms;
+    auto blk = std::make_shared<Block>();
+    blk->addSlotValue("$a");
+    blk->addSlotValue("$b");
+    ms.stack().push(Value::fromNumber(12));
+    ms.stack().push(Value::fromNumber(24));
+    blk->add(std::make_shared<Loadslot>("$a"));
+    blk->add(std::make_shared<Loadslot>("$b"));
+    blk->add(std::make_shared<Add_Binary_Arithmetic_Operation>());
+    blk->execute(ms);
+    ASSERT_EQ(1, ms.stack().size());
+    ASSERT_TRUE(Value::fromNumber(36)->equals(ms.stack().peek()));
+}
+
+TEST(Block, InsufficientSlots) {
+    MachineState ms;
+    auto blk = std::make_shared<Block>();
+    blk->addSlotValue("$a");
+    blk->addSlotValue("$b");
+    ms.stack().push(Value::fromNumber(12));
+    blk->add(std::make_shared<Loadslot>("$a"));
+    blk->add(std::make_shared<Loadslot>("$b"));
+    blk->add(std::make_shared<Add_Binary_Arithmetic_Operation>());
+    blk->execute(ms);
+    ASSERT_EQ(3, ms.stack().size());
+    ASSERT_TRUE(Value::error(ErrorCode::NOT_FOUND)->equals(ms.stack().pop()));
+    ASSERT_TRUE(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS)->equals(ms.stack().pop()));
+    ASSERT_TRUE(Value::fromNumber(12)->equals(ms.stack().pop()));
+}
+
+TEST(Block, SlotsAreReentrant) {
+    Parser p("value foo block slots $a { loadslot $a push number 0 eq iftrue break push number 1 loadslot $a sub dup load foo exec }"
+             "\n"
+             "value main block { push number 10 load foo exec }");
+    MachineState ms;
+    ASSERT_EQ(2, ms.load(&p));
+    ms.execute();
+    ASSERT_EQ(10, ms.stack().size());
+    for(size_t i = 0; i < 10; ++i) {
+        ASSERT_TRUE(Value::fromNumber(i)->equals(ms.stack().pop()));
+    }
+}
