@@ -58,4 +58,3 @@ std::shared_ptr<Operation> OperationLoader::fromParser(Parser* p) {
         return nullptr;
     }
 }
-

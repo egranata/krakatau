@@ -43,14 +43,8 @@ class OperationLoader {
         ~OperationLoader();
 };
 
-#define OP_LOADER(Ty, Class) \
-void OpLoader ## Class () __attribute__((constructor, weak)); \
-void OpLoader ## Class () { \
-            OperationLoader::loader()->addLoader(Ty, [] (ByteStream* bs) -> std::shared_ptr<Operation> { \
-                return Class ::fromByteStream(bs); \
-            }); \
-            OperationLoader::loader()->addParser(Ty, [] (Parser* p) -> std::shared_ptr<Operation> { \
-                return Class ::fromParser(p); \
-            });
+#define OPERATION_TYPE(NAME, CLASS, TOKEN, STRING, NUMBER) \
+    void OpLoader ## CLASS () __attribute__((constructor, weak));
+#include <operations/op_types.def>
 
 #endif
