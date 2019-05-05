@@ -19,7 +19,7 @@
 
 #include <operations/op.h>
 
-class Filter : public Operation {
+class Filter : public DefaultConstructibleOperation<Filter, OperationType::FILTER> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 

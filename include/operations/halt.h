@@ -20,7 +20,7 @@
 #include <operations/op.h>
 #include <operations/op_loader.h>
 
-class Halt : public Operation {
+class Halt : public DefaultConstructibleOperation<Halt, OperationType::HALT> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 

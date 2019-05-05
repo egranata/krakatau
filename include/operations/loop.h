@@ -18,11 +18,10 @@
 #define STUFF_OPERATION_LOOP
 
 #include <operations/op.h>
-#include <operations/op_loader.h>
 
 class ByteStream;
 
-class Loop : public Operation {
+class Loop : public DefaultConstructibleOperation<Loop, OperationType::LOOP> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 

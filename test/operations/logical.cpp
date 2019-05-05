@@ -34,8 +34,6 @@ TEST(Type, BadType) { \
     ASSERT_EQ(Operation::Result::ERROR, a.execute(ms)); \
     ASSERT_EQ(3, ms.stack().size()); \
     ASSERT_TRUE(ms.stack().pop()->isOfClass<Value_Error>()); \
-    ASSERT_TRUE(a.isOfClass<Binary_Logical_Operation>()); \
-    ASSERT_FALSE(a.isOfClass<Unary_Logical_Operation>()); \
 }
 
 TEST_BINARY_LOGICAL_BADTYPE(And);
@@ -80,8 +78,6 @@ TEST(Type, BadType) { \
     ASSERT_EQ(Operation::Result::ERROR, a.execute(ms)); \
     ASSERT_EQ(2, ms.stack().size()); \
     ASSERT_TRUE(ms.stack().pop()->isOfClass<Value_Error>()); \
-    ASSERT_FALSE(a.isOfClass<Binary_Logical_Operation>()); \
-    ASSERT_TRUE(a.isOfClass<Unary_Logical_Operation>()); \
 }
 
 TEST_UNARY_LOGICAL_BADTYPE(Not);

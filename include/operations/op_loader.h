@@ -51,6 +51,6 @@ void OpLoader ## Class () { \
             }); \
             OperationLoader::loader()->addParser(Ty, [] (Parser* p) -> std::shared_ptr<Operation> { \
                 return Class ::fromParser(p); \
-            }); \
+            });
 
 #endif

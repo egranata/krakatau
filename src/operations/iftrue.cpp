@@ -79,3 +79,7 @@ size_t IfTrue::serialize(Serializer* s) const {
 std::shared_ptr<Operation> IfTrue::op() const {
     return mOperation;
 }
+
+std::shared_ptr<Operation> IfTrue::clone() const {
+    return std::make_shared<IfTrue>(op()->clone());
+}

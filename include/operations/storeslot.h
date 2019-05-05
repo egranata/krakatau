@@ -20,7 +20,7 @@
 #include <operations/op.h>
 #include <string>
 
-class Storeslot : public Operation {
+class Storeslot : public BaseOperation<Storeslot, OperationType::STORESLOT> {
     public:
         static std::shared_ptr<Operation> fromByteStream(ByteStream*);
         static std::shared_ptr<Operation> fromParser(Parser*);
@@ -30,6 +30,8 @@ class Storeslot : public Operation {
         virtual std::string describe() const override;
         size_t serialize(Serializer*) const override;
         bool equals(std::shared_ptr<Operation>) const override;
+
+        std::shared_ptr<Operation> clone() const override;
 
         std::string key() const;
 

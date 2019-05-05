@@ -19,7 +19,7 @@
 
 #include <operations/op.h>
 
-class ResetStack : public Operation {
+class ResetStack : public DefaultConstructibleOperation<ResetStack, OperationType::RESETSTACK> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 

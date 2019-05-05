@@ -22,24 +22,24 @@
 #include <memory>
 #include <operations/op_loader.h>
 
-class Binary_Arithmetic_Operation : public Operation {
+template<typename T, OperationType OpType, typename P = Operation>
+class Binary_Arithmetic_Operation : public DefaultConstructibleOperation<T,OpType,P> {
     public:
         virtual std::shared_ptr<Value> eval(Value_Number* v1, Value_Number* v2) = 0;
         Operation::Result execute(MachineState&) override;
-
-        ABSTRACT_OPERATION_SUBCLASS(Binary_Arithmetic_Operation, OperationType::BINARY_ARITHMETIC, Operation);
 };
 
-class Unary_Arithmetic_Operation : public Operation {
+template<typename T, OperationType OpType, typename P = Operation>
+class Unary_Arithmetic_Operation : public DefaultConstructibleOperation<T,OpType,P> {
     public:
         virtual std::shared_ptr<Value> eval(Value_Number* v1) = 0;
         Operation::Result execute(MachineState&) override;
-
-        ABSTRACT_OPERATION_SUBCLASS(Unary_Arithmetic_Operation, OperationType::UNARY_ARITHMETIC, Operation);
 };
 
 #define BINARY_ARITH_OPERATION(ClassName, OpType) \
-class ClassName ## _Binary_Arithmetic_Operation : public Binary_Arithmetic_Operation { \
+class ClassName ## _Binary_Arithmetic_Operation : public Binary_Arithmetic_Operation< \
+    ClassName ## _Binary_Arithmetic_Operation,\
+    OpType> { \
     public: \
         std::shared_ptr<Value> eval(Value_Number* v1, Value_Number* v2) override; \
         OPERATION_SUBCLASS(ClassName ## _Binary_Arithmetic_Operation, OpType, Binary_Arithmetic_Operation); \
@@ -54,7 +54,9 @@ BINARY_ARITH_OPERATION(Modulo, OperationType::MODULO);
 #undef BINARY_ARITH_OPERATION
 
 #define UNARY_ARITH_OPERATION(ClassName, OpType) \
-class ClassName ## _Unary_Arithmetic_Operation : public Unary_Arithmetic_Operation { \
+class ClassName ## _Unary_Arithmetic_Operation : public Unary_Arithmetic_Operation<\
+    ClassName ## _Unary_Arithmetic_Operation,\
+    OpType> { \
     public: \
         std::shared_ptr<Value> eval(Value_Number* v) override; \
         OPERATION_SUBCLASS(ClassName ## _Unary_Arithmetic_Operation, OpType, Unary_Arithmetic_Operation); \

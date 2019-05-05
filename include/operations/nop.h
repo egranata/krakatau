@@ -19,7 +19,7 @@
 
 #include <operations/op.h>
 
-class Nop : public Operation {
+class Nop : public DefaultConstructibleOperation<Nop, OperationType::NOP> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 

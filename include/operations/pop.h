@@ -19,7 +19,7 @@
 
 #include <operations/op.h>
 
-class Pop : public Operation {
+class Pop : public DefaultConstructibleOperation<Pop, OperationType::POP> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 

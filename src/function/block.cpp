@@ -218,3 +218,14 @@ bool Block::loadSlots(MachineState& ms) const {
 
     return true;
 }
+
+std::shared_ptr<Operation> Block::clone() const {
+    std::shared_ptr<Block> newBlock = std::make_shared<Block>();
+    std::for_each(mSlotNames.begin(), mSlotNames.end(), [newBlock] (const std::string& sn) -> void {
+        newBlock->addSlotValue(sn);
+    });
+    std::for_each(mOperations.begin(), mOperations.end(), [newBlock] (const std::shared_ptr<Operation>& op) -> void {
+        newBlock->add(op->clone());
+    });
+    return newBlock;
+}

@@ -23,11 +23,6 @@ std::string operationTypeToString(OperationType op) {
         case OperationType::NONE: return "none";
         case OperationType::BLOCK: return "block";
 #include <operations/op_types.def>
-        case OperationType::BINARY_ARITHMETIC:
-        case OperationType::UNARY_ARITHMETIC:
-        case OperationType::BINARY_LOGICAL:
-        case OperationType::UNARY_LOGICAL:
-            return "unexpected operation type";
     }
 
     return "unknown";

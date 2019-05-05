@@ -19,7 +19,7 @@
 
 #include <operations/op.h>
 
-class Map : public Operation {
+class Map : public DefaultConstructibleOperation<Map, OperationType::MAP> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 

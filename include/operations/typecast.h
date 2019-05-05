@@ -22,7 +22,7 @@
 
 class ByteStream;
 
-class Typecast : public Operation {
+class Typecast : public DefaultConstructibleOperation<Typecast, OperationType::TYPECAST> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 

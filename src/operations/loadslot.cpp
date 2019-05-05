@@ -75,3 +75,7 @@ bool Loadslot::equals(std::shared_ptr<Operation> rhs) const {
     }
     return false;
 }
+
+std::shared_ptr<Operation> Loadslot::clone() const {
+    return std::make_shared<Loadslot>(key());
+}

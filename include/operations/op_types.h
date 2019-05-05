@@ -39,40 +39,9 @@ enum class OperationType : uint32_t {
 
 NUMERIC_LIMITS(OperationType);
 
-#define ABSTRACT_OPERATION_SUBCLASS( SELFNAME, NEWCLASSID, BASECLASSNAME ) \
-  private: \
-    using self = SELFNAME; \
-  public: \
-    OperationType getClassId() const override { return NEWCLASSID; }; \
-    static OperationType getStaticClassId() { return NEWCLASSID; }; \
-     \
-    bool isOfType(OperationType aID) const override { \
-      return ((aID == NEWCLASSID) || BASECLASSNAME::isOfType(aID)); \
-    }; \
-
-
 #define OPERATION_SUBCLASS( SELFNAME, NEWCLASSID, BASECLASSNAME ) \
-  private: \
-    using self = SELFNAME; \
-    template<typename T> \
-    static constexpr bool is_dc = std::is_default_constructible<T>::value; \
-  public: \
-    OperationType getClassId() const override { return NEWCLASSID; }; \
-    static OperationType getStaticClassId() { return NEWCLASSID; }; \
-     \
-    bool isOfType(OperationType aID) const override { \
-      return ((aID == NEWCLASSID) || BASECLASSNAME::isOfType(aID)); \
-    }; \
-    template<typename T = self, typename = typename std::enable_if<is_dc<T>>::type> \
-    static std::shared_ptr<Operation> fromByteStream(ByteStream*) { \
-      return std::shared_ptr<Operation>(new T()); \
-    } \
-    template<typename T = self, typename = typename std::enable_if<is_dc<T>>::type> \
-    static std::shared_ptr<Operation> fromParser(Parser*) { \
-      return std::shared_ptr<Operation>(new T()); \
-    } \
 }; \
-OP_LOADER(NEWCLASSID, SELFNAME);
+OP_LOADER(NEWCLASSID, SELFNAME); \
 
 std::string operationTypeToString(OperationType);
 std::optional<OperationType> operationTypeFromByteStream(ByteStream*);

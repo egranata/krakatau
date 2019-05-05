@@ -18,7 +18,8 @@
 #include <rtti/rtti.h>
 #include <machine/state.h>
 
-Operation::Result Binary_Logical_Operation::execute(MachineState& s) {
+template<class T, OperationType OpType, class P>
+Operation::Result Binary_Logical_Operation<T,OpType,P>::execute(MachineState& s) {
     if (!s.stack().hasAtLeast(2)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;
@@ -30,7 +31,7 @@ Operation::Result Binary_Logical_Operation::execute(MachineState& s) {
     if (p1->isOfClass<Value_Boolean>() && p2->isOfClass<Value_Boolean>()) {
         auto n1 = runtime_ptr_cast<Value_Boolean>(p1);
         auto n2 = runtime_ptr_cast<Value_Boolean>(p2);
-        auto ptr = eval(n1, n2);
+        std::shared_ptr<Value> ptr = eval(n1, n2);
         if (ptr->isOfClass<Value_Error>()) {
             s.stack().push(p2);
             s.stack().push(p1);
@@ -45,7 +46,8 @@ Operation::Result Binary_Logical_Operation::execute(MachineState& s) {
     }
 }
 
-Operation::Result Unary_Logical_Operation::execute(MachineState& s) {
+template<class T, OperationType OpType, class P>
+Operation::Result Unary_Logical_Operation<T,OpType,P>::execute(MachineState& s) {
     if (!s.stack().hasAtLeast(1)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;
@@ -55,7 +57,7 @@ Operation::Result Unary_Logical_Operation::execute(MachineState& s) {
 
     if (p->isOfClass<Value_Boolean>()) {
         auto n = runtime_ptr_cast<Value_Boolean>(p);
-        auto ptr = eval(n);
+        std::shared_ptr<Value> ptr = eval(n);
         if (ptr->isOfClass<Value_Error>()) {
             s.stack().push(p);
         }

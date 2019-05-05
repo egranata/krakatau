@@ -19,7 +19,7 @@
 
 #include <operations/op.h>
 
-class Pack : public Operation {
+class Pack : public DefaultConstructibleOperation<Pack, OperationType::PACK> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 

@@ -19,7 +19,7 @@
 
 #include <operations/op.h>
 
-class Size : public Operation {
+class Size : public DefaultConstructibleOperation<Size, OperationType::SIZE> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 

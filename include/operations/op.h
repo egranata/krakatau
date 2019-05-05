@@ -22,6 +22,7 @@
 #include <operations/op_types.h>
 #include <memory>
 #include <string>
+#include <stdlib.h>
 
 class Serializer;
 class MachineState;
@@ -49,6 +50,7 @@ class Operation : public std::enable_shared_from_this<Operation> {
         virtual size_t serialize(Serializer*) const;
 
         virtual bool equals(std::shared_ptr<Operation>) const;
+        virtual std::shared_ptr<Operation> clone() const = 0;
 
         template <typename T>
         bool isOfClass() const { return isOfType( T::getStaticClassId() ); };
@@ -57,6 +59,34 @@ class Operation : public std::enable_shared_from_this<Operation> {
         Operation();
         Operation(const Operation&) = delete;
         Operation& operator=(const Operation&) = delete;
+};
+
+template<typename T, OperationType OpType, typename Parent = Operation>
+class BaseOperation : public Operation {
+    public:
+        virtual OperationType getClassId() const { return OpType; }
+        static OperationType getStaticClassId() { return OpType; }
+        bool isOfType(OperationType aID) const override {
+            return (aID == OpType) || this->Parent::isOfType(aID);
+        }
+};
+
+template<typename T, OperationType OpType, typename Parent = Operation>
+class DefaultConstructibleOperation : public BaseOperation<T,OpType,Parent> {
+    private:
+        std::shared_ptr<T> ensureDefaultConstructible() {
+            return std::make_shared<T>();
+        }
+    public:
+        std::shared_ptr<Operation> clone() const override {
+            return std::make_shared<T>();
+        }
+        static std::shared_ptr<Operation> fromByteStream(ByteStream*) {
+            return std::make_shared<T>();
+        }
+        static std::shared_ptr<Operation> fromParser(Parser*) {
+            return std::make_shared<T>();
+        }
 };
 
 std::string operationResultToString(Operation::Result);

@@ -20,7 +20,7 @@
 #include <operations/op.h>
 #include <string>
 
-class IfTrue : public Operation {
+class IfTrue : public BaseOperation<IfTrue, OperationType::IFTRUE> {
     public:
         static std::shared_ptr<Operation> fromByteStream(ByteStream*);
         static std::shared_ptr<Operation> fromParser(Parser*);
@@ -29,6 +29,8 @@ class IfTrue : public Operation {
         virtual Operation::Result execute(MachineState&) override;
         virtual std::string describe() const override;
         size_t serialize(Serializer*) const override;
+
+        std::shared_ptr<Operation> clone() const override;
 
         std::shared_ptr<Operation> op() const;
     private:

@@ -19,7 +19,7 @@
 
 #include <operations/op.h>
 
-class Swap : public Operation {
+class Swap : public DefaultConstructibleOperation<Swap, OperationType::SWAP> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 

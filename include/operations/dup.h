@@ -19,7 +19,7 @@
 
 #include <operations/op.h>
 
-class Dup : public Operation {
+class Dup : public DefaultConstructibleOperation<Dup, OperationType::DUP> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 

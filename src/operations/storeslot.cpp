@@ -78,3 +78,7 @@ bool Storeslot::equals(std::shared_ptr<Operation> rhs) const {
     }
     return false;
 }
+
+std::shared_ptr<Operation> Storeslot::clone() const {
+    return std::make_shared<Storeslot>(key());
+}

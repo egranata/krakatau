@@ -32,8 +32,6 @@ TEST(Class, OkType) { \
     ASSERT_EQ(1, s.stack().size()); \
     ASSERT_TRUE(s.stack().peek()->isOfClass<Value_Number>()); \
     ASSERT_EQ(result, runtime_ptr_cast<Value_Number>(s.stack().peek())->value()); \
-    ASSERT_TRUE(a.isOfClass<Binary_Arithmetic_Operation>()); \
-    ASSERT_FALSE(a.isOfClass<Unary_Arithmetic_Operation>()); \
 } \
 TEST(Class, BadType) { \
     MachineState s; \
@@ -91,8 +89,6 @@ TEST(Class ## id, OkType) { \
     ASSERT_EQ(1, s.stack().size()); \
     ASSERT_TRUE(s.stack().peek()->isOfClass<Value_Boolean>()); \
     ASSERT_EQ(result, runtime_ptr_cast<Value_Boolean>(s.stack().peek())->value()); \
-    ASSERT_FALSE(a.isOfClass<Binary_Arithmetic_Operation>()); \
-    ASSERT_TRUE(a.isOfClass<Unary_Arithmetic_Operation>()); \
 } \
 TEST(Class ## id, BadType) { \
     MachineState s; \

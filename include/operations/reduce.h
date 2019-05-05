@@ -19,7 +19,7 @@
 
 #include <operations/op.h>
 
-class Reduce : public Operation {
+class Reduce : public DefaultConstructibleOperation<Reduce, OperationType::REDUCE> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 

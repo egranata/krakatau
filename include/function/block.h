@@ -52,6 +52,8 @@ class Block : public Operation {
 
         bool loadSlots(MachineState&) const;
 
+        std::shared_ptr<Operation> clone() const override;
+
     private:
         std::vector<std::shared_ptr<Operation>> mOperations;
         std::vector<std::shared_ptr<ValueTable>> mSlots;
@@ -59,8 +61,6 @@ class Block : public Operation {
     public:
         decltype(mOperations)::const_iterator begin() const;
         decltype(mOperations)::const_iterator end() const;
-
-        ABSTRACT_OPERATION_SUBCLASS(Block, OperationType::BLOCK, Operation);
 };
 
 #endif

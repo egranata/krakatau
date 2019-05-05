@@ -19,7 +19,7 @@
 
 #include <operations/op.h>
 
-class Parse : public Operation {
+class Parse : public DefaultConstructibleOperation<Parse, OperationType::PARSE> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 

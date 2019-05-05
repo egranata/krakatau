@@ -19,7 +19,7 @@
 
 #include <operations/op.h>
 
-class Unpack : public Operation {
+class Unpack : public DefaultConstructibleOperation<Unpack, OperationType::UNPACK> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 

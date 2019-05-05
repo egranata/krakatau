@@ -19,7 +19,7 @@
 
 #include <operations/op.h>
 
-class Typeof : public Operation {
+class Typeof : public DefaultConstructibleOperation<Typeof, OperationType::TYPEOF> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 

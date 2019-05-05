@@ -19,12 +19,17 @@
 
 #include <operations/op.h>
 #include <operations/op_loader.h>
+#include <type_traits>
 
 class ByteStream;
 
-class Break : public Operation {
+class Break : public DefaultConstructibleOperation<Break, OperationType::BREAK> {
     public:
         virtual Operation::Result execute(MachineState&) override;
+
+        std::shared_ptr<Operation> clone() const override {
+            return nullptr;
+        }
 
         OPERATION_SUBCLASS(Break, OperationType::BREAK, Operation);
 };

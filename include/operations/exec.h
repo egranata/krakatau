@@ -19,7 +19,7 @@
 
 #include <operations/op.h>
 
-class Exec : public Operation {
+class Exec : public DefaultConstructibleOperation<Exec, OperationType::EXEC> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 

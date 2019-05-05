@@ -19,7 +19,7 @@
 
 #include <operations/op.h>
 
-class Equals : public Operation {
+class Equals : public DefaultConstructibleOperation<Equals, OperationType::EQUALS> {
     public:
         virtual Operation::Result execute(MachineState&) override;
 
