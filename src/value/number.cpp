@@ -67,3 +67,7 @@ std::shared_ptr<Value> Value_Number::fromParser(Parser* p) {
 size_t Value_Number::hash() const {
     return (size_t)value();
 }
+
+std::shared_ptr<Value> Value_Number::clone() const {
+    return Value::fromNumber(value());
+}

@@ -45,3 +45,7 @@ std::shared_ptr<Value> Value_Empty::fromParser(Parser*) {
 size_t Value_Empty::hash() const {
     return 0xE101;
 }
+
+std::shared_ptr<Value> Value_Empty::clone() const {
+    return Value::empty();
+}

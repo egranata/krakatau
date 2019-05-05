@@ -21,6 +21,7 @@
 #include <value/error.h>
 #include <rtti/rtti.h>
 #include <stream/byte_stream.h>
+#include <value/block.h>
 #include <vector>
 #include <stream/serializer.h>
 #include <machine/state.h>
@@ -240,4 +241,11 @@ TEST(Block, SlotsAreReentrant) {
     for(size_t i = 0; i < 10; ++i) {
         ASSERT_TRUE(Value::fromNumber(i)->equals(ms.stack().pop()));
     }
+}
+
+TEST(Block, Clone) {
+    Parser p("block slots $a, $b, $c { loadslot $a push number 0 eq iftrue push number 3 add nop push boolean false eq iftrue halt }");
+    auto vblk = p.parseValuePayload();
+    auto blk = vblk->asClass<Value_Block>()->value();
+    ASSERT_TRUE(blk->equals(blk->clone()));
 }

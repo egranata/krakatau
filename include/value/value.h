@@ -67,6 +67,7 @@ class Value : public std::enable_shared_from_this<Value> {
         virtual bool equals(std::shared_ptr<Value>) const = 0;
 
         virtual size_t hash() const = 0;
+        virtual std::shared_ptr<Value> clone() const = 0;
 
         std::shared_ptr<Value> typecast(ValueType);
 

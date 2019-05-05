@@ -70,6 +70,12 @@ size_t Value_Block::hash() const {
     return hash;
 }
 
+std::shared_ptr<Value> Value_Block::clone() const {
+    auto newBlockOp = value()->clone();
+    auto newBlock = std::dynamic_pointer_cast<Block>(newBlockOp);
+    return Value::fromBlock(newBlock);
+}
+
 Operation::Result Value_Block::execute(MachineState& ms) {
     return value()->execute(ms);
 }

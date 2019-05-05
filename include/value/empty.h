@@ -32,6 +32,7 @@ class Value_Empty : public Value {
         size_t serialize(Serializer*) override;
 
         size_t hash() const override;
+        std::shared_ptr<Value> clone() const override;
 
         VALUE_SUBCLASS(ValueType::EMPTY, Value);
 };

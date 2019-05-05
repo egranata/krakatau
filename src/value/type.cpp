@@ -69,3 +69,6 @@ size_t Value_Type::hash() const {
     return 0x31E0000 | enumToNumber(value());
 }
 
+std::shared_ptr<Value> Value_Type::clone() const {
+    return Value::type(value());
+}

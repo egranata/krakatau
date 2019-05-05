@@ -28,6 +28,7 @@
 #include <value/table.h>
 #include <operations/at.h>
 #include <error/error_codes.h>
+#include <parser/parser.h>
 
 TEST(Value, Number) {
     auto v(Value::fromNumber(123));
@@ -37,6 +38,8 @@ TEST(Value, Number) {
     ASSERT_FALSE(v->equals(Value::fromNumber(4)));
     ASSERT_FALSE(v->equals(Value::empty()));
     ASSERT_TRUE(v->equals(Value::fromNumber(123)));
+
+    ASSERT_TRUE(v->equals(v->clone()));
 }
 
 TEST(Value, Empty) {
@@ -45,6 +48,8 @@ TEST(Value, Empty) {
 
     ASSERT_FALSE(v->equals(Value::fromNumber(4)));
     ASSERT_TRUE(v->equals(Value::empty()));
+
+    ASSERT_TRUE(v->equals(v->clone()));
 }
 
 TEST(Value, Boolean) {
@@ -55,6 +60,8 @@ TEST(Value, Boolean) {
     ASSERT_FALSE(v->equals(Value::fromBoolean(true)));
     ASSERT_FALSE(v->equals(Value::fromNumber(1221)));
     ASSERT_TRUE(v->equals(Value::fromBoolean(false)));
+
+    ASSERT_TRUE(v->equals(v->clone()));
 }
 
 TEST(Value, Block) {
@@ -66,6 +73,8 @@ TEST(Value, Block) {
     ASSERT_FALSE(v->equals(Value::fromBoolean(true)));
     ASSERT_TRUE(v->equals(Value::fromBlock(std::make_shared<Block>())));
     ASSERT_TRUE(v->equals(v));
+
+    ASSERT_TRUE(v->equals(v->clone()));
 }
 
 TEST(Value, TypeMismatch) {
@@ -77,6 +86,8 @@ TEST(Value, TypeMismatch) {
     ASSERT_NE(nullptr, v->asClass<Value_Number>());
     ASSERT_EQ(nullptr, v->asClass<Value_Empty>());
     ASSERT_EQ(nullptr, v->asClass<Value_Boolean>());
+
+    ASSERT_TRUE(v->equals(v->clone()));
 }
 
 TEST(Value, Operation) {
@@ -88,6 +99,8 @@ TEST(Value, Operation) {
     ASSERT_FALSE(v->equals(Value::fromBoolean(true)));
     ASSERT_FALSE(v->equals(Value::fromNumber(1221)));
     ASSERT_TRUE(Value::fromOperation(std::shared_ptr<Operation>(new At())));
+
+    ASSERT_TRUE(v->equals(v->clone()));
 }
 
 TEST(Value, Print) {
@@ -114,6 +127,8 @@ TEST(Value, String) {
     ASSERT_FALSE(v->equals(Value::fromBoolean(true)));
     ASSERT_FALSE(v->equals(Value::fromString("   abc   ")));
     ASSERT_TRUE(v->equals(Value::fromString("hello world")));
+
+    ASSERT_TRUE(v->equals(v->clone()));
 }
 
 TEST(Value, Error) {
@@ -124,6 +139,8 @@ TEST(Value, Error) {
     ASSERT_FALSE(v->equals(Value::fromBoolean(true)));
     ASSERT_FALSE(v->equals(Value::error(ErrorCode::TYPE_MISMATCH)));
     ASSERT_TRUE(v->equals(Value::error(ErrorCode::DIV_BY_ZERO)));
+
+    ASSERT_TRUE(v->equals(v->clone()));
 }
 
 TEST(Value, Tuple) {
@@ -143,6 +160,12 @@ TEST(Value, Tuple) {
     ASSERT_TRUE(vp.at(1)->isOfClass<Value_Number>());
     ASSERT_TRUE(vp.at(2)->isOfClass<Value_Boolean>());
     ASSERT_TRUE(vp.at(3)->isOfClass<Value_Empty>());
+
+    Parser p("tuple (number 12, boolean false, empty, number 24)");
+    auto v = p.parseValuePayload();
+    ASSERT_NE(nullptr, v);
+    ASSERT_TRUE(v->isOfClass<Value_Tuple>());
+    ASSERT_TRUE(v->equals(v->clone()));
 }
 
 TEST(Value, Type) {
@@ -153,6 +176,8 @@ TEST(Value, Type) {
     ASSERT_TRUE(v->equals(Value::type(ValueType::NUMBER)));
     ASSERT_FALSE(v->equals(Value::empty()));
     ASSERT_FALSE(v->equals(Value::type(ValueType::STRING)));
+
+    ASSERT_TRUE(v->equals(v->clone()));
 }
 
 TEST(Value, Table) {
@@ -168,4 +193,10 @@ TEST(Value, Table) {
     ASSERT_EQ(2, tbl->size());
     ASSERT_TRUE(tbl->find(Value::fromNumber(123))->isOfClass<Value_Number>());
     ASSERT_TRUE(tbl->find(Value::fromNumber(456))->isOfClass<Value_Boolean>());
+
+    Parser p("table [number 1 -> boolean true, number 0 -> boolean false, number 2 -> empty]");
+    auto v = p.parseValuePayload();
+    ASSERT_NE(nullptr, v);
+    ASSERT_TRUE(v->isOfClass<Value_Table>());
+    ASSERT_TRUE(v->equals(v->clone()));
 }

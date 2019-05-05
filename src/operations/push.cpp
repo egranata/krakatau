@@ -67,6 +67,6 @@ bool Push::equals(std::shared_ptr<Operation> rhs) const {
 }
 
 std::shared_ptr<Operation> Push::clone() const {
-    return std::make_shared<Push>(value());
+    return std::make_shared<Push>(value()->clone());
 }
 

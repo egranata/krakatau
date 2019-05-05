@@ -59,3 +59,7 @@ std::shared_ptr<Value> Value_Boolean::fromParser(Parser* p) {
 size_t Value_Boolean::hash() const {
     return value() ? 0 : 1;
 }
+
+std::shared_ptr<Value> Value_Boolean::clone() const {
+    return Value::fromBoolean(value());
+}

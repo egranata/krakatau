@@ -150,6 +150,14 @@ size_t Value_Table::hash() const {
     return hash;
 }
 
+std::shared_ptr<Value> Value_Table::clone() const {
+    auto newTable = std::make_shared<Value_Table>();
+    for(size_t i = 0; i < size(); ++i) {
+        newTable->append(keyAt(i)->clone(), valueAt(i)->clone());
+    }
+    return newTable;
+}
+
 std::shared_ptr<Value> Value_Table::doTypecast(ValueType vt) {
     return TypecastHelper<Value_Table>().onType(ValueType::TUPLE, [] (Value_Table* self) -> std::shared_ptr<Value> {
         auto val_tpl = Value::tuple();

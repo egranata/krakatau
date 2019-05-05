@@ -64,3 +64,7 @@ std::shared_ptr<Value> Value_Error::fromParser(Parser* p) {
 size_t Value_Error::hash() const {
     return 0xE690000 | enumToNumber(value());
 }
+
+std::shared_ptr<Value> Value_Error::clone() const {
+    return Value::error(value());
+}

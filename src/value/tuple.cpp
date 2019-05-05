@@ -123,6 +123,14 @@ size_t Value_Tuple::hash() const {
     return hash;
 }
 
+std::shared_ptr<Value> Value_Tuple::clone() const {
+    auto newTuple = std::make_shared<Value_Tuple>();
+    for(size_t i = 0; i < size(); ++i) {
+        newTuple->append(at(i)->clone());
+    }
+    return newTuple;
+}
+
 std::shared_ptr<Value> Value_Tuple::doTypecast(ValueType vt) {
     return TypecastHelper<Value_Tuple>().onType(ValueType::BLOCK, [] (Value_Tuple* self) -> std::shared_ptr<Value> {
         std::shared_ptr<Block> blk(new Block());

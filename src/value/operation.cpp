@@ -64,3 +64,7 @@ size_t Value_Operation::hash() const {
 Operation::Result Value_Operation::execute(MachineState& ms) {
     return value()->execute(ms);
 }
+
+std::shared_ptr<Value> Value_Operation::clone() const {
+    return Value::fromOperation(value()->clone());
+}

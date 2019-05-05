@@ -64,3 +64,7 @@ std::shared_ptr<Value> Value_String::fromParser(Parser* p) {
 size_t Value_String::hash() const {
     return std::hash<std::string>()(value());
 }
+
+std::shared_ptr<Value> Value_String::clone() const {
+    return Value::fromString(value());
+}
