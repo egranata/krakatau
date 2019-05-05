@@ -54,3 +54,12 @@ TEST(Break, Serialize) {
     ASSERT_EQ(Operation::Result::EXIT_BLOCK, op->execute(ms));
     ASSERT_EQ(0, ms.stack().size());
 }
+
+TEST(Break, Clone) {
+    auto brk = std::make_shared<Break>();
+    ASSERT_NE(brk, nullptr);
+    auto cln = brk->clone();
+    ASSERT_NE(cln, nullptr);
+    ASSERT_NE(cln, brk);
+    ASSERT_TRUE(cln->equals(brk));
+}
