@@ -42,7 +42,6 @@ class ClassName : public Binary_Logical_Operation<\
     OpType> { \
     public: \
         std::shared_ptr<Value> eval(Value_Boolean* v1, Value_Boolean* v2) override; \
-        OPERATION_SUBCLASS(ClassName, OpType, Binary_Logical_Operation); \
 }
 
 BINARY_LOGICAL_OPERATION(And, OperationType::AND);
@@ -57,7 +56,6 @@ class ClassName : public Unary_Logical_Operation<\
     OpType> { \
     public: \
         std::shared_ptr<Value> eval(Value_Boolean* v) override; \
-        OPERATION_SUBCLASS(ClassName, OpType, Unary_Logical_Operation); \
 }
 
 UNARY_LOGICAL_OPERATION(Not, OperationType::NOT);

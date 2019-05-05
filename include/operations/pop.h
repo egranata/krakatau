@@ -22,8 +22,6 @@
 class Pop : public DefaultConstructibleOperation<Pop, OperationType::POP> {
     public:
         virtual Operation::Result execute(MachineState&) override;
-
-        OPERATION_SUBCLASS(Pop, OperationType::POP, Operation);
 };
 
 #endif

@@ -22,8 +22,6 @@
 class Nop : public DefaultConstructibleOperation<Nop, OperationType::NOP> {
     public:
         virtual Operation::Result execute(MachineState&) override;
-
-        OPERATION_SUBCLASS(Nop, OperationType::NOP, Operation);
 };
 
 #endif

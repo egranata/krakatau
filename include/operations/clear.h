@@ -36,8 +36,6 @@ class Clear : public BaseOperation<Clear, OperationType::CLEAR> {
         std::string key() const;
     private:
         std::string mKey;
-
-        OPERATION_SUBCLASS(Clear, OperationType::CLEAR, Operation);
 };
 
 #endif

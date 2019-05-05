@@ -22,8 +22,6 @@
 class Dup : public DefaultConstructibleOperation<Dup, OperationType::DUP> {
     public:
         virtual Operation::Result execute(MachineState&) override;
-
-        OPERATION_SUBCLASS(Dup, OperationType::DUP, Operation);
 };
 
 #endif

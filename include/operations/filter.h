@@ -22,8 +22,6 @@
 class Filter : public DefaultConstructibleOperation<Filter, OperationType::FILTER> {
     public:
         virtual Operation::Result execute(MachineState&) override;
-
-        OPERATION_SUBCLASS(Filter, OperationType::FILTER, Operation);
 };
 
 #endif

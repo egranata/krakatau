@@ -22,8 +22,6 @@
 class Map : public DefaultConstructibleOperation<Map, OperationType::MAP> {
     public:
         virtual Operation::Result execute(MachineState&) override;
-
-        OPERATION_SUBCLASS(Map, OperationType::MAP, Operation);
 };
 
 #endif

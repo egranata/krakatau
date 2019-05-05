@@ -22,8 +22,6 @@
 class Typeof : public DefaultConstructibleOperation<Typeof, OperationType::TYPEOF> {
     public:
         virtual Operation::Result execute(MachineState&) override;
-
-        OPERATION_SUBCLASS(Typeof, OperationType::TYPEOF, Operation);
 };
 
 #endif

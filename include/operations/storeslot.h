@@ -37,8 +37,6 @@ class Storeslot : public BaseOperation<Storeslot, OperationType::STORESLOT> {
 
     private:
         std::string mKey;
-
-        OPERATION_SUBCLASS(Storeslot, OperationType::STORESLOT, Operation);
 };
 
 #endif

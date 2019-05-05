@@ -39,8 +39,6 @@ enum class OperationType : uint32_t {
 
 NUMERIC_LIMITS(OperationType);
 
-#define OPERATION_SUBCLASS( SELFNAME, NEWCLASSID, BASECLASSNAME ) \
-
 std::string operationTypeToString(OperationType);
 std::optional<OperationType> operationTypeFromByteStream(ByteStream*);
 std::optional<OperationType> operationTypeFromString(const std::string&);

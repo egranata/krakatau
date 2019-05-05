@@ -42,7 +42,6 @@ class ClassName : public Binary_Arithmetic_Operation< \
     OpType> { \
     public: \
         std::shared_ptr<Value> eval(Value_Number* v1, Value_Number* v2) override; \
-        OPERATION_SUBCLASS(ClassName, OpType, Binary_Arithmetic_Operation); \
 }; \
 
 BINARY_ARITH_OPERATION(Add, OperationType::ADD);
@@ -59,7 +58,6 @@ class ClassName : public Unary_Arithmetic_Operation<\
     OpType> { \
     public: \
         std::shared_ptr<Value> eval(Value_Number* v) override; \
-        OPERATION_SUBCLASS(ClassName, OpType, Unary_Arithmetic_Operation); \
 }; \
 
 UNARY_ARITH_OPERATION(Positive, OperationType::POSITIVE);

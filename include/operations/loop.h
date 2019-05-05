@@ -24,8 +24,6 @@ class ByteStream;
 class Loop : public DefaultConstructibleOperation<Loop, OperationType::LOOP> {
     public:
         virtual Operation::Result execute(MachineState&) override;
-
-        OPERATION_SUBCLASS(Loop, OperationType::LOOP, Operation);
 };
 
 #endif

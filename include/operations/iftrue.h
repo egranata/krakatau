@@ -35,8 +35,6 @@ class IfTrue : public BaseOperation<IfTrue, OperationType::IFTRUE> {
         std::shared_ptr<Operation> op() const;
     private:
         std::shared_ptr<Operation> mOperation;
-
-        OPERATION_SUBCLASS(IfTrue, OperationType::IFTRUE, Operation);
 };
 
 #endif

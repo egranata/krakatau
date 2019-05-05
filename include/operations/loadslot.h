@@ -36,8 +36,6 @@ class Loadslot : public BaseOperation<Loadslot, OperationType::LOADSLOT> {
         std::string key() const;
     private:
         std::string mKey;
-
-        OPERATION_SUBCLASS(Loadslot, OperationType::LOADSLOT, Operation);
 };
 
 #endif

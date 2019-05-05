@@ -22,8 +22,6 @@
 class Unpack : public DefaultConstructibleOperation<Unpack, OperationType::UNPACK> {
     public:
         virtual Operation::Result execute(MachineState&) override;
-
-        OPERATION_SUBCLASS(Unpack, OperationType::UNPACK, Operation);
 };
 
 #endif

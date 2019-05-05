@@ -30,8 +30,6 @@ class Break : public DefaultConstructibleOperation<Break, OperationType::BREAK> 
         std::shared_ptr<Operation> clone() const override {
             return nullptr;
         }
-
-        OPERATION_SUBCLASS(Break, OperationType::BREAK, Operation);
 };
 
 #endif

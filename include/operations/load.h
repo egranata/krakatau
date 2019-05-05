@@ -36,8 +36,6 @@ class Load : public BaseOperation<Load, OperationType::LOAD> {
         std::string key() const;
     private:
         std::string mKey;
-
-        OPERATION_SUBCLASS(Load, OperationType::LOAD, Operation);
 };
 
 #endif

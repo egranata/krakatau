@@ -37,8 +37,6 @@ class Push : public BaseOperation<Push, OperationType::PUSH> {
 
     private:
         std::shared_ptr<Value> mValue;
-
-        OPERATION_SUBCLASS(Push, OperationType::PUSH, Operation);
 };
 
 #endif

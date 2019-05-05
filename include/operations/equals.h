@@ -22,8 +22,6 @@
 class Equals : public DefaultConstructibleOperation<Equals, OperationType::EQUALS> {
     public:
         virtual Operation::Result execute(MachineState&) override;
-
-        OPERATION_SUBCLASS(Equals, OperationType::EQUALS, Operation);
 };
 
 #endif

@@ -22,8 +22,6 @@
 class Size : public DefaultConstructibleOperation<Size, OperationType::SIZE> {
     public:
         virtual Operation::Result execute(MachineState&) override;
-
-        OPERATION_SUBCLASS(Size, OperationType::SIZE, Operation);
 };
 
 #endif

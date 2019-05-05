@@ -22,8 +22,6 @@
 class Reduce : public DefaultConstructibleOperation<Reduce, OperationType::REDUCE> {
     public:
         virtual Operation::Result execute(MachineState&) override;
-
-        OPERATION_SUBCLASS(Reduce, OperationType::REDUCE, Operation);
 };
 
 #endif

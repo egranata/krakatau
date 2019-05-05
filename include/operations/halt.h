@@ -23,8 +23,6 @@
 class Halt : public DefaultConstructibleOperation<Halt, OperationType::HALT> {
     public:
         virtual Operation::Result execute(MachineState&) override;
-
-        OPERATION_SUBCLASS(Halt, OperationType::HALT, Operation);
 };
 
 #endif

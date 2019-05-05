@@ -25,8 +25,6 @@ class ByteStream;
 class Typecast : public DefaultConstructibleOperation<Typecast, OperationType::TYPECAST> {
     public:
         virtual Operation::Result execute(MachineState&) override;
-
-        OPERATION_SUBCLASS(Typecast, OperationType::TYPECAST, Operation);
 };
 
 #endif
