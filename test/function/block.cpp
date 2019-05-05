@@ -208,7 +208,7 @@ TEST(Block, ValidSlots) {
     ms.stack().push(Value::fromNumber(24));
     blk->add(std::make_shared<Loadslot>("$a"));
     blk->add(std::make_shared<Loadslot>("$b"));
-    blk->add(std::make_shared<Add_Binary_Arithmetic_Operation>());
+    blk->add(std::make_shared<Add>());
     blk->execute(ms);
     ASSERT_EQ(1, ms.stack().size());
     ASSERT_TRUE(Value::fromNumber(36)->equals(ms.stack().peek()));
@@ -222,7 +222,7 @@ TEST(Block, InsufficientSlots) {
     ms.stack().push(Value::fromNumber(12));
     blk->add(std::make_shared<Loadslot>("$a"));
     blk->add(std::make_shared<Loadslot>("$b"));
-    blk->add(std::make_shared<Add_Binary_Arithmetic_Operation>());
+    blk->add(std::make_shared<Add>());
     blk->execute(ms);
     ASSERT_EQ(3, ms.stack().size());
     ASSERT_TRUE(Value::error(ErrorCode::NOT_FOUND)->equals(ms.stack().pop()));

@@ -27,7 +27,7 @@ TEST(Class, OkType) { \
     MachineState s; \
     s.stack().push(Value::fromNumber(n1)); \
     s.stack().push(Value::fromNumber(n2)); \
-    Class ## _Binary_Arithmetic_Operation a; \
+    Class a; \
     ASSERT_EQ(Operation::Result::SUCCESS, a.execute(s)); \
     ASSERT_EQ(1, s.stack().size()); \
     ASSERT_TRUE(s.stack().peek()->isOfClass<Value_Number>()); \
@@ -39,7 +39,7 @@ TEST(Class, BadType) { \
     s.stack().push(Value::empty()); \
     ASSERT_EQ(2, s.stack().size()); \
     ASSERT_TRUE(s.stack().peek()->isOfClass<Value_Empty>()); \
-    Class ## _Binary_Arithmetic_Operation a; \
+    Class a; \
     ASSERT_EQ(Operation::Result::ERROR, a.execute(s)); \
     ASSERT_EQ(3, s.stack().size()); \
     ASSERT_TRUE(s.stack().peek()->isOfClass<Value_Error>()); \
@@ -58,7 +58,7 @@ TEST(Divide, ErrorOnZero) {
     MachineState s;
     s.stack().push(Value::fromNumber(0));
     s.stack().push(Value::fromNumber(12));
-    Divide_Binary_Arithmetic_Operation a;
+    Divide a;
     ASSERT_EQ(Operation::Result::SUCCESS, a.execute(s));
     ASSERT_EQ(3, s.stack().size());
     ASSERT_TRUE(s.stack().peek()->isOfClass<Value_Error>());
@@ -71,7 +71,7 @@ TEST(Modulo, ErrorOnZero) {
     MachineState s;
     s.stack().push(Value::fromNumber(0));
     s.stack().push(Value::fromNumber(12));
-    Modulo_Binary_Arithmetic_Operation a;
+    Modulo a;
     ASSERT_EQ(Operation::Result::SUCCESS, a.execute(s));
     ASSERT_EQ(3, s.stack().size());
     ASSERT_TRUE(s.stack().peek()->isOfClass<Value_Error>());
@@ -84,7 +84,7 @@ TEST(Modulo, ErrorOnZero) {
 TEST(Class ## id, OkType) { \
     MachineState s; \
     s.stack().push(Value::fromNumber(n)); \
-    Class ## _Unary_Arithmetic_Operation a; \
+    Class a; \
     ASSERT_EQ(Operation::Result::SUCCESS, a.execute(s)); \
     ASSERT_EQ(1, s.stack().size()); \
     ASSERT_TRUE(s.stack().peek()->isOfClass<Value_Boolean>()); \
@@ -93,7 +93,7 @@ TEST(Class ## id, OkType) { \
 TEST(Class ## id, BadType) { \
     MachineState s; \
     s.stack().push(Value::empty()); \
-    Class ## _Unary_Arithmetic_Operation a; \
+    Class a; \
     ASSERT_EQ(Operation::Result::ERROR, a.execute(s)); \
     ASSERT_EQ(2, s.stack().size()); \
     ASSERT_TRUE(s.stack().peek()->isOfClass<Value_Error>()); \

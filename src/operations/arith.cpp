@@ -72,49 +72,49 @@ Operation::Result Unary_Arithmetic_Operation<T,OpType,P>::execute(MachineState& 
     }
 }
 
-std::shared_ptr<Value> Add_Binary_Arithmetic_Operation::eval(Value_Number* v1, Value_Number* v2) {
+std::shared_ptr<Value> Add::eval(Value_Number* v1, Value_Number* v2) {
     auto n1 = v1->value();
     auto n2 = v2->value();
     return Value::fromNumber(n1+n2);
 }
 
-std::shared_ptr<Value> Subtract_Binary_Arithmetic_Operation::eval(Value_Number* v1, Value_Number* v2) {
+std::shared_ptr<Value> Subtract::eval(Value_Number* v1, Value_Number* v2) {
     auto n1 = v1->value();
     auto n2 = v2->value();
     return Value::fromNumber(n1-n2);
 }
 
-std::shared_ptr<Value> Multiply_Binary_Arithmetic_Operation::eval(Value_Number* v1, Value_Number* v2) {
+std::shared_ptr<Value> Multiply::eval(Value_Number* v1, Value_Number* v2) {
     auto n1 = v1->value();
     auto n2 = v2->value();
     return Value::fromNumber(n1*n2);
 }
 
-std::shared_ptr<Value> Divide_Binary_Arithmetic_Operation::eval(Value_Number* v1, Value_Number* v2) {
+std::shared_ptr<Value> Divide::eval(Value_Number* v1, Value_Number* v2) {
     auto n1 = v1->value();
     auto n2 = v2->value();
     if (n2 == 0) return Value::error(ErrorCode::DIV_BY_ZERO);
     return Value::fromNumber(n1/n2);
 }
 
-std::shared_ptr<Value> Modulo_Binary_Arithmetic_Operation::eval(Value_Number* v1, Value_Number* v2) {
+std::shared_ptr<Value> Modulo::eval(Value_Number* v1, Value_Number* v2) {
     auto n1 = v1->value();
     auto n2 = v2->value();
     if (n2 == 0) return Value::error(ErrorCode::DIV_BY_ZERO);
     return Value::fromNumber(n1%n2);
 }
 
-std::shared_ptr<Value> Positive_Unary_Arithmetic_Operation::eval(Value_Number* v) {
+std::shared_ptr<Value> Positive::eval(Value_Number* v) {
     int64_t n = (int64_t)v->value();
     return Value::fromBoolean(n > 0);
 }
 
-std::shared_ptr<Value> Negative_Unary_Arithmetic_Operation::eval(Value_Number* v) {
+std::shared_ptr<Value> Negative::eval(Value_Number* v) {
     int64_t n = (int64_t)v->value();
     return Value::fromBoolean(n < 0);
 }
 
-std::shared_ptr<Value> Zero_Unary_Arithmetic_Operation::eval(Value_Number* v) {
+std::shared_ptr<Value> Zero::eval(Value_Number* v) {
     auto n = v->value();
     return Value::fromBoolean(n == 0);
 }

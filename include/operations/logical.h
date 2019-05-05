@@ -37,12 +37,12 @@ class Unary_Logical_Operation : public DefaultConstructibleOperation<T,OpType,P>
 };
 
 #define BINARY_LOGICAL_OPERATION(ClassName, OpType) \
-class ClassName ## _Binary_Logical_Operation : public Binary_Logical_Operation<\
-    ClassName ## _Binary_Logical_Operation,\
+class ClassName : public Binary_Logical_Operation<\
+    ClassName,\
     OpType> { \
     public: \
         std::shared_ptr<Value> eval(Value_Boolean* v1, Value_Boolean* v2) override; \
-        OPERATION_SUBCLASS(ClassName ## _Binary_Logical_Operation, OpType, Binary_Logical_Operation); \
+        OPERATION_SUBCLASS(ClassName, OpType, Binary_Logical_Operation); \
 }
 
 BINARY_LOGICAL_OPERATION(And, OperationType::AND);
@@ -52,12 +52,12 @@ BINARY_LOGICAL_OPERATION(Xor, OperationType::XOR);
 #undef BINARY_LOGICAL_OPERATION
 
 #define UNARY_LOGICAL_OPERATION(ClassName, OpType) \
-class ClassName ## _Unary_Logical_Operation : public Unary_Logical_Operation<\
-    ClassName ## _Unary_Logical_Operation,\
+class ClassName : public Unary_Logical_Operation<\
+    ClassName,\
     OpType> { \
     public: \
         std::shared_ptr<Value> eval(Value_Boolean* v) override; \
-        OPERATION_SUBCLASS(ClassName ## _Unary_Logical_Operation, OpType, Unary_Logical_Operation); \
+        OPERATION_SUBCLASS(ClassName, OpType, Unary_Logical_Operation); \
 }
 
 UNARY_LOGICAL_OPERATION(Not, OperationType::NOT);

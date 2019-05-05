@@ -26,7 +26,7 @@
 TEST(Type, BadType) { \
     MachineState ms; \
     ms.stack().push(Value::empty()); \
-    Type ## _Binary_Logical_Operation a; \
+    Type a; \
     ASSERT_EQ(Operation::Result::ERROR, a.execute(ms)); \
     ASSERT_EQ(2, ms.stack().size()); \
     ASSERT_EQ(ErrorCode::INSUFFICIENT_ARGUMENTS, runtime_ptr_cast<Value_Error>(ms.stack().pop())->value()); \
@@ -45,7 +45,7 @@ TEST_BINARY_LOGICAL_BADTYPE(Xor);
 #define TEST_BINARY_LOGICAL_TRUTH(Type, ff, ft, tf, tt) \
 TEST(Type, TruthTable) { \
     MachineState ms; \
-    Type ## _Binary_Logical_Operation a; \
+    Type a; \
     ms.stack().push(Value::fromBoolean(false)); \
     ms.stack().push(Value::fromBoolean(false)); \
     ASSERT_EQ(Operation::Result::SUCCESS, a.execute(ms)); \
@@ -74,7 +74,7 @@ TEST_BINARY_LOGICAL_TRUTH(Xor, false, true, true, false);
 TEST(Type, BadType) { \
     MachineState ms; \
     ms.stack().push(Value::empty()); \
-    Type ## _Unary_Logical_Operation a; \
+    Type a; \
     ASSERT_EQ(Operation::Result::ERROR, a.execute(ms)); \
     ASSERT_EQ(2, ms.stack().size()); \
     ASSERT_TRUE(ms.stack().pop()->isOfClass<Value_Error>()); \
@@ -87,7 +87,7 @@ TEST_UNARY_LOGICAL_BADTYPE(Not);
 #define TEST_UNARY_LOGICAL_TRUTH(Type, f, t) \
 TEST(Type, TruthTable) { \
     MachineState ms; \
-    Type ## _Unary_Logical_Operation a; \
+    Type a; \
     ms.stack().push(Value::fromBoolean(false)); \
     ASSERT_EQ(Operation::Result::SUCCESS, a.execute(ms)); \
     ASSERT_EQ(f, runtime_ptr_cast<Value_Boolean>(ms.stack().pop())->value()); \

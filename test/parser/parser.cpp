@@ -213,7 +213,7 @@ TEST(Parser, ParseBlock) {
     ASSERT_EQ(6, blk->value()->size());
     ASSERT_TRUE(blk->value()->at(0)->isOfClass<Load>());
     ASSERT_TRUE(blk->value()->at(1)->isOfClass<Dup>());
-    ASSERT_TRUE(blk->value()->at(2)->isOfClass<Add_Binary_Arithmetic_Operation>());
+    ASSERT_TRUE(blk->value()->at(2)->isOfClass<Add>());
     ASSERT_TRUE(blk->value()->at(3)->isOfClass<ResetStack>());
     ASSERT_TRUE(blk->value()->at(4)->isOfClass<Push>());
     ASSERT_TRUE(runtime_ptr_cast<Push>(blk->value()->at(4))->value()->isOfClass<Value_Empty>());
@@ -256,7 +256,7 @@ TEST(Parser, ParseNewlineBlock) {
     ASSERT_EQ(6, blk->value()->size());
     ASSERT_TRUE(blk->value()->at(0)->isOfClass<Load>());
     ASSERT_TRUE(blk->value()->at(1)->isOfClass<Dup>());
-    ASSERT_TRUE(blk->value()->at(2)->isOfClass<Add_Binary_Arithmetic_Operation>());
+    ASSERT_TRUE(blk->value()->at(2)->isOfClass<Add>());
     ASSERT_TRUE(blk->value()->at(3)->isOfClass<ResetStack>());
     ASSERT_TRUE(blk->value()->at(4)->isOfClass<Push>());
     ASSERT_TRUE(runtime_ptr_cast<Push>(blk->value()->at(4))->value()->isOfClass<Value_Empty>());
@@ -273,7 +273,7 @@ TEST(Parser, ParseSemicolonBlock) {
     ASSERT_EQ(6, blk->value()->size());
     ASSERT_TRUE(blk->value()->at(0)->isOfClass<Load>());
     ASSERT_TRUE(blk->value()->at(1)->isOfClass<Dup>());
-    ASSERT_TRUE(blk->value()->at(2)->isOfClass<Add_Binary_Arithmetic_Operation>());
+    ASSERT_TRUE(blk->value()->at(2)->isOfClass<Add>());
     ASSERT_TRUE(blk->value()->at(3)->isOfClass<ResetStack>());
     ASSERT_TRUE(blk->value()->at(4)->isOfClass<Push>());
     ASSERT_TRUE(runtime_ptr_cast<Push>(blk->value()->at(4))->value()->isOfClass<Value_Empty>());

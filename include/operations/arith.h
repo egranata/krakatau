@@ -37,12 +37,12 @@ class Unary_Arithmetic_Operation : public DefaultConstructibleOperation<T,OpType
 };
 
 #define BINARY_ARITH_OPERATION(ClassName, OpType) \
-class ClassName ## _Binary_Arithmetic_Operation : public Binary_Arithmetic_Operation< \
-    ClassName ## _Binary_Arithmetic_Operation,\
+class ClassName : public Binary_Arithmetic_Operation< \
+    ClassName,\
     OpType> { \
     public: \
         std::shared_ptr<Value> eval(Value_Number* v1, Value_Number* v2) override; \
-        OPERATION_SUBCLASS(ClassName ## _Binary_Arithmetic_Operation, OpType, Binary_Arithmetic_Operation); \
+        OPERATION_SUBCLASS(ClassName, OpType, Binary_Arithmetic_Operation); \
 }; \
 
 BINARY_ARITH_OPERATION(Add, OperationType::ADD);
@@ -54,12 +54,12 @@ BINARY_ARITH_OPERATION(Modulo, OperationType::MODULO);
 #undef BINARY_ARITH_OPERATION
 
 #define UNARY_ARITH_OPERATION(ClassName, OpType) \
-class ClassName ## _Unary_Arithmetic_Operation : public Unary_Arithmetic_Operation<\
-    ClassName ## _Unary_Arithmetic_Operation,\
+class ClassName : public Unary_Arithmetic_Operation<\
+    ClassName,\
     OpType> { \
     public: \
         std::shared_ptr<Value> eval(Value_Number* v) override; \
-        OPERATION_SUBCLASS(ClassName ## _Unary_Arithmetic_Operation, OpType, Unary_Arithmetic_Operation); \
+        OPERATION_SUBCLASS(ClassName, OpType, Unary_Arithmetic_Operation); \
 }; \
 
 UNARY_ARITH_OPERATION(Positive, OperationType::POSITIVE);

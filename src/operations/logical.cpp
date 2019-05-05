@@ -70,25 +70,25 @@ Operation::Result Unary_Logical_Operation<T,OpType,P>::execute(MachineState& s) 
     }
 }
 
-std::shared_ptr<Value> And_Binary_Logical_Operation::eval(Value_Boolean* v1, Value_Boolean* v2) {
+std::shared_ptr<Value> And::eval(Value_Boolean* v1, Value_Boolean* v2) {
     auto n1 = v1->value();
     auto n2 = v2->value();
     return Value::fromBoolean(n1 && n2);
 }
 
-std::shared_ptr<Value> Or_Binary_Logical_Operation::eval(Value_Boolean* v1, Value_Boolean* v2) {
+std::shared_ptr<Value> Or::eval(Value_Boolean* v1, Value_Boolean* v2) {
     auto n1 = v1->value();
     auto n2 = v2->value();
     return Value::fromBoolean(n1 || n2);
 }
 
-std::shared_ptr<Value> Xor_Binary_Logical_Operation::eval(Value_Boolean* v1, Value_Boolean* v2) {
+std::shared_ptr<Value> Xor::eval(Value_Boolean* v1, Value_Boolean* v2) {
     auto n1 = v1->value();
     auto n2 = v2->value();
     return Value::fromBoolean((n1 || n2) && !(n1 && n2));
 }
 
-std::shared_ptr<Value> Not_Unary_Logical_Operation::eval(Value_Boolean* v) {
+std::shared_ptr<Value> Not::eval(Value_Boolean* v) {
     auto n = v->value();
     return Value::fromBoolean(!n);
 }

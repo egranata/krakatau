@@ -40,11 +40,11 @@ TEST(OpLoader, Arith) {
     auto opl = OperationLoader::loader();
     auto op = opl->fromByteStream(bs.get());
     ASSERT_NE(nullptr, op);
-    ASSERT_TRUE(op->isOfClass<Add_Binary_Arithmetic_Operation>());
+    ASSERT_TRUE(op->isOfClass<Add>());
     opl = OperationLoader::loader();
     op = opl->fromByteStream(bs.get());
     ASSERT_NE(nullptr, op);
-    ASSERT_TRUE(op->isOfClass<Positive_Unary_Arithmetic_Operation>());
+    ASSERT_TRUE(op->isOfClass<Positive>());
 }
 
 TEST(OpLoader, InvalidOp) {
