@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef STUFF_OPERATION_PACK
-#define STUFF_OPERATION_PACK
+#ifndef STUFF_OPERATION_UNPACK
+#define STUFF_OPERATION_UNPACK
 
 #include <operations/op.h>
 
