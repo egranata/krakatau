@@ -88,6 +88,14 @@ TEST(Block, Print) {
     ASSERT_EQ("block {\n push 12\n dup\n}", b.describe());
 }
 
+TEST(Block, PrintWithSlots) {
+    Block b;
+    b.addSlotValue("$slot");
+    b.add(std::make_shared<Push>(Value::fromNumber(12)));
+    b.add(std::make_shared<Dup>());
+    ASSERT_EQ("block slots $slot {\n push 12\n dup\n}", b.describe());
+}
+
 TEST(Block, FromByteStream) {
     std::vector<uint8_t> i = {  0, 0, 0, 0, 0, 0, 0, 0,
                                 0, 0, 0, 0, 0, 0, 0, 2,

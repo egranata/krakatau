@@ -66,7 +66,18 @@ out:
 
 std::string Block::describe() const {
     IndentingStream is;
-    is.append("block {");
+    is.append("block ");
+    if (numSlotValues()) {
+        is.append("slots ");
+        bool first = true;
+        for (size_t i = 0; i < numSlotValues(); ++i) {
+            if (!first) is.append(", ");
+            else first = false;
+            is.append("%s", slotValueAt(i).value().c_str());
+        }
+        is.append(" ");
+    }
+    is.append("{");
     is.indent();
     for (auto op : mOperations) {
         is.append("\n%s", op->describe().c_str());
