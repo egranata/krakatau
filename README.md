@@ -96,6 +96,13 @@ build$ ./tests
 [  PASSED  ] 299 tests.
 ```
 
-If you're going to contribute patches, please see the CONTRIBUTING.md file before proceeding.
+### Join the conversation
+
+To get involved with the Krakatau project,
+
+* try out new things and file bugs for any issues you run into;
+* contribute documentation;
+* join krakatau-discuss@googlegroups.com;
+* send pull requests (but see CONTRIBUTING.md file before proceeding).
 
 In all cases, enjoy this project but please know that Krakatau is not an officially supported Google product.
