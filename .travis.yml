@@ -24,3 +24,8 @@ before_script:
   - cmake -G Ninja ..
 
 script: ninja && ./tests --gtest_repeat=10 --gtest_shuffle
+
+notifications:
+  email:
+    recipients:
+      - krakatau-discuss@googlegroups.com
