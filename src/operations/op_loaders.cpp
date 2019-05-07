@@ -15,6 +15,7 @@
 #include <operations/op_loader.h>
 #include <operations/op_types.h>
 
+#include <operations/append.h>
 #include <operations/arith.h>
 #include <operations/at.h>
 #include <operations/break.h>
