@@ -41,3 +41,10 @@ std::string operationResultToString(Operation::Result r) {
         default: return "unknown";
     }
 }
+
+std::ostream& operator<<(std::ostream& os, std::shared_ptr<Operation> sp) {
+    return (os << sp.get());
+}
+std::ostream& operator<<(std::ostream& os, Operation* v) {
+    return (os << v->describe());
+}

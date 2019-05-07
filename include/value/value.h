@@ -24,6 +24,7 @@
 #include <string>
 #include <error/error_codes.h>
 #include <rtti/rtti.h>
+#include <iostream>
 
 class Block;
 class ByteStream;
@@ -79,6 +80,9 @@ class Value : public std::enable_shared_from_this<Value> {
         Value& operator=(const Value&) = delete;
         Value(const Value&) = delete;
 };
+
+std::ostream& operator<<(std::ostream&, std::shared_ptr<Value>);
+std::ostream& operator<<(std::ostream&, Value*);
 
 #endif
 

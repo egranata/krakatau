@@ -117,3 +117,10 @@ std::shared_ptr<Value> Value::typecast(ValueType vt) {
 std::shared_ptr<Value> Value::doTypecast(ValueType) {
     return nullptr;
 }
+
+std::ostream& operator<<(std::ostream& os, std::shared_ptr<Value> sp) {
+    return (os << sp.get());
+}
+std::ostream& operator<<(std::ostream& os, Value* v) {
+    return (os << v->describe());
+}

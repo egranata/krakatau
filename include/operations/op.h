@@ -23,6 +23,7 @@
 #include <memory>
 #include <string>
 #include <stdlib.h>
+#include <iostream>
 
 class Serializer;
 class MachineState;
@@ -90,5 +91,8 @@ class DefaultConstructibleOperation : public BaseOperation<T,OpType,Parent> {
 };
 
 std::string operationResultToString(Operation::Result);
+
+std::ostream& operator<<(std::ostream&, std::shared_ptr<Operation>);
+std::ostream& operator<<(std::ostream&, Operation*);
 
 #endif
