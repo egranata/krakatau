@@ -1,4 +1,6 @@
 # Welcome to Krakatau
+[![Build](https://travis-ci.org/egranata/krakatau.svg?branch=master)](https://travis-ci.org/egranata/krakatau)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Krakatau is a stack-based virtual machine.
 
@@ -6,15 +8,15 @@ It amins to be minimal, fast, orthogonal and easy to program - albeit with permu
 
 Krakatau is based upon the notion of immutable *values* and a *stack*.
 
-### Values
+## Values
 
-All values are immutable. A value can be thought of a box that can hold one specific kind of datum.
+A value is an immutable box that contains one specific kind of datum.
 
-Value types include:
+Values can be of one of the following types:
 
 * number (64-bit);
 * boolean;
-* string (UTF-8);
+* string;
 * tuple (an indexable list of other values);
 * table (a key-value store of other values);
 * operation (any Krakatau instruction);
@@ -23,52 +25,67 @@ Value types include:
 * error (invalid operations push errors);
 * type (the type of a value).
 
-### The stack
+## The stack
 
-The Krakatau VM currently has a single stack on which values can be pushed and popped by means of operations.
+The Krakatau VM currently has a single stack on which values can be pushed and popped.
 
 Executing blocks and mutating the stack is the way to perform a computation in the VM.
-For example, this is a valid Krakatau program:
 
-```
-value main block {
-  push number 24
-  push number 3
-  add
-  push number 2
-  mul
-}
-```
+## Blocks
 
-It is equivalent to the expression `(24+3)*2`
+Blocks are the equivalent to functions in the Krakatau language. A block is a sequence of operations, which are by default executed in order from first to last. There are control flow operations that allow to restart execution of a block or skip the remainder of a block.
 
-More complex programs can be written that involve multiple *blocks* calling each other, as well as more interesting
-transformations of the stack. It is also possible to create new blocks at runtime and place them in a *value store*.
+Blocks take arguments off the stack. As a convenience, one can define *slots* as part of a block, which are then automatically popped off the stack, and labeled for each execution of a block.
 
-### Value store
+Blocks can be given names and inserted in the *value store*, or defined at the point of use.
+
+## Value store
 
 Krakatau can load programs from a textual language, as well as from a serialized binary format.
 
-Both formats work by describing a series of named values (e.g. `main` of type `block` above) and putting these
-in a storage separate from the stack: the value store. Instructions exist to add and fetch values from this
-storage area. By convention, a program begins by looking for a block named `main` in the store and executing it:
+Both formats work by describing a series of named values (e.g. `main` of type `block`) and putting these in a storage separate from the stack: the value store. Instructions exist to add and fetch values from this storage area. By convention, a program begins by looking for a block named `main` in the store and executing it.
+
+For example, this is a valid Krakatau program:
 
 ```
-    auto main_val = ms.value_store().retrieve("main");
-    auto main_blk = runtime_ptr_cast<Value_Block>(main_val);
-    if (main_blk == nullptr) {
-        printf("no main block found\n");
-        exit(1);
-    }
-    Push p(main_val);
-    p.execute(ms);
-    Exec e;
-    e.execute(ms);
+value compute block slots $a,$b,$c {
+  loadslot $a
+  loadslot $b
+  add
+  loadslot $c
+  mul
+}
+
+value main block {
+  push number 5
+  dup
+  push number 4
+  load compute
+  exec
+}
 ```
 
-### How to get started
+It is roughly equivalent to the C++ program
 
-To build Krakatau, you need cmake, lex, and a C++17 compiler.
+```
+#include <stdio.h>
+#include <inttypes.h>
+
+uint64_t compute(uint64_t a, uint64_t b, uint64_t c) {
+  return (a+b)*c;
+}
+
+int main() {
+  printf("%" PRIu64 "\n", compute(4, 5, 5));
+  return 0;
+}
+```
+
+This is a very simple example, but more interesting programs are possible, and blocks can be nested at arbitrary levels of depth, including recursion.
+
+## How to get started
+
+To build Krakatau, you need cmake, lex, and a C++17 compiler (clang and gcc are supported).
 
 ```
 build$ cmake ..
@@ -96,7 +113,7 @@ build$ ./tests
 [  PASSED  ] 299 tests.
 ```
 
-### Join the conversation
+## Join the conversation
 
 To get involved with the Krakatau project,
 
