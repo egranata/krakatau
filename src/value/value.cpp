@@ -23,11 +23,13 @@
 #include <value/string.h>
 #include <value/tuple.h>
 #include <value/table.h>
+#include <value/bind.h>
 #include <operations/op.h>
 #include <value/error.h>
 #include <value/type.h>
 #include <rtti/rtti.h>
 #include <stream/byte_stream.h>
+#include <function/bind.h>
 #include <parser/parser.h>
 
 Value::Value() = default;
@@ -77,6 +79,10 @@ std::shared_ptr<Value> Value::table() {
     return std::shared_ptr<Value>(new Value_Table());
 }
 
+std::shared_ptr<Value> Value::fromBind(std::shared_ptr<PartialBind> pb) {
+    return std::shared_ptr<Value>(new Value_Bind(pb));
+}
+
 std::shared_ptr<Value> Value::fromByteStream(ByteStream* bs) {
     if (bs->nextIf(Value_Empty::MARKER)) return Value_Empty::fromByteStream(bs);
     if (bs->nextIf(Value_Number::MARKER)) return Value_Number::fromByteStream(bs);
@@ -88,6 +94,7 @@ std::shared_ptr<Value> Value::fromByteStream(ByteStream* bs) {
     if (bs->nextIf(Value_Operation::MARKER)) return Value_Operation::fromByteStream(bs);
     if (bs->nextIf(Value_String::MARKER)) return Value_String::fromByteStream(bs);
     if (bs->nextIf(Value_Table::MARKER)) return Value_Table::fromByteStream(bs);
+    if (bs->nextIf(Value_Bind::MARKER)) return Value_Bind::fromByteStream(bs);
 
     return nullptr;
 }
@@ -103,6 +110,7 @@ std::shared_ptr<Value> Value::fromParser(Parser* p) {
     if (p->nextIf(TokenKind::KW_OPERATION)) return Value_Operation::fromParser(p);
     if (p->nextIf(TokenKind::KW_STRING)) return Value_String::fromParser(p);
     if (p->nextIf(TokenKind::KW_TABLE)) return Value_Table::fromParser(p);
+    if (p->nextIf(TokenKind::KW_BIND)) return Value_Bind::fromParser(p);
 
     p->error("expected value type keyword");
     return nullptr;

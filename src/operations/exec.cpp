@@ -21,6 +21,8 @@
 #include <value/operation.h>
 #include <operations/op.h>
 #include <machine/state.h>
+#include <value/bind.h>
+#include <function/bind.h>
 
 Operation::Result Exec::execute(MachineState& s) {
     if (!s.stack().hasAtLeast(1)) {
@@ -32,6 +34,7 @@ Operation::Result Exec::execute(MachineState& s) {
 
     Value_Block* blk = runtime_ptr_cast<Value_Block>(val);
     Value_Operation* oper = runtime_ptr_cast<Value_Operation>(val);
+    Value_Bind* bind = runtime_ptr_cast<Value_Bind>(val);
 
     if (oper) {
         auto ret = oper->execute(s);
@@ -39,6 +42,10 @@ Operation::Result Exec::execute(MachineState& s) {
     }
     if (blk) {
         auto ret = blk->execute(s);
+        return ret;
+    }
+    if (bind) {
+        auto ret = bind->execute(s);
         return ret;
     }
 

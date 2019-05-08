@@ -34,6 +34,8 @@
 #include <value/string.h>
 #include <value/table.h>
 #include <stream/shared_file.h>
+#include <value/bind.h>
+#include <function/bind.h>
 
 TEST(Parser, Next) {
     Parser p("hello world 1234");
@@ -433,4 +435,35 @@ TEST(Parser, PeekIf) {
     ASSERT_FALSE(p.peekIf(TokenKind::KW_BOOLEAN));
     ASSERT_FALSE(p.peekIf(TokenKind::COMMA));
     ASSERT_FALSE(p.peekIf(TokenKind::IDENTIFIER));
+}
+
+TEST(Parser, ValidBind) {
+    Parser p_op("value foo bind number 24 operation dup");
+    Parser p_block("value foo bind number 24 block slots $a { loadslot $a dup }");
+    Parser p_nested("value foo bind number 24 bind number 12 operation mul");
+    auto v_op = p_op.parseValue();
+    auto v_block = p_block.parseValue();
+    auto v_nested = p_nested.parseValue();
+
+    ASSERT_NE(nullptr, v_op);
+    ASSERT_NE(nullptr, v_block);
+    ASSERT_NE(nullptr, v_nested);
+
+    ASSERT_TRUE(v_op->value->isOfClass<Value_Bind>());
+    ASSERT_TRUE(v_block->value->isOfClass<Value_Bind>());
+    ASSERT_TRUE(v_nested->value->isOfClass<Value_Bind>());
+
+    auto b_op = v_op->value->asClass<Value_Bind>();
+    auto b_block = v_block->value->asClass<Value_Bind>();
+    auto b_nested = v_nested->value->asClass<Value_Bind>();
+
+    ASSERT_NE(nullptr, b_op->value()->callable().operation());
+    ASSERT_NE(nullptr, b_block->value()->callable().block());
+    ASSERT_NE(nullptr, b_nested->value()->callable().bind());
+    ASSERT_NE(nullptr, b_nested->value()->callable().bind()->callable().operation());
+}
+
+TEST(Parser, InvalidBind) {
+    Parser p("value foo bind empty boolean false");
+    ASSERT_EQ(nullptr, p.parseValue());
 }

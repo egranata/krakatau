@@ -23,14 +23,17 @@
 #include <error/error_codes.h>
 #include <value/block.h>
 #include <function/block.h>
+#include <function/bind.h>
 #include <value/value_types.h>
 #include <value/tuple.h>
 #include <operations/nop.h>
+#include <operations/dup.h>
 #include <operations/pop.h>
 #include <operations/resetstack.h>
 #include <value/operation.h>
 #include <value/string.h>
 #include <value/table.h>
+#include <value/bind.h>
 
 TEST(ValueSerialize, Boolean) {
     auto val = Value::fromBoolean(true);
@@ -151,4 +154,15 @@ TEST(ValueSerialize, Table) {
     ASSERT_TRUE(val->isOfClass<Value_Table>());
     ASSERT_TRUE(val->equals(dv));
     ASSERT_EQ(runtime_ptr_cast<Value_Table>(dv)->size(), tbl->size());
+}
+
+TEST(ValueSerialize, Bind) {
+    auto val = Value::fromBind(std::make_shared<PartialBind>(Value::fromNumber(1), Callable(std::make_shared<Dup>())));
+    Serializer s;
+    val->serialize(&s);
+    auto bs = ByteStream::anonymous(s.data(), s.size());
+    auto dv = Value::fromByteStream(bs.get());
+    ASSERT_NE(nullptr, dv);
+    ASSERT_TRUE(val->isOfClass<Value_Bind>());
+    ASSERT_TRUE(val->equals(dv));
 }

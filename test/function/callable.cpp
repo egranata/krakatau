@@ -20,6 +20,7 @@
 #include <value/value.h>
 #include <rtti/rtti.h>
 #include <value/block.h>
+#include <function/bind.h>
 
 TEST(Callable, Empty) {
     MachineState ms;
@@ -34,6 +35,10 @@ TEST(Callable, Empty) {
     ASSERT_EQ(Operation::Result::ERROR, c1.execute(ms));
     ASSERT_EQ(Operation::Result::ERROR, c2.execute(ms));
     ASSERT_EQ(Operation::Result::ERROR, c3.execute(ms));
+
+    ASSERT_EQ(nullptr, c1.operation());
+    ASSERT_EQ(nullptr, c1.block());
+    ASSERT_EQ(nullptr, c1.bind());
 }
 
 TEST(Callable, ValidOp) {
@@ -45,6 +50,10 @@ TEST(Callable, ValidOp) {
     ASSERT_EQ(Operation::Result::SUCCESS, clb.execute(ms));
     ASSERT_EQ(2, ms.stack().size());
     ASSERT_TRUE(ms.stack().pop()->equals(ms.stack().peek()));
+
+    ASSERT_NE(clb.operation(), nullptr);
+    ASSERT_EQ(nullptr, clb.block());
+    ASSERT_EQ(nullptr, clb.bind());
 }
 
 TEST(Callable, ValidBlock) {
@@ -56,6 +65,10 @@ TEST(Callable, ValidBlock) {
     ASSERT_EQ(Operation::Result::SUCCESS, clb.execute(ms));
     ASSERT_EQ(1, ms.stack().size());
     ASSERT_TRUE(ms.stack().pop()->equals(Value::fromNumber(0)));
+
+    ASSERT_EQ(clb.operation(), nullptr);
+    ASSERT_NE(nullptr, clb.block());
+    ASSERT_EQ(nullptr, clb.bind());
 }
 
 TEST(Callable, BlockValue) {
@@ -66,6 +79,10 @@ TEST(Callable, BlockValue) {
     ASSERT_EQ(Operation::Result::SUCCESS, clb.execute(ms));
     ASSERT_EQ(1, ms.stack().size());
     ASSERT_TRUE(ms.stack().pop()->equals(Value::fromNumber(0)));
+
+    ASSERT_EQ(clb.operation(), nullptr);
+    ASSERT_NE(nullptr, clb.block());
+    ASSERT_EQ(nullptr, clb.bind());
 }
 
 TEST(Callable, OpValue) {
@@ -76,6 +93,10 @@ TEST(Callable, OpValue) {
     ASSERT_EQ(Operation::Result::SUCCESS, clb.execute(ms));
     ASSERT_EQ(1, ms.stack().size());
     ASSERT_TRUE(ms.stack().pop()->equals(Value::fromNumber(0)));
+
+    ASSERT_NE(clb.operation(), nullptr);
+    ASSERT_EQ(nullptr, clb.block());
+    ASSERT_EQ(nullptr, clb.bind());
 }
 
 TEST(Callable, InvalidValue) {
@@ -84,4 +105,19 @@ TEST(Callable, InvalidValue) {
     Callable clb(vblk);
     ASSERT_FALSE(clb);
     ASSERT_EQ(Operation::Result::ERROR, clb.execute(ms));
+}
+
+TEST(Callable, Bind) {
+    MachineState ms;
+    auto bind = Value::fromBind(std::make_shared<PartialBind>(Value::fromNumber(1), Callable(std::make_shared<Dup>())));
+    Callable clb(bind);
+    ASSERT_TRUE(clb);
+    ASSERT_EQ(Operation::Result::SUCCESS, clb.execute(ms));
+    ASSERT_EQ(2, ms.stack().size());
+    ASSERT_TRUE(ms.stack().pop()->equals(Value::fromNumber(1)));
+    ASSERT_TRUE(ms.stack().pop()->equals(Value::fromNumber(1)));
+
+    ASSERT_EQ(clb.operation(), nullptr);
+    ASSERT_EQ(nullptr, clb.block());
+    ASSERT_NE(nullptr, clb.bind());
 }

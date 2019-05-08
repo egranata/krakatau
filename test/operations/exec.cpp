@@ -23,6 +23,7 @@
 #include <value/operation.h>
 #include <value/error.h>
 #include <rtti/rtti.h>
+#include <value/bind.h>
 
 TEST(Exec, Block) {
     MachineState s;
@@ -54,4 +55,14 @@ TEST(Exec, NotBlock) {
     ASSERT_EQ(2, s.stack().size());
     ASSERT_TRUE(s.stack().peek()->isOfClass<Value_Error>());
     ASSERT_EQ(ErrorCode::TYPE_MISMATCH, runtime_ptr_cast<Value_Error>(s.stack().peek())->value());
+}
+
+TEST(Exec, Bind) {
+    MachineState s;
+    Exec e;
+    s.stack().push(Value::fromBind(std::make_shared<PartialBind>(Value::fromNumber(123), Callable(std::make_shared<Dup>()))));
+    ASSERT_EQ(Operation::Result::SUCCESS, e.execute(s));
+    ASSERT_EQ(2, s.stack().size());
+    ASSERT_TRUE(Value::fromNumber(123)->equals(s.stack().pop()));
+    ASSERT_TRUE(Value::fromNumber(123)->equals(s.stack().pop()));
 }

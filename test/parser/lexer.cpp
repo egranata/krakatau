@@ -43,6 +43,7 @@ TEST(Lexer, LexString) {
 
 TEST(Lexer, LexKeywords) {
     std::vector<Token> expected = {
+        {TokenKind::KW_BIND, "bind"},
         {TokenKind::KW_STRING, "string"},
         {TokenKind::BOOLEAN, "true"},
         {TokenKind::KW_TUPLE, "tuple"},
@@ -58,7 +59,7 @@ TEST(Lexer, LexKeywords) {
     };
     yyscan_t scanner;
     yylex_init(&scanner);
-    YY_BUFFER_STATE buf = yy_scan_string("block hello1234 empty value hello number 123 false boolean tuple true string", scanner);
+    YY_BUFFER_STATE buf = yy_scan_string("block hello1234 empty value hello number 123 false boolean tuple true string bind", scanner);
     while(!expected.empty()) {
         auto parsed = yylex(scanner);
         ASSERT_NE(parsed, nullptr);

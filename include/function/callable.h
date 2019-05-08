@@ -22,19 +22,41 @@
 #include <variant>
 #include <memory.h>
 
+class PartialBind;
+class Serializer;
+class ByteStream;
 class Value;
 
 class Callable {
     public:
+        static constexpr uint8_t MARKER_EMPTY = '/';
+        static constexpr uint8_t MARKER_OPERATION = 'O';
+        static constexpr uint8_t MARKER_BLOCK = 'B';
+        static constexpr uint8_t MARKER_VALUE = 'V';
+        static constexpr uint8_t MARKER_BIND = 'D';
+
+        static Callable fromByteStream(ByteStream* bs);
+
         Callable(std::shared_ptr<Operation>);
         Callable(std::shared_ptr<Block>);
         Callable(std::shared_ptr<Value>);
+        Callable(std::shared_ptr<PartialBind>);
 
         explicit operator bool() const;
+        std::string describe() const;
+        size_t serialize(Serializer*);
+        bool equals(Callable) const;
+        Callable clone() const;
+        size_t hash() const;
+
+        std::shared_ptr<Operation> operation() const;
+        std::shared_ptr<Block> block() const;
+        std::shared_ptr<PartialBind> bind() const;
 
         Operation::Result execute(MachineState&) const;
     private:
-        std::variant<std::shared_ptr<Operation>, std::shared_ptr<Block>> mPayload;
+        Callable(std::nullptr_t);
+        std::variant<std::shared_ptr<Operation>, std::shared_ptr<Block>, std::shared_ptr<PartialBind>> mPayload;
 };
 
 #endif

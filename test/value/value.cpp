@@ -21,6 +21,7 @@
 #include <value/string.h>
 #include <value/block.h>
 #include <value/operation.h>
+#include <operations/dup.h>
 #include <value/error.h>
 #include <value/tuple.h>
 #include <value/type.h>
@@ -29,6 +30,8 @@
 #include <operations/at.h>
 #include <error/error_codes.h>
 #include <parser/parser.h>
+#include <value/bind.h>
+#include <function/bind.h>
 
 TEST(Value, Number) {
     auto v(Value::fromNumber(123));
@@ -117,6 +120,7 @@ TEST(Value, Print) {
     auto tbl = tbl_val->asClass<Value_Table>();
     tbl->append(Value::fromNumber(123), Value::fromNumber(42));
     ASSERT_EQ("[123 -> 42]", tbl_val->describe());
+    ASSERT_EQ("bind(empty, dup)", Value::fromBind(std::make_shared<PartialBind>(Value::empty(), Callable(std::make_shared<Dup>())))->describe());
 }
 
 TEST(Value, String) {
@@ -199,4 +203,10 @@ TEST(Value, Table) {
     ASSERT_NE(nullptr, v);
     ASSERT_TRUE(v->isOfClass<Value_Table>());
     ASSERT_TRUE(v->equals(v->clone()));
+}
+
+TEST(Value, Bind) {
+    auto val_bind = Value::fromBind(std::make_shared<PartialBind>(Value::empty(), Callable(std::make_shared<Dup>())));
+    ASSERT_TRUE(val_bind->isOfClass<Value_Bind>());
+    ASSERT_TRUE(val_bind->equals(val_bind->clone()));
 }
