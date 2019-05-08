@@ -18,5 +18,5 @@
 set -e
 set -x
 
-cpp -P -Iinclude include/parser/value_tokens.l.in -o /tmp/parser_value_tokens.l
+cpp -P -Iinclude include/parser/value_tokens.l -o /tmp/parser_value_tokens.l
 cat include/parser/header.l /tmp/parser_value_tokens.l include/parser/tokens.l > $1
