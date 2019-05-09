@@ -190,3 +190,24 @@ std::optional<Token> Parser::parsedTokenAt(size_t i) const {
     if (i >= parsedTokensCount()) return std::nullopt;
     return mParsedTokens.at(i);
 }
+
+std::string Parser::context(size_t n) const {
+    const size_t count = parsedTokensCount();
+    if (count == 0) return "no context";
+    if (n > count) n = count;
+
+    IndentingStream is;
+    is.append("context: ");
+
+    bool first = true;
+    for(size_t i = n;;--i) {
+        if (!first) is.append(" ");
+        if (auto tok = parsedTokenAt(count - 1 - i)) {
+            is.append("%s", tok->value().c_str());
+            first = false;
+        }
+        if (i == 0) break;
+    }
+
+    return is.str();
+}

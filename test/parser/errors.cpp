@@ -20,6 +20,7 @@ TEST(ParserErrors, MissingValue) {
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
     ASSERT_EQ("expected 'value'", p.errorAt(0));
+    ASSERT_EQ("no context", p.context());
 }
 
 TEST(ParserErrors, MissingIdentifier) {
@@ -27,6 +28,7 @@ TEST(ParserErrors, MissingIdentifier) {
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
     ASSERT_EQ("expected 'identifier'", p.errorAt(0));
+    ASSERT_EQ("context: value number", p.context());
 }
 
 TEST(ParserErrors, InvalidBooleanValue) {
@@ -34,6 +36,7 @@ TEST(ParserErrors, InvalidBooleanValue) {
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
     ASSERT_EQ("expected 'boolean value'", p.errorAt(0));
+    ASSERT_EQ("context: value foo boolean", p.context());
 }
 
 TEST(ParserErrors, MissingError) {
@@ -41,6 +44,7 @@ TEST(ParserErrors, MissingError) {
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
     ASSERT_EQ("expected 'identifier'", p.errorAt(0));
+    ASSERT_EQ("context: value foo error", p.context());
 }
 
 TEST(ParserErrors, NotAnError) {
@@ -48,6 +52,7 @@ TEST(ParserErrors, NotAnError) {
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
     ASSERT_EQ("not a valid error code", p.errorAt(0));
+    ASSERT_EQ("context: value foo error allgood", p.context());
 }
 
 TEST(ParserErrors, NotAString) {
@@ -55,13 +60,15 @@ TEST(ParserErrors, NotAString) {
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
     ASSERT_EQ("expected 'string value'", p.errorAt(0));
+    ASSERT_EQ("context: value foo string", p.context());
 }
 
 TEST(ParserErrors, InvalidTuple) {
-    Parser p("value foo tuple (foo, number 12");
+    Parser p("value foo tuple ( number 12, foo)");
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
     ASSERT_EQ("expected value", p.errorAt(0).value_or("fail"));
+    ASSERT_EQ("context: number 12 , foo", p.context());
 }
 
 TEST(ParserErrors, NotAType) {
@@ -69,6 +76,7 @@ TEST(ParserErrors, NotAType) {
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
     ASSERT_EQ("expected value type keyword", p.errorAt(0).value_or("fail"));
+    ASSERT_EQ("context: value foo type", p.context());
 }
 
 TEST(ParserErrors, UnarrowedTable) {
@@ -76,6 +84,7 @@ TEST(ParserErrors, UnarrowedTable) {
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
     ASSERT_EQ("expected '->'", p.errorAt(0));
+    ASSERT_EQ("context: number 1 boolean true", p.context());
 }
 
 TEST(ParserErrors, IncompleteOperation) {
@@ -84,4 +93,5 @@ TEST(ParserErrors, IncompleteOperation) {
     ASSERT_EQ(2, p.errorsCount());
     ASSERT_EQ("expected 'identifier'", p.errorAt(0).value_or("fail"));
     ASSERT_EQ("expected operation", p.errorAt(1).value_or("fail"));
+    ASSERT_EQ("context: foo block { push", p.context());
 }

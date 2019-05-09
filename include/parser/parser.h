@@ -63,6 +63,8 @@ class Parser {
         auto parsed_begin() const { return mParsedTokens.begin(); }
         auto parsed_end() const { return mParsedTokens.end(); }
 
+        std::string context(size_t = 3) const;
+
         std::optional<std::string> errorAt(size_t) const;
 
         std::optional<Token> expectedError(TokenKind);
