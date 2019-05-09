@@ -20,8 +20,8 @@
 #include <rtti/rtti.h>
 #include <machine/state.h>
 
-template<class T, OperationType OpType, class P
-Operation::Result Binary_Arithmetic_Operation<TpType,P>::execute(MachineState& s) {
+template<class T, OperationType OpType, class P>
+Operation::Result Binary_Arithmetic_Operation<T,OpType,P>::execute(MachineState& s) {
     if (!s.stack().hasAtLeast(2)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;
