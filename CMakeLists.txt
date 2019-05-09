@@ -13,15 +13,8 @@ set (stuff_VERSION_MINOR 1)
 
 file(GLOB_RECURSE lexsources CONFIGURE_DEPENDS include/parser/*.l)
 
-add_custom_command(
-  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/lexer.l
-  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/tokens_list.sh ${CMAKE_CURRENT_BINARY_DIR}/lexer.l
-  DEPENDS ${lexsources}
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
 find_package(FLEX)
-FLEX_TARGET(stuff ${CMAKE_CURRENT_BINARY_DIR}/lexer.l ${CMAKE_CURRENT_BINARY_DIR}/lexer.cpp)
+FLEX_TARGET(stuff ${lexsources} ${CMAKE_CURRENT_BINARY_DIR}/lexer.cpp)
 
 file(GLOB_RECURSE stuffsources CONFIGURE_DEPENDS src/*.cpp)
 
