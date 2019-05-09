@@ -467,3 +467,24 @@ TEST(Parser, InvalidBind) {
     Parser p("value foo bind empty boolean false");
     ASSERT_EQ(nullptr, p.parseValue());
 }
+
+TEST(Parser, PreviousTokens) {
+    Parser p("hello world value");
+    ASSERT_EQ(0, p.parsedTokensCount());
+    ASSERT_TRUE(p.next());
+    ASSERT_EQ(1, p.parsedTokensCount());
+    ASSERT_EQ(Token(TokenKind::IDENTIFIER, "hello"), p.parsedTokenAt(0));
+    ASSERT_FALSE(p.nextIf(TokenKind::KW_VALUE));
+    ASSERT_EQ(1, p.parsedTokensCount());
+    ASSERT_TRUE(p.nextIf(TokenKind::IDENTIFIER));
+    ASSERT_EQ(2, p.parsedTokensCount());
+    ASSERT_EQ(Token(TokenKind::IDENTIFIER, "hello"), p.parsedTokenAt(0));
+    ASSERT_EQ(Token(TokenKind::IDENTIFIER, "world"), p.parsedTokenAt(1));
+    ASSERT_TRUE(p.peekIf(TokenKind::KW_VALUE));
+    ASSERT_EQ(2, p.parsedTokensCount());
+    ASSERT_TRUE(p.nextIf(TokenKind::KW_VALUE));
+    ASSERT_EQ(3, p.parsedTokensCount());
+    ASSERT_EQ(Token(TokenKind::KW_VALUE, "value"), p.parsedTokenAt(2));
+    ASSERT_FALSE(p.next());
+    ASSERT_EQ(3, p.parsedTokensCount());
+}

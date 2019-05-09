@@ -58,6 +58,11 @@ class Parser {
         auto error_begin() const { return mErrors.begin(); }
         auto error_end() const { return mErrors.end(); }
 
+        size_t parsedTokensCount() const;
+        std::optional<Token> parsedTokenAt(size_t) const;
+        auto parsed_begin() const { return mParsedTokens.begin(); }
+        auto parsed_end() const { return mParsedTokens.end(); }
+
         std::optional<std::string> errorAt(size_t) const;
 
         std::optional<Token> expectedError(TokenKind);
@@ -74,6 +79,8 @@ class Parser {
 
         std::unique_ptr<Buffer> mBufferState;
         std::unique_ptr<Token> mPeeked;
+
+        std::vector<Token> mParsedTokens;
 };
 
 #endif

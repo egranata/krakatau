@@ -87,6 +87,7 @@ Token* Parser::nextToken() {
     return mPeeked.get();
 }
 void Parser::consumeToken() {
+    if (mPeeked.get()) mParsedTokens.push_back(*mPeeked);
     mPeeked.reset();
 }
 
@@ -179,4 +180,13 @@ std::optional<Token> Parser::expectedError(const Token& tok) {
 std::optional<std::string> Parser::errorAt(size_t i) const {
     if (i >= errorsCount()) return std::nullopt;
     return mErrors.at(i);
+}
+
+size_t Parser::parsedTokensCount() const {
+    return mParsedTokens.size();
+}
+
+std::optional<Token> Parser::parsedTokenAt(size_t i) const {
+    if (i >= parsedTokensCount()) return std::nullopt;
+    return mParsedTokens.at(i);
 }
