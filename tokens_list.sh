@@ -18,4 +18,4 @@
 set -e
 set -x
 
-cat include/parser/header.l /tmp/parser_value_tokens.l include/parser/tokens.l > $1
+cat include/parser/header.l include/parser/tokens.l > $1
