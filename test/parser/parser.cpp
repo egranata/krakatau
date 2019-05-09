@@ -72,14 +72,14 @@ TEST(Parser, NextIfKind) {
     auto tok = p.nextIf(TokenKind::IDENTIFIER);
     ASSERT_TRUE(tok.has_value());
     ASSERT_TRUE(tok.value() == Token(TokenKind::IDENTIFIER, "hello"));
-    tok = p.nextIf(TokenKind::KW_NUMBER);
+    tok = p.nextIf(TokenKind::BOOLEAN);
     ASSERT_FALSE(tok.has_value());
-    tok = p.nextIf(TokenKind::KW_EMPTY);
+    tok = p.nextIf(TokenKind::IDENTIFIER);
     ASSERT_TRUE(tok.has_value());
-    ASSERT_TRUE(tok.value() == Token(TokenKind::KW_EMPTY, "empty"));
+    ASSERT_TRUE(tok.value() == Token(TokenKind::IDENTIFIER, "empty"));
     tok = p.nextIf(TokenKind::IDENTIFIER);
     ASSERT_FALSE(tok.has_value());
-    tok = p.nextIf(TokenKind::KW_EMPTY);
+    tok = p.nextIf(TokenKind::CLOSE_BLOCK);
     ASSERT_FALSE(tok.has_value());
     tok = p.nextIf(TokenKind::NUMBER);
     ASSERT_TRUE(tok.has_value());
@@ -92,10 +92,10 @@ TEST(Parser, NextIfValue) {
     auto tok = p.nextIf(wanted);
     ASSERT_TRUE(tok.has_value());
     ASSERT_TRUE(tok.value() == wanted);
-    wanted = Token(TokenKind::IDENTIFIER, "empty");
+    wanted = Token(TokenKind::IDENTIFIER, "notempty");
     tok = p.nextIf(wanted);
     ASSERT_FALSE(tok.has_value());
-    wanted = Token(TokenKind::KW_EMPTY, "empty");
+    wanted = Token(TokenKind::IDENTIFIER, "empty");
     tok = p.nextIf(wanted);
     ASSERT_TRUE(tok.has_value());
     ASSERT_TRUE(tok.value() == wanted);
@@ -428,11 +428,11 @@ TEST(Parser, PeekIf) {
     ASSERT_TRUE(p.peekIf(TokenKind::COMMA));
     ASSERT_EQ(TokenKind::COMMA, p.next()->kind());
     ASSERT_TRUE(p.peekIf(TokenKind::NUMBER));
-    ASSERT_FALSE(p.peekIf(TokenKind::KW_BOOLEAN));
+    ASSERT_FALSE(p.peekIf(TokenKind::ARROW));
     ASSERT_EQ("12345", p.next()->value());
-    ASSERT_TRUE(p.peekIf(TokenKind::KW_BOOLEAN));
-    ASSERT_EQ(TokenKind::KW_BOOLEAN, p.next()->kind());
-    ASSERT_FALSE(p.peekIf(TokenKind::KW_BOOLEAN));
+    ASSERT_TRUE(p.peekIf(TokenKind::IDENTIFIER));
+    ASSERT_EQ(TokenKind::IDENTIFIER, p.next()->kind());
+    ASSERT_FALSE(p.peekIf(TokenKind::ARROW));
     ASSERT_FALSE(p.peekIf(TokenKind::COMMA));
     ASSERT_FALSE(p.peekIf(TokenKind::IDENTIFIER));
 }

@@ -20,9 +20,6 @@
 #include <string>
 
 enum class TokenKind {
-#define VALUE_TYPE(ID, TOKEN, STRING, NUMBER) \
-    KW_ ## ID,
-#include <value/value_types.def>
     KW_VALUE,
     OPEN_BLOCK,
     CLOSE_BLOCK,

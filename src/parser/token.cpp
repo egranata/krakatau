@@ -15,12 +15,8 @@
 #include <parser/token.h>
 #include <stream/indenting_stream.h>
 
-#define VALUE_TYPE(NAME, TOKEN, STRING, NUMBER) \
-    case TokenKind::KW_ ## NAME : return #TOKEN;
-
 std::string tokenKindToString(TokenKind tk) {
     switch (tk) {
-#include <value/value_types.def>
         case TokenKind::KW_VALUE: return "value";
         case TokenKind::IDENTIFIER: return "identifier";
         case TokenKind::NUMBER: return "numeric value";

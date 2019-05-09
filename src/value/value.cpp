@@ -31,6 +31,7 @@
 #include <stream/byte_stream.h>
 #include <function/bind.h>
 #include <parser/parser.h>
+#include <value/value_loader.h>
 
 Value::Value() = default;
 Value::~Value() = default;
@@ -84,36 +85,11 @@ std::shared_ptr<Value> Value::fromBind(std::shared_ptr<PartialBind> pb) {
 }
 
 std::shared_ptr<Value> Value::fromByteStream(ByteStream* bs) {
-    if (bs->nextIf(Value_Empty::MARKER)) return Value_Empty::fromByteStream(bs);
-    if (bs->nextIf(Value_Number::MARKER)) return Value_Number::fromByteStream(bs);
-    if (bs->nextIf(Value_Boolean::MARKER)) return Value_Boolean::fromByteStream(bs);
-    if (bs->nextIf(Value_Tuple::MARKER)) return Value_Tuple::fromByteStream(bs);
-    if (bs->nextIf(Value_Error::MARKER)) return Value_Error::fromByteStream(bs);
-    if (bs->nextIf(Value_Type::MARKER)) return Value_Type::fromByteStream(bs);
-    if (bs->nextIf(Value_Block::MARKER)) return Value_Block::fromByteStream(bs);
-    if (bs->nextIf(Value_Operation::MARKER)) return Value_Operation::fromByteStream(bs);
-    if (bs->nextIf(Value_String::MARKER)) return Value_String::fromByteStream(bs);
-    if (bs->nextIf(Value_Table::MARKER)) return Value_Table::fromByteStream(bs);
-    if (bs->nextIf(Value_Bind::MARKER)) return Value_Bind::fromByteStream(bs);
-
-    return nullptr;
+    return ValueLoader::loader()->fromByteStream(bs);
 }
 
 std::shared_ptr<Value> Value::fromParser(Parser* p) {
-    if (p->nextIf(TokenKind::KW_EMPTY)) return Value_Empty::fromParser(p);
-    if (p->nextIf(TokenKind::KW_NUMBER)) return Value_Number::fromParser(p);
-    if (p->nextIf(TokenKind::KW_BOOLEAN)) return Value_Boolean::fromParser(p);
-    if (p->nextIf(TokenKind::KW_TUPLE)) return Value_Tuple::fromParser(p);
-    if (p->nextIf(TokenKind::KW_BLOCK)) return Value_Block::fromParser(p);
-    if (p->nextIf(TokenKind::KW_ERROR)) return Value_Error::fromParser(p);
-    if (p->nextIf(TokenKind::KW_TYPE)) return Value_Type::fromParser(p);
-    if (p->nextIf(TokenKind::KW_OPERATION)) return Value_Operation::fromParser(p);
-    if (p->nextIf(TokenKind::KW_STRING)) return Value_String::fromParser(p);
-    if (p->nextIf(TokenKind::KW_TABLE)) return Value_Table::fromParser(p);
-    if (p->nextIf(TokenKind::KW_BIND)) return Value_Bind::fromParser(p);
-
-    p->error("expected value type keyword");
-    return nullptr;
+    return ValueLoader::loader()->fromParser(p);
 }
 
 std::shared_ptr<Value> Value::typecast(ValueType vt) {

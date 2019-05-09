@@ -24,7 +24,7 @@
 
 class ByteStream;
 
-#define VALUE_TYPE(ID, TOKEN, STRING, VALUE) \
+#define VALUE_TYPE(ID, TOKEN, STRING, VALUE, CLASS) \
   ID = VALUE,
 #define VALUE_TYPE_ALIAS(ID, VALUE) \
   ID = VALUE,

@@ -60,16 +60,15 @@ TEST(ParserErrors, NotAString) {
 TEST(ParserErrors, InvalidTuple) {
     Parser p("value foo tuple (foo, number 12");
     ASSERT_EQ(nullptr, p.parseValue());
-    ASSERT_EQ(2, p.errorsCount());
-    ASSERT_EQ("expected value type keyword", p.errorAt(0));
-    ASSERT_EQ("expected value", p.errorAt(1));
+    ASSERT_EQ(1, p.errorsCount());
+    ASSERT_EQ("expected value", p.errorAt(0).value_or("fail"));
 }
 
 TEST(ParserErrors, NotAType) {
     Parser p("value foo type int");
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
-    ASSERT_EQ("expected value type keyword", p.errorAt(0));
+    ASSERT_EQ("expected value type keyword", p.errorAt(0).value_or("fail"));
 }
 
 TEST(ParserErrors, UnarrowedTable) {
@@ -83,6 +82,6 @@ TEST(ParserErrors, IncompleteOperation) {
     Parser p("value foo block { push");
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(2, p.errorsCount());
-    ASSERT_EQ("expected value type keyword", p.errorAt(0));
-    ASSERT_EQ("expected operation", p.errorAt(1));
+    ASSERT_EQ("expected 'identifier'", p.errorAt(0).value_or("fail"));
+    ASSERT_EQ("expected operation", p.errorAt(1).value_or("fail"));
 }

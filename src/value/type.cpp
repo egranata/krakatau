@@ -51,8 +51,8 @@ size_t Value_Type::serialize(Serializer* s) {
     return wr;
 }
 
-#define VALUE_TYPE(NAME, TOKEN, STRING, NUMBER) \
-  id = p->nextIf(TokenKind::KW_ ## NAME); \
+#define VALUE_TYPE(NAME, TOKEN, STRING, NUMBER, CLASS) \
+  id = p->nextIf(Token(TokenKind::IDENTIFIER, STRING)); \
   if (id != std::nullopt) { \
     auto ec = valueTypeFromString(id->value()); \
     if (ec) return Value::type(ec.value()); \

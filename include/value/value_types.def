@@ -1,17 +1,17 @@
 #ifndef VALUE_TYPE
 #error "define VALUE_TYPE before including this file"
 #else
-VALUE_TYPE(EMPTY, empty, "empty", 1)
-VALUE_TYPE(NUMBER, number, "number", 2)
-VALUE_TYPE(BOOLEAN, boolean, "boolean", 3)
-VALUE_TYPE(BLOCK, block, "block", 4)
-VALUE_TYPE(STRING, string, "string", 5)
-VALUE_TYPE(ERROR, error, "error", 6)
-VALUE_TYPE(TUPLE, tuple, "tuple", 7)
-VALUE_TYPE(TYPE, type, "type", 8)
-VALUE_TYPE(OPERATION, operation, "operation", 9)
-VALUE_TYPE(TABLE, table, "table", 10)
-VALUE_TYPE(BIND, bind, "bind", 11)
+VALUE_TYPE(EMPTY, empty, "empty", 1, Value_Empty)
+VALUE_TYPE(NUMBER, number, "number", 2, Value_Number)
+VALUE_TYPE(BOOLEAN, boolean, "boolean", 3, Value_Boolean)
+VALUE_TYPE(BLOCK, block, "block", 4, Value_Block)
+VALUE_TYPE(STRING, string, "string", 5, Value_String)
+VALUE_TYPE(ERROR, error, "error", 6, Value_Error)
+VALUE_TYPE(TUPLE, tuple, "tuple", 7, Value_Tuple)
+VALUE_TYPE(TYPE, type, "type", 8, Value_Type)
+VALUE_TYPE(OPERATION, operation, "operation", 9, Value_Operation)
+VALUE_TYPE(TABLE, table, "table", 10, Value_Table)
+VALUE_TYPE(BIND, bind, "bind", 11, Value_Bind)
 #undef VALUE_TYPE
 #endif
 

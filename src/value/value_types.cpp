@@ -15,7 +15,7 @@
 #include <value/value_types.h>
 #include <stream/byte_stream.h>
 
-#define VALUE_TYPE(NAME, TOKEN, STRING, VALUE) \
+#define VALUE_TYPE(NAME, TOKEN, STRING, VALUE, CLASS) \
     case ValueType:: NAME : { static_assert(VALUE <= enumToNumber(std::numeric_limits<ValueType>::max())); return STRING; };
 
 std::string valueTypeToString(ValueType vt) {
@@ -37,7 +37,7 @@ std::optional<ValueType> valueTypeFromByteStream(ByteStream* bs) {
     return std::nullopt;
 }
 
-#define VALUE_TYPE(NAME, TOKEN, STRING, VALUE) \
+#define VALUE_TYPE(NAME, TOKEN, STRING, VALUE, CLASS) \
     if (s == #TOKEN) return ValueType:: NAME;
 
 std::optional<ValueType> valueTypeFromString(const std::string& s) {
