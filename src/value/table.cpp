@@ -24,6 +24,12 @@
 
 Value_Table::Value_Table() = default;
 
+Value_Table::Value_Table(std::initializer_list<std::pair<std::shared_ptr<Value>,std::shared_ptr<Value>>> elems) {
+    for (const auto& elem : elems) {
+        append(elem.first, elem.second);
+    }
+}
+
 Value_Table* Value_Table::append(std::shared_ptr<Value> k, std::shared_ptr<Value> v) {
     mTable.add(k, v);
     return this;

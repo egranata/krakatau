@@ -19,6 +19,8 @@
 
 #include <value/value.h>
 #include <value/value_table.h>
+#include <initializer_list>
+#include <utility>
 
 class Value_Table : public Value {
     public:
@@ -28,6 +30,7 @@ class Value_Table : public Value {
         static std::shared_ptr<Value> fromParser(Parser*);
 
         Value_Table();
+        Value_Table(std::initializer_list<std::pair<std::shared_ptr<Value>,std::shared_ptr<Value>>>);
         Value_Table *append(std::shared_ptr<Value>, std::shared_ptr<Value>);
         size_t size() const;
         std::shared_ptr<Value> pairAt(size_t i) const;

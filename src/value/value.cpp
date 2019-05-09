@@ -108,3 +108,10 @@ std::ostream& operator<<(std::ostream& os, std::shared_ptr<Value> sp) {
 std::ostream& operator<<(std::ostream& os, Value* v) {
     return (os << v->describe());
 }
+
+std::shared_ptr<Value_Tuple> Value::tuple(std::initializer_list<std::shared_ptr<Value>> elems) {
+    return std::make_shared<Value_Tuple>(elems);
+}
+std::shared_ptr<Value_Table> Value::table(std::initializer_list<std::pair<std::shared_ptr<Value>,std::shared_ptr<Value>>> elems) {
+    return std::make_shared<Value_Table>(elems);
+}

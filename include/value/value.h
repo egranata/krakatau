@@ -25,6 +25,8 @@
 #include <error/error_codes.h>
 #include <rtti/rtti.h>
 #include <iostream>
+#include <initializer_list>
+#include <utility>
 
 class PartialBind;
 class Block;
@@ -32,6 +34,9 @@ class ByteStream;
 class Serializer;
 class Parser;
 class Operation;
+
+class Value_Tuple;
+class Value_Table;
 
 class Value : public std::enable_shared_from_this<Value> {
     public:
@@ -48,6 +53,9 @@ class Value : public std::enable_shared_from_this<Value> {
         static std::shared_ptr<Value> fromBind(std::shared_ptr<PartialBind>);
         static std::shared_ptr<Value> fromByteStream(ByteStream*);
         static std::shared_ptr<Value> fromParser(Parser*);
+
+        static std::shared_ptr<Value_Tuple> tuple(std::initializer_list<std::shared_ptr<Value>>);
+        static std::shared_ptr<Value_Table> table(std::initializer_list<std::pair<std::shared_ptr<Value>,std::shared_ptr<Value>>>);
 
         virtual ~Value();
         virtual ValueType getClassId() const { return ValueType::EMPTY; }

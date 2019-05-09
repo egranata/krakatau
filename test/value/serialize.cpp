@@ -90,11 +90,7 @@ TEST(ValueSerialize, Type) {
 }
 
 TEST(ValueSerialize, Tuple) {
-    auto val = Value::tuple();
-    auto tpl = runtime_ptr_cast<Value_Tuple>(val);
-    tpl->append(Value::empty())
-       ->append(Value::fromNumber(1234))
-       ->append(Value::fromBoolean(false));
+    auto val = Value::tuple({Value::empty(), Value::fromNumber(1234), Value::fromBoolean(false)});
     Serializer s;
     val->serialize(&s);
     auto bs = ByteStream::anonymous(s.data(), s.size());
@@ -142,10 +138,7 @@ TEST(ValueSerialize, String) {
 }
 
 TEST(ValueSerialize, Table) {
-    auto val = Value::table();
-    auto tbl = runtime_ptr_cast<Value_Table>(val);
-    tbl->append(Value::fromString("one two three"), Value::fromNumber(123));
-    tbl->append(Value::fromString("four five seven"), Value::fromNumber(457));
+    auto val = Value::table({ {Value::fromString("one two three"), Value::fromNumber(123)}, {Value::fromString("four five seven"), Value::fromNumber(457)} });
     Serializer s;
     val->serialize(&s);
     auto bs = ByteStream::anonymous(s.data(), s.size());
@@ -153,7 +146,8 @@ TEST(ValueSerialize, Table) {
     ASSERT_NE(nullptr, dv);
     ASSERT_TRUE(val->isOfClass<Value_Table>());
     ASSERT_TRUE(val->equals(dv));
-    ASSERT_EQ(runtime_ptr_cast<Value_Table>(dv)->size(), tbl->size());
+    ASSERT_EQ(2, val->size());
+    ASSERT_EQ(runtime_ptr_cast<Value_Table>(dv)->size(), val->size());
 }
 
 TEST(ValueSerialize, Bind) {

@@ -26,6 +26,13 @@
 #include <value/table.h>
 
 Value_Tuple::Value_Tuple() = default;
+
+Value_Tuple::Value_Tuple(std::initializer_list<std::shared_ptr<Value>> elems) {
+    for (const auto& elem : elems) {
+        append(elem);
+    }
+}
+
 Value_Tuple* Value_Tuple::append(std::shared_ptr<Value> v) {
     mValues.push_back(v);
     return this;

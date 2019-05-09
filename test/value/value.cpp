@@ -112,13 +112,10 @@ TEST(Value, Print) {
     ASSERT_EQ("true", Value::fromBoolean(true)->describe());
     ASSERT_EQ("false", Value::fromBoolean(false)->describe());
     ASSERT_EQ(" hello ", Value::fromString(" hello ")->describe());
-    auto tpl_val = Value::tuple();
-    auto tpl = runtime_ptr_cast<Value_Tuple>(tpl_val);
-    ASSERT_EQ("(empty, hello, 12)", tpl->append(Value::empty())->append(Value::fromString("hello"))->append(Value::fromNumber(12))->describe());
+    auto tpl_val = Value::tuple({Value::empty(), Value::fromString("hello"), Value::fromNumber(12)});
+    ASSERT_EQ("(empty, hello, 12)", tpl_val->describe());
     ASSERT_EQ("string", Value::type(ValueType::STRING)->describe());
-    auto tbl_val = Value::table();
-    auto tbl = tbl_val->asClass<Value_Table>();
-    tbl->append(Value::fromNumber(123), Value::fromNumber(42));
+    auto tbl_val =Value::table({{Value::fromNumber(123), Value::fromNumber(42)}});
     ASSERT_EQ("[123 -> 42]", tbl_val->describe());
     ASSERT_EQ("bind(empty, dup)", Value::fromBind(std::make_shared<PartialBind>(Value::empty(), Callable(std::make_shared<Dup>())))->describe());
 }

@@ -20,6 +20,7 @@
 #include <value/value.h>
 #include <memory>
 #include <vector>
+#include <initializer_list>
 
 class Value_Tuple : public Value {
     public:
@@ -29,6 +30,7 @@ class Value_Tuple : public Value {
         static std::shared_ptr<Value> fromParser(Parser*);
 
         Value_Tuple();
+        Value_Tuple(std::initializer_list<std::shared_ptr<Value>>);
         Value_Tuple *append(std::shared_ptr<Value>);
         size_t size() const;
         std::shared_ptr<Value> at(size_t i) const;

@@ -55,10 +55,8 @@ TEST(At, MistypedArgs) {
 TEST(At, TupleOutOfBounds) {
     MachineState s;
     At at;
-    auto val = Value::tuple();
+    auto val = Value::tuple({Value::empty(), Value::empty()});
     s.stack().push(val);
-    runtime_ptr_cast<Value_Tuple>(val)->append(Value::empty());
-    runtime_ptr_cast<Value_Tuple>(val)->append(Value::empty());
     s.stack().push(Value::fromNumber(4));
     ASSERT_EQ(Operation::Result::ERROR, at.execute(s));
     ASSERT_EQ(ErrorCode::OUT_OF_BOUNDS, runtime_ptr_cast<Value_Error>(s.stack().pop())->value());
@@ -68,11 +66,8 @@ TEST(At, TupleOutOfBounds) {
 TEST(At, ValidTuple) {
     MachineState s;
     At at;
-    auto val = Value::tuple();
+    auto val = Value::tuple({Value::empty(), Value::empty(), Value::fromBoolean(true)});
     s.stack().push(val);
-    runtime_ptr_cast<Value_Tuple>(val)->append(Value::empty());
-    runtime_ptr_cast<Value_Tuple>(val)->append(Value::empty());
-    runtime_ptr_cast<Value_Tuple>(val)->append(Value::fromBoolean(true));
     s.stack().push(Value::fromNumber(2));
     ASSERT_EQ(Operation::Result::SUCCESS, at.execute(s));
     ASSERT_EQ(1, s.stack().size());
@@ -123,10 +118,8 @@ TEST(At, Table) {
 TEST(At, MissingTable) {
     MachineState s;
     At at;
-    auto val = Value::table();
-    auto tbl = runtime_ptr_cast<Value_Table>(val);
-    tbl->append(Value::fromBoolean(false), Value::fromNumber(123));
-    tbl->append(Value::fromBoolean(true), Value::fromBoolean(456));
+    auto val = Value::table({ {Value::fromBoolean(false), Value::fromNumber(123)} });
+    runtime_ptr_cast<Value_Table>(val)->append(Value::fromBoolean(true), Value::fromBoolean(456));
     s.stack().push(val);
     s.stack().push(Value::fromString("false"));
     ASSERT_EQ(Operation::Result::SUCCESS, at.execute(s));
