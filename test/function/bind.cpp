@@ -133,7 +133,7 @@ TEST(Bind, NestedSerialize) {
     ASSERT_TRUE(bind->equals(deser));
 }
 
-TEST(Bind, Parser) {
+TEST(Bind, ParseValue) {
     Parser p1("value foo bind number 12 operation exec");
     ASSERT_NE(nullptr, p1.parseValue());
 }
