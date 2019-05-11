@@ -19,79 +19,80 @@ TEST(ParserErrors, MissingValue) {
     Parser p("number foo 12");
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
-    ASSERT_EQ("expected 'value'", p.errorAt(0));
-    ASSERT_EQ("no context", p.context());
+    ASSERT_EQ("expected 'value'", p.errorAt(0)->message);
+    ASSERT_EQ("no context", p.errorAt(0)->context);
 }
 
 TEST(ParserErrors, MissingIdentifier) {
     Parser p("value number 12");
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
-    ASSERT_EQ("expected 'identifier'", p.errorAt(0));
-    ASSERT_EQ("context: value number", p.context());
+    ASSERT_EQ("expected 'identifier'", p.errorAt(0)->message);
+    ASSERT_EQ("context: value number", p.errorAt(0)->context);
 }
 
 TEST(ParserErrors, InvalidBooleanValue) {
     Parser p("value foo boolean nope");
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
-    ASSERT_EQ("expected 'boolean value'", p.errorAt(0));
-    ASSERT_EQ("context: value foo boolean", p.context());
+    ASSERT_EQ("expected 'boolean value'", p.errorAt(0)->message);
+    ASSERT_EQ("context: value foo boolean", p.errorAt(0)->context);
 }
 
 TEST(ParserErrors, MissingError) {
     Parser p("value foo error");
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
-    ASSERT_EQ("expected 'identifier'", p.errorAt(0));
-    ASSERT_EQ("context: value foo error", p.context());
+    ASSERT_EQ("expected 'identifier'", p.errorAt(0)->message);
+    ASSERT_EQ("context: value foo error", p.errorAt(0)->context);
 }
 
 TEST(ParserErrors, NotAnError) {
     Parser p("value foo error allgood");
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
-    ASSERT_EQ("not a valid error code", p.errorAt(0));
-    ASSERT_EQ("context: value foo error allgood", p.context());
+    ASSERT_EQ("not a valid error code", p.errorAt(0)->message);
+    ASSERT_EQ("context: value foo error allgood", p.errorAt(0)->context);
 }
 
 TEST(ParserErrors, NotAString) {
     Parser p("value foo string foobar");
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
-    ASSERT_EQ("expected 'string value'", p.errorAt(0));
-    ASSERT_EQ("context: value foo string", p.context());
+    ASSERT_EQ("expected 'string value'", p.errorAt(0)->message);
+    ASSERT_EQ("context: value foo string", p.errorAt(0)->context);
 }
 
 TEST(ParserErrors, InvalidTuple) {
     Parser p("value foo tuple ( number 12, foo)");
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
-    ASSERT_EQ("expected value", p.errorAt(0).value_or("fail"));
-    ASSERT_EQ("context: number 12 , foo", p.context());
+    ASSERT_EQ("expected value", p.errorAt(0)->message);
+    ASSERT_EQ("context: number 12 , foo", p.errorAt(0)->context);
 }
 
 TEST(ParserErrors, NotAType) {
     Parser p("value foo type int");
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
-    ASSERT_EQ("expected value type keyword", p.errorAt(0).value_or("fail"));
-    ASSERT_EQ("context: value foo type", p.context());
+    ASSERT_EQ("expected value type keyword", p.errorAt(0)->message);
+    ASSERT_EQ("context: value foo type", p.errorAt(0)->context);
 }
 
 TEST(ParserErrors, UnarrowedTable) {
     Parser p("value foo table [number 123 -> number 1 boolean true boolean false");
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(1, p.errorsCount());
-    ASSERT_EQ("expected '->'", p.errorAt(0));
-    ASSERT_EQ("context: number 1 boolean true", p.context());
+    ASSERT_EQ("expected '->'", p.errorAt(0)->message);
+    ASSERT_EQ("context: number 1 boolean true", p.errorAt(0)->context);
 }
 
 TEST(ParserErrors, IncompleteOperation) {
     Parser p("value foo block { push");
     ASSERT_EQ(nullptr, p.parseValue());
     ASSERT_EQ(2, p.errorsCount());
-    ASSERT_EQ("expected 'identifier'", p.errorAt(0).value_or("fail"));
-    ASSERT_EQ("expected operation", p.errorAt(1).value_or("fail"));
-    ASSERT_EQ("context: foo block { push", p.context());
+    ASSERT_EQ("expected 'identifier'", p.errorAt(0)->message);
+    ASSERT_EQ("expected operation", p.errorAt(1)->message);
+    ASSERT_EQ("context: foo block { push", p.errorAt(0)->context);
+    ASSERT_EQ("context: foo block { push", p.errorAt(1)->context);
 }

@@ -44,7 +44,7 @@ int main(int argc, const char** argv) {
             auto peb = p.error_begin();
             auto pee = p.error_end();
             while(peb != pee) {
-                printf("error: %s\n", peb->c_str());
+                printf("error: %s\n%s\n", peb->message.c_str(), peb->context.c_str());
                 ++peb;
             }
         }

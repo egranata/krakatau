@@ -155,7 +155,7 @@ std::shared_ptr<Parser::NamedValue> Parser::parseValue() {
 }
 
 void Parser::error(const std::string& err) {
-    mErrors.push_back(err);
+    mErrors.push_back(ParseError{err, context()});
 }
 
 size_t Parser::errorsCount() const {
@@ -177,7 +177,7 @@ std::optional<Token> Parser::expectedError(const Token& tok) {
     return std::nullopt;
 }
 
-std::optional<std::string> Parser::errorAt(size_t i) const {
+std::optional<Parser::ParseError> Parser::errorAt(size_t i) const {
     if (i >= errorsCount()) return std::nullopt;
     return mErrors.at(i);
 }

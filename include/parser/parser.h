@@ -40,6 +40,12 @@ class Parser {
             std::string name;
             std::shared_ptr<Value> value;
         };
+
+        struct ParseError {
+            std::string message;
+            std::string context;
+        };
+
         Parser(const std::string&);
         Parser(SharedFile);
         ~Parser();
@@ -65,7 +71,7 @@ class Parser {
 
         std::string context(size_t = 3) const;
 
-        std::optional<std::string> errorAt(size_t) const;
+        std::optional<ParseError> errorAt(size_t) const;
 
         std::optional<Token> expectedError(TokenKind);
         std::optional<Token> expectedError(const Token&);
@@ -75,7 +81,7 @@ class Parser {
     private:
         Token* nextToken();
         void consumeToken();
-        std::vector<std::string> mErrors;
+        std::vector<ParseError> mErrors;
 
         yyscan_t mScanner;
 
