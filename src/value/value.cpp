@@ -106,7 +106,8 @@ std::ostream& operator<<(std::ostream& os, std::shared_ptr<Value> sp) {
     return (os << sp.get());
 }
 std::ostream& operator<<(std::ostream& os, Value* v) {
-    return (os << v->describe());
+    if (v) return (os << v->describe());
+    return (os << "(null) value");
 }
 
 std::shared_ptr<Value_Tuple> Value::tuple(std::initializer_list<std::shared_ptr<Value>> elems) {

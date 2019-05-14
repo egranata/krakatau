@@ -46,5 +46,6 @@ std::ostream& operator<<(std::ostream& os, std::shared_ptr<Operation> sp) {
     return (os << sp.get());
 }
 std::ostream& operator<<(std::ostream& os, Operation* v) {
-    return (os << v->describe());
+    if (v) return (os << v->describe());
+    return (os << "(null) operation");
 }
