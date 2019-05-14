@@ -21,7 +21,6 @@
 std::string operationTypeToString(OperationType op) {
     switch (op) {
         case OperationType::NONE: return "none";
-        case OperationType::BLOCK: return "block";
 #include <operations/op_types.def>
     }
 

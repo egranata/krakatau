@@ -50,7 +50,9 @@ std::shared_ptr<Operation> OperationLoader::fromParser(Parser* p) {
     if (id == std::nullopt) return nullptr;
     if (auto ot = operationTypeFromString(id->value())) {
         auto iter = mParsers.find(ot.value()), end = mParsers.end();
-        if (iter != end) op = iter->second(p);
+        if (iter != end) {
+            op = iter->second(p);
+        }
     }
     if (op) return op;
     else {

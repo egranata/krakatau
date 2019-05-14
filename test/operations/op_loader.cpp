@@ -15,6 +15,7 @@
 #include <operations/at.h>
 #include <operations/arith.h>
 #include <operations/push.h>
+#include <function/block.h>
 #include <operations/op_loader.h>
 #include <operations/resetstack.h>
 #include <value/boolean.h>
@@ -93,4 +94,12 @@ TEST(OpLoader, ResetStack) {
     auto op = opl->fromByteStream(bs.get());
     ASSERT_NE(nullptr, op);
     ASSERT_TRUE(op->isOfClass<ResetStack>());
+}
+
+TEST(OpLoader, Block) {
+    auto opl = OperationLoader::loader();
+    Parser p("block slots $a { dup }");
+    std::shared_ptr<Operation> op = opl->fromParser(&p);
+    ASSERT_NE(nullptr, op);
+    ASSERT_TRUE(op->isOfClass<Block>());
 }
