@@ -23,7 +23,8 @@ Values can be of one of the following types:
 * block (a tuple of operations);
 * empty (the null value);
 * error (invalid operations push errors);
-* type (the type of a value).
+* type (the type of a value);
+* bind (a pair of a value and a callable, e.g. a block or operation).
 
 ## The stack
 
