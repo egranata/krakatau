@@ -141,3 +141,26 @@ TEST(MachineState, Execute) {
     ASSERT_EQ(1, ms.stack().size());
     ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_Number>());
 }
+
+TEST(MachineState, ExecuteOperation) {
+    Parser p("value main operation dup");
+    MachineState ms;
+    ASSERT_EQ(1, ms.load(&p));
+    ms.stack().push(Value::fromNumber(5));
+    auto ret = ms.execute();
+    ASSERT_EQ(Operation::Result::SUCCESS, ret.value());
+    ASSERT_EQ(2, ms.stack().size());
+    ASSERT_TRUE(ms.stack().pop()->isOfClass<Value_Number>());
+    ASSERT_TRUE(ms.stack().pop()->isOfClass<Value_Number>());
+}
+
+TEST(MachineState, ExecuteBind) {
+    Parser p("value main bind number 5 operation dup");
+    MachineState ms;
+    ASSERT_EQ(1, ms.load(&p));
+    auto ret = ms.execute();
+    ASSERT_EQ(Operation::Result::SUCCESS, ret.value());
+    ASSERT_EQ(2, ms.stack().size());
+    ASSERT_TRUE(ms.stack().pop()->isOfClass<Value_Number>());
+    ASSERT_TRUE(ms.stack().pop()->isOfClass<Value_Number>());
+}
