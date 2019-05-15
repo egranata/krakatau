@@ -22,24 +22,26 @@
 #include <value/value.h>
 #include <string>
 
+class Parser;
 class Serializer;
 class ByteStream;
 
-class PartialBind {
+class PartialBind : public Operation {
     public:
         PartialBind(std::shared_ptr<Value>, Callable);
 
         static std::shared_ptr<PartialBind> fromByteStream(ByteStream* bs);
+        static std::shared_ptr<PartialBind> fromParser(Parser*);
 
-        Operation::Result execute(MachineState&) const;
+        Operation::Result execute(MachineState&) override;
 
         std::shared_ptr<Value> value() const;
         Callable callable() const;
 
-        std::string describe() const;
-        bool equals(std::shared_ptr<PartialBind>) const;
-        size_t serialize(Serializer*);
-        std::shared_ptr<PartialBind> clone() const;
+        std::string describe() const override;
+        bool equals(std::shared_ptr<Operation>) const override;
+        size_t serialize(Serializer*) const override;
+        std::shared_ptr<Operation> clone() const override;
 
     private:
         std::shared_ptr<Value> mValue;

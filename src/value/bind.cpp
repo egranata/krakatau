@@ -58,14 +58,11 @@ size_t Value_Bind::serialize(Serializer* s) {
 }
 
 std::shared_ptr<Value> Value_Bind::fromParser(Parser* p) {
-    auto val = Value::fromParser(p);
-    if (val == nullptr) return nullptr;
-    auto vcl = Value::fromParser(p);
-    if (vcl == nullptr) return nullptr;
+    if (auto blk = PartialBind::fromParser(p)) {
+        return std::shared_ptr<Value>(new Value_Bind(blk));
+    }
 
-    Callable clb(vcl);
-    if (clb) return Value::fromBind(std::make_shared<PartialBind>(val, clb));
-    else return nullptr;
+    return nullptr;
 }
 
 size_t Value_Bind::hash() const {
@@ -77,7 +74,8 @@ size_t Value_Bind::hash() const {
 }
 
 std::shared_ptr<Value> Value_Bind::clone() const {
-    auto newBind = value()->clone();
+    auto newBindOp = value()->clone();
+    auto newBind = std::dynamic_pointer_cast<PartialBind>(newBindOp);
     return Value::fromBind(newBind);
 }
 

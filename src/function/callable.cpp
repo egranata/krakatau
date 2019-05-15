@@ -92,13 +92,7 @@ size_t Callable::hash() const {
 
 bool Callable::equals(Callable rhs) const {
     return std::visit([] (auto&& me, auto&& them) -> bool {
-        using me_T = std::decay_t<decltype(me)>;
-        using them_T = std::decay_t<decltype(them)>;
-        if constexpr (std::is_same_v<me_T, them_T>) {
-            if constexpr (std::is_same_v<me_T, std::shared_ptr<Operation>>) return me->equals(them);
-            if constexpr (std::is_same_v<me_T, std::shared_ptr<Block>>) return me->equals(them);
-            if constexpr (std::is_same_v<me_T, std::shared_ptr<PartialBind>>) return me->equals(them);
-        } else return false;
+        return me->equals(them);
     }, mPayload, rhs.mPayload);
 }
 

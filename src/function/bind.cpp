@@ -15,10 +15,11 @@
 #include <function/bind.h>
 #include <stream/indenting_stream.h>
 #include <stream/serializer.h>
+#include <parser/parser.h>
 
 PartialBind::PartialBind(std::shared_ptr<Value> v, Callable c) : mValue(v), mCallable(c) {}
 
-Operation::Result PartialBind::execute(MachineState& ms) const {
+Operation::Result PartialBind::execute(MachineState& ms) {
     ms.stack().push(value());
     return callable().execute(ms);
 }
@@ -36,10 +37,12 @@ std::string PartialBind::describe() const {
     return is.str();
 }
 
-bool PartialBind::equals(std::shared_ptr<PartialBind> rhs) const {
-    bool v = value()->equals(rhs->value());
-    bool c = callable().equals(rhs->callable());
-    return v && c;
+bool PartialBind::equals(std::shared_ptr<Operation> op) const {
+    if (auto rhs = runtime_ptr_cast<PartialBind>(op)) {
+        bool v = value()->equals(rhs->value());
+        bool c = callable().equals(rhs->callable());
+        return v && c;
+    } else return false;
 }
 
 std::shared_ptr<PartialBind> PartialBind::fromByteStream(ByteStream* bs) {
@@ -48,13 +51,24 @@ std::shared_ptr<PartialBind> PartialBind::fromByteStream(ByteStream* bs) {
     return std::make_shared<PartialBind>(val, cal);
 }
 
-size_t PartialBind::serialize(Serializer* s) {
+std::shared_ptr<PartialBind> PartialBind::fromParser(Parser* p) {
+    auto val = Value::fromParser(p);
+    if (val == nullptr) return nullptr;
+    auto vcl = Value::fromParser(p);
+    if (vcl == nullptr) return nullptr;
+
+    Callable clb(vcl);
+    if (clb) return std::make_shared<PartialBind>(val, clb);
+    else return nullptr;
+}
+
+size_t PartialBind::serialize(Serializer* s) const {
     size_t wr = value()->serialize(s);
     wr += callable().serialize(s);
     return wr;
 }
 
-std::shared_ptr<PartialBind> PartialBind::clone() const {
+std::shared_ptr<Operation> PartialBind::clone() const {
     auto val = value()->clone();
     auto cal = callable().clone();
     return std::make_shared<PartialBind>(val, cal);
