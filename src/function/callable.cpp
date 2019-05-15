@@ -21,6 +21,7 @@
 #include <function/bind.h>
 #include <stream/serializer.h>
 #include <stream/byte_stream.h>
+#include <stream/indenting_stream.h>
 #include <operations/op_loader.h>
 
 Callable::Callable(std::nullptr_t) {}
@@ -61,12 +62,19 @@ Operation::Result Callable::execute(MachineState& s) const {
 }
 
 std::string Callable::describe() const {
-    return std::visit([] (auto&& arg) -> std::string {
+    IndentingStream is;
+    return std::visit([&is] (auto&& arg) -> std::string {
         using T = std::decay_t<decltype(arg)>;
-        if constexpr (std::is_same_v<T, std::shared_ptr<Operation>>) return arg ? arg->describe() : "";
-        if constexpr (std::is_same_v<T, std::shared_ptr<Block>>) return arg ? arg->describe() : "";
-        if constexpr (std::is_same_v<T, std::shared_ptr<PartialBind>>) return arg ? arg->describe() : "";
-        return "";
+        if constexpr (std::is_same_v<T, std::shared_ptr<Operation>>) {
+            if (arg) is.append("operation %s", arg->describe().c_str());
+        }
+        if constexpr (std::is_same_v<T, std::shared_ptr<Block>>) {
+            if (arg) is.append("%s", arg->describe().c_str());
+        }
+        if constexpr (std::is_same_v<T, std::shared_ptr<PartialBind>>) {
+            if (arg) is.append("%s", arg->describe().c_str());
+        }
+        return is.str();
     }, mPayload);
 }
 

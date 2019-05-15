@@ -121,3 +121,13 @@ TEST(Callable, Bind) {
     ASSERT_EQ(nullptr, clb.block());
     ASSERT_NE(nullptr, clb.bind());
 }
+
+TEST(Callable, Describe) {
+    Callable c1(Value::fromOperation(std::make_shared<Dup>()));
+    Callable c2(Value::fromBlock(std::make_shared<Block>()));
+    Callable c3(Value::fromBind(std::make_shared<PartialBind>(Value::empty(), Callable(std::make_shared<Dup>()))));
+
+    ASSERT_EQ("operation dup", c1.describe());
+    ASSERT_EQ("block {\n}", c2.describe());
+    ASSERT_EQ("bind(empty, operation dup)", c3.describe());
+}
