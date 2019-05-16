@@ -39,6 +39,10 @@ std::string tokenKindToString(TokenKind tk) {
 
 Token::Token(TokenKind tk, std::string v) : mValue(v), mKind(tk) {}
 
+Token Token::identifier(const std::string& id) {
+    return Token(TokenKind::IDENTIFIER, id);
+}
+
 TokenKind Token::kind() const {
     return mKind;
 }

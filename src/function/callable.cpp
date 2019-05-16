@@ -23,6 +23,8 @@
 #include <stream/byte_stream.h>
 #include <stream/indenting_stream.h>
 #include <operations/op_loader.h>
+#include <parser/parser.h>
+#include <parser/token.h>
 
 Callable::Callable(std::nullptr_t) {}
 
@@ -130,6 +132,35 @@ Callable Callable::fromByteStream(ByteStream* bs) {
         case MARKER_EMPTY:
         default: return Callable(nullptr);
     }
+}
+
+Callable Callable::fromParser(Parser* p) {
+    auto op_token = Token::identifier("operation");
+    auto bk_token = Token::identifier("block");
+    auto bd_token = Token::identifier("bind");
+
+    if (p->nextIf(op_token)) {
+        auto opl = OperationLoader::loader();
+        if (auto op = opl->fromParser(p)) {
+            return Callable(op);
+        }
+        return nullptr;
+    }
+    if (p->nextIf(bk_token)) {
+        if (auto blk = Block::fromParser(p)) {
+            return Callable(blk);
+        }
+        return nullptr;
+    }
+    if (p->nextIf(bd_token)) {
+        if (auto bnd = PartialBind::fromParser(p)) {
+            return Callable(bnd);
+        }
+        return nullptr;
+    }
+
+    p->error("expected block, bind or operation");
+    return nullptr;
 }
 
 size_t Callable::serialize(Serializer* s) {

@@ -43,6 +43,8 @@ class Token {
     public:
         Token(TokenKind, std::string);
 
+        static Token identifier(const std::string&);
+
         TokenKind kind() const;
         std::string value() const;
         std::string describe() const;

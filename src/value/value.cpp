@@ -32,6 +32,8 @@
 #include <function/bind.h>
 #include <parser/parser.h>
 #include <value/value_loader.h>
+#include <value/callable.h>
+#include <function/callable.h>
 
 Value::Value() = default;
 Value::~Value() = default;
@@ -82,6 +84,10 @@ std::shared_ptr<Value> Value::table() {
 
 std::shared_ptr<Value> Value::fromBind(std::shared_ptr<PartialBind> pb) {
     return std::shared_ptr<Value>(new Value_Bind(pb));
+}
+
+std::shared_ptr<Value> Value::fromCallable(const Callable& c) {
+    return std::shared_ptr<Value>(new Value_Callable(c));
 }
 
 std::shared_ptr<Value> Value::fromByteStream(ByteStream* bs) {

@@ -28,6 +28,7 @@
 #include <initializer_list>
 #include <utility>
 
+class Callable;
 class PartialBind;
 class Block;
 class ByteStream;
@@ -51,6 +52,7 @@ class Value : public std::enable_shared_from_this<Value> {
         static std::shared_ptr<Value> type(ValueType);
         static std::shared_ptr<Value> table();
         static std::shared_ptr<Value> fromBind(std::shared_ptr<PartialBind>);
+        static std::shared_ptr<Value> fromCallable(const Callable&);
         static std::shared_ptr<Value> fromByteStream(ByteStream*);
         static std::shared_ptr<Value> fromParser(Parser*);
 

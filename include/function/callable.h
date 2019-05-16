@@ -26,6 +26,7 @@ class PartialBind;
 class Serializer;
 class ByteStream;
 class Value;
+class Parser;
 
 class Callable {
     public:
@@ -36,6 +37,7 @@ class Callable {
         static constexpr uint8_t MARKER_BIND = 'D';
 
         static Callable fromByteStream(ByteStream* bs);
+        static Callable fromParser(Parser* p);
 
         Callable(std::shared_ptr<Operation>);
         Callable(std::shared_ptr<Block>);
