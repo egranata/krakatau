@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #include <function/callable.h>
-#include <value/block.h>
 #include <value/operation.h>
 #include <rtti/rtti.h>
 #include <type_traits>
@@ -31,12 +30,8 @@ Callable::Callable(std::nullptr_t) {}
 Callable::Callable(std::shared_ptr<Operation> o) : mPayload(o) {}
 
 Callable::Callable(std::shared_ptr<Value> v) {
-    auto blk = runtime_ptr_cast<Value_Block>(v);
     auto opr = runtime_ptr_cast<Value_Operation>(v);
-    auto bnd = runtime_ptr_cast<Value_Bind>(v);
-    if (blk) mPayload = blk->value();
     if (opr) mPayload = opr->value();
-    if (bnd) mPayload = bnd->value();
 }
 
 Callable::operator bool() const {

@@ -24,6 +24,8 @@
 #include <value/error.h>
 #include <rtti/rtti.h>
 #include <value/bind.h>
+#include <function/callable.h>
+#include <function/bind.h>
 
 TEST(Exec, Block) {
     MachineState s;

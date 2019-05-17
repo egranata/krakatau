@@ -18,7 +18,6 @@
 #define STUFF_VALUE_BLOCK
 
 #include <value/value.h>
-#include <operations/op.h>
 
 class MachineState;
 class Block;
@@ -29,21 +28,6 @@ class Value_Block : public Value {
 
         static std::shared_ptr<Value> fromByteStream(ByteStream* bs);
         static std::shared_ptr<Value> fromParser(Parser*);
-
-        Value_Block(std::shared_ptr<Block>);
-        std::shared_ptr<Block> value() const;
-        virtual std::string describe() const override;
-        bool equals(std::shared_ptr<Value>) const override;
-        size_t serialize(Serializer*) override;
-
-        size_t hash() const override;
-        std::shared_ptr<Value> clone() const override;
-
-        Operation::Result execute(MachineState&);
-
-        VALUE_SUBCLASS(ValueType::BLOCK, Value);
-    private:
-        std::shared_ptr<Block> mValue;
 };
 
 #endif

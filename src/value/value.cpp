@@ -54,7 +54,7 @@ std::shared_ptr<Value> Value::fromBoolean(bool b) {
 }
 
 std::shared_ptr<Value> Value::fromBlock(std::shared_ptr<Block> b) {
-    return std::shared_ptr<Value>(new Value_Block(b));
+    return std::shared_ptr<Value>(new Value_Operation(b));
 }
 
 std::shared_ptr<Value> Value::fromOperation(std::shared_ptr<Operation> b) {

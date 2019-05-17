@@ -13,72 +13,23 @@
 // limitations under the License.
 
 #include <value/bind.h>
-#include <rtti/rtti.h>
 #include <stream/byte_stream.h>
-#include <stream/serializer.h>
 #include <parser/parser.h>
-#include <operations/op_loader.h>
-#include <operations/op.h>
-#include <rtti/enum.h>
 #include <function/bind.h>
 #include <value/operation.h>
-#include <value/block.h>
-#include <function/block.h>
-#include <function/callable.h>
-
-Value_Bind::Value_Bind(std::shared_ptr<PartialBind> b) : mValue(b) {}
-
-std::shared_ptr<PartialBind> Value_Bind::value() const {
-    return mValue;
-}
-
-std::string Value_Bind::describe() const {
-    return value()->describe();
-}
-
-bool Value_Bind::equals(std::shared_ptr<Value> v) const {
-    auto blk = runtime_ptr_cast<Value_Bind>(v);
-    if (blk == nullptr) return false;
-
-    return value()->equals(blk->value());
-}
 
 std::shared_ptr<Value> Value_Bind::fromByteStream(ByteStream* bs) {
     if (auto blk = PartialBind::fromByteStream(bs)) {
-        return std::shared_ptr<Value>(new Value_Bind(blk));
+        return std::shared_ptr<Value>(new Value_Operation(blk));
     }
 
     return nullptr;
-}
-
-size_t Value_Bind::serialize(Serializer* s) {
-    size_t wr = s->writeNumber(MARKER, 1);
-    wr += value()->serialize(s);
-    return wr;
 }
 
 std::shared_ptr<Value> Value_Bind::fromParser(Parser* p) {
     if (auto blk = PartialBind::fromParser(p)) {
-        return std::shared_ptr<Value>(new Value_Bind(blk));
+        return std::shared_ptr<Value>(new Value_Operation(blk));
     }
 
     return nullptr;
-}
-
-size_t Value_Bind::hash() const {
-    size_t hash = 0xE1DD000;
-    auto bind = value();
-    hash |= value()->value()->hash();
-    hash += value()->callable().hash();
-    return hash;
-}
-
-std::shared_ptr<Value> Value_Bind::clone() const {
-    auto newBindOp = value()->clone();
-    auto newBind = std::dynamic_pointer_cast<PartialBind>(newBindOp);
-    return Value::fromBind(newBind);
-}
-
-Operation::Result Value_Bind::execute(MachineState& ms) {
-    return value()->execute(ms);
 }

@@ -146,8 +146,6 @@ std::shared_ptr<Value> Value_Tuple::doTypecast(ValueType vt) {
             auto elem = self->at(i);
             if (elem->isOfClass<Value_Operation>()) {
                 blk->add(runtime_ptr_cast<Value_Operation>(elem)->value());
-            } else if (elem->isOfClass<Value_Block>()) {
-                blk->add(runtime_ptr_cast<Value_Block>(elem)->value());
             } else {
                 return nullptr;
             }

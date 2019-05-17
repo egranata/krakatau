@@ -13,16 +13,12 @@
 // limitations under the License.
 
 #include <operations/exec.h>
-#include <function/block.h>
 #include <rtti/rtti.h>
-#include <value/block.h>
 #include <value/boolean.h>
 #include <error/error_codes.h>
 #include <value/operation.h>
 #include <operations/op.h>
 #include <machine/state.h>
-#include <value/bind.h>
-#include <function/bind.h>
 
 Operation::Result Exec::execute(MachineState& s) {
     if (!s.stack().hasAtLeast(1)) {
@@ -32,24 +28,12 @@ Operation::Result Exec::execute(MachineState& s) {
 
     auto val = s.stack().pop();
 
-    Value_Block* blk = runtime_ptr_cast<Value_Block>(val);
-    Value_Operation* oper = runtime_ptr_cast<Value_Operation>(val);
-    Value_Bind* bind = runtime_ptr_cast<Value_Bind>(val);
-
-    if (oper) {
+    if (auto oper = runtime_ptr_cast<Value_Operation>(val)) {
         auto ret = oper->execute(s);
         return ret;
+    } else {
+        s.stack().push(val);
+        s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
+        return Operation::Result::ERROR;
     }
-    if (blk) {
-        auto ret = blk->execute(s);
-        return ret;
-    }
-    if (bind) {
-        auto ret = bind->execute(s);
-        return ret;
-    }
-
-    s.stack().push(val);
-    s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
-    return Operation::Result::ERROR;
 }

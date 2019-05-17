@@ -18,7 +18,6 @@
 #define STUFF_VALUE_BIND
 
 #include <value/value.h>
-#include <function/bind.h>
 
 class MachineState;
 
@@ -28,21 +27,6 @@ class Value_Bind : public Value {
 
         static std::shared_ptr<Value> fromByteStream(ByteStream* bs);
         static std::shared_ptr<Value> fromParser(Parser*);
-
-        Value_Bind(std::shared_ptr<PartialBind>);
-        std::shared_ptr<PartialBind> value() const;
-        virtual std::string describe() const override;
-        bool equals(std::shared_ptr<Value>) const override;
-        size_t serialize(Serializer*) override;
-
-        size_t hash() const override;
-        std::shared_ptr<Value> clone() const override;
-
-        Operation::Result execute(MachineState&);
-
-        VALUE_SUBCLASS(ValueType::BIND, Value);
-    private:
-        std::shared_ptr<PartialBind> mValue;
 };
 
 #endif

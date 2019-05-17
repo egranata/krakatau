@@ -36,6 +36,7 @@
 #include <stream/shared_file.h>
 #include <value/bind.h>
 #include <function/bind.h>
+#include <function/callable.h>
 
 TEST(Parser, Next) {
     Parser p("hello world 1234");
@@ -449,18 +450,18 @@ TEST(Parser, ValidBind) {
     ASSERT_NE(nullptr, v_block);
     ASSERT_NE(nullptr, v_nested);
 
-    ASSERT_TRUE(v_op->value->isOfClass<Value_Bind>());
-    ASSERT_TRUE(v_block->value->isOfClass<Value_Bind>());
-    ASSERT_TRUE(v_nested->value->isOfClass<Value_Bind>());
+    ASSERT_TRUE(v_op->value->isOfClass<Value_Operation>());
+    ASSERT_TRUE(v_block->value->isOfClass<Value_Operation>());
+    ASSERT_TRUE(v_nested->value->isOfClass<Value_Operation>());
 
-    auto b_op = v_op->value->asClass<Value_Bind>();
-    auto b_block = v_block->value->asClass<Value_Bind>();
-    auto b_nested = v_nested->value->asClass<Value_Bind>();
+    auto b_op = v_op->value->asClass<Value_Operation>();
+    auto b_block = v_block->value->asClass<Value_Operation>();
+    auto b_nested = v_nested->value->asClass<Value_Operation>();
 
-    ASSERT_NE(nullptr, b_op->value()->callable().operation());
-    ASSERT_NE(nullptr, b_block->value()->callable().block());
-    ASSERT_NE(nullptr, b_nested->value()->callable().bind());
-    ASSERT_NE(nullptr, b_nested->value()->callable().bind()->callable().operation());
+    ASSERT_NE(nullptr, b_op->value()->asClass<PartialBind>());
+    ASSERT_NE(nullptr, b_block->value()->asClass<PartialBind>());
+    ASSERT_NE(nullptr, b_nested->value()->asClass<PartialBind>());
+    ASSERT_NE(nullptr, b_nested->value()->asClass<PartialBind>()->callable().bind());
 }
 
 TEST(Parser, InvalidBind) {
