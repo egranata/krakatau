@@ -136,7 +136,7 @@ TEST(ValueSerialize, Table) {
 }
 
 TEST(ValueSerialize, Bind) {
-    auto val = Value::fromBind(std::make_shared<PartialBind>(Value::fromNumber(1), Callable(std::make_shared<Dup>())));
+    auto val = Value::fromBind(std::make_shared<PartialBind>(Value::fromNumber(1), std::make_shared<Dup>()));
     Serializer s;
     val->serialize(&s);
     auto bs = ByteStream::anonymous(s.data(), s.size());

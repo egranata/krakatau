@@ -36,7 +36,6 @@
 #include <stream/shared_file.h>
 #include <value/bind.h>
 #include <function/bind.h>
-#include <function/callable.h>
 
 TEST(Parser, Next) {
     Parser p("hello world 1234");
@@ -461,7 +460,7 @@ TEST(Parser, ValidBind) {
     ASSERT_NE(nullptr, b_op->value()->asClass<PartialBind>());
     ASSERT_NE(nullptr, b_block->value()->asClass<PartialBind>());
     ASSERT_NE(nullptr, b_nested->value()->asClass<PartialBind>());
-    ASSERT_NE(nullptr, b_nested->value()->asClass<PartialBind>()->callable().bind());
+    ASSERT_NE(nullptr, b_nested->value()->asClass<PartialBind>()->callable()->asClass<PartialBind>());
 }
 
 TEST(Parser, InvalidBind) {

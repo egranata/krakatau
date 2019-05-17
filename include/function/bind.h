@@ -18,17 +18,17 @@
 #define STUFF_FUNCTION_BIND
 
 #include <operations/op.h>
-#include <function/callable.h>
 #include <value/value.h>
 #include <string>
 
+class MachineState;
 class Parser;
 class Serializer;
 class ByteStream;
 
 class PartialBind : public BaseOperation<PartialBind, OperationType::PARTIALBIND> {
     public:
-        PartialBind(std::shared_ptr<Value>, Callable);
+        PartialBind(std::shared_ptr<Value>, std::shared_ptr<Operation>);
 
         static std::shared_ptr<PartialBind> fromByteStream(ByteStream* bs);
         static std::shared_ptr<PartialBind> fromParser(Parser*);
@@ -36,7 +36,7 @@ class PartialBind : public BaseOperation<PartialBind, OperationType::PARTIALBIND
         Operation::Result execute(MachineState&) override;
 
         std::shared_ptr<Value> value() const;
-        Callable callable() const;
+        std::shared_ptr<Operation> callable() const;
 
         std::string describe() const override;
         bool equals(std::shared_ptr<Operation>) const override;
@@ -45,7 +45,7 @@ class PartialBind : public BaseOperation<PartialBind, OperationType::PARTIALBIND
 
     private:
         std::shared_ptr<Value> mValue;
-        Callable mCallable;
+        std::shared_ptr<Operation> mCallable;
 };
 
 #endif

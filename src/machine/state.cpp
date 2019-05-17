@@ -20,7 +20,6 @@
 #include <value/block.h>
 #include <machine/slots_handler.h>
 #include <value/operation.h>
-#include <function/callable.h>
 
 MachineState::MachineState() {
     appendListener(std::make_shared<SlotsHandler>(*this));
@@ -109,9 +108,8 @@ void MachineState::removeListener(std::shared_ptr<MachineEventsListener> l) {
 
 std::optional<Operation::Result> MachineState::execute(const std::string& name) {
     auto vblk = value_store().retrieve(name);
-    if (auto clb = Callable{vblk}) {
-        return clb.execute(*this);
-    } else return std::nullopt;
+    if (auto clb = vblk->asClass<Value_Operation>()) return clb->execute(*this);
+    else return std::nullopt;
 }
 
 void MachineState::pushSlot(std::shared_ptr<Block> blk) {

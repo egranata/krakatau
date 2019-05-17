@@ -24,7 +24,6 @@
 #include <value/error.h>
 #include <rtti/rtti.h>
 #include <value/bind.h>
-#include <function/callable.h>
 #include <function/bind.h>
 
 TEST(Exec, Block) {
@@ -62,7 +61,7 @@ TEST(Exec, NotBlock) {
 TEST(Exec, Bind) {
     MachineState s;
     Exec e;
-    s.stack().push(Value::fromBind(std::make_shared<PartialBind>(Value::fromNumber(123), Callable(std::make_shared<Dup>()))));
+    s.stack().push(Value::fromBind(std::make_shared<PartialBind>(Value::fromNumber(123), std::make_shared<Dup>())));
     ASSERT_EQ(Operation::Result::SUCCESS, e.execute(s));
     ASSERT_EQ(2, s.stack().size());
     ASSERT_TRUE(Value::fromNumber(123)->equals(s.stack().pop()));

@@ -22,7 +22,6 @@
 #include <value/block.h>
 #include <function/block.h>
 #include <value/boolean.h>
-#include <function/callable.h>
 #include <machine/state.h>
 
 Operation::Result Reduce::execute(MachineState& s) {
@@ -38,10 +37,9 @@ Operation::Result Reduce::execute(MachineState& s) {
 
     auto tpl = runtime_ptr_cast<Value_Tuple>(vcnt);
     auto tbl = runtime_ptr_cast<Value_Table>(vcnt);
+    auto cbk = vpred->asClass<Value_Operation>();
 
-    Callable cbk(vpred);
-
-    if(!cbk.operator bool()) {
+    if(cbk == nullptr) {
         s.stack().push(vcnt);
         s.stack().push(vpred);
         s.stack().push(v0);
@@ -62,7 +60,7 @@ Operation::Result Reduce::execute(MachineState& s) {
             auto itm = tpl->at(i);
             s.stack().push(itm);
             s.stack().push(v0);
-            auto ok = cbk.execute(s);
+            auto ok = cbk->execute(s);
             if (ok != Operation::Result::SUCCESS) {
                 s.stack().push(vcnt);
                 s.stack().push(vpred);
@@ -78,7 +76,7 @@ Operation::Result Reduce::execute(MachineState& s) {
             auto itm = tbl->pairAt(i);
             s.stack().push(itm);
             s.stack().push(v0);
-            auto ok = cbk.execute(s);
+            auto ok = cbk->execute(s);
             if (ok != Operation::Result::SUCCESS) {
                 s.stack().push(vcnt);
                 s.stack().push(vpred);

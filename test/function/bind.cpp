@@ -23,10 +23,11 @@
 #include <stream/serializer.h>
 #include <stream/byte_stream.h>
 #include <operations/op_loader.h>
+#include <function/block.h>
 
 TEST(Bind, BindOfOperation) {
     auto op = std::make_shared<Dup>();
-    auto bind = std::make_shared<PartialBind>(Value::fromNumber(12), Callable(op));
+    auto bind = std::make_shared<PartialBind>(Value::fromNumber(12), op);
     MachineState ms;
     ASSERT_EQ(Operation::Result::SUCCESS, bind->execute(ms));
     ASSERT_EQ(2, ms.stack().size());
@@ -39,7 +40,7 @@ TEST(Bind, BindOfBlock) {
     auto blk = p.parseValuePayload();
     ASSERT_TRUE(blk->isOfClass<Value_Operation>());
     ASSERT_TRUE(blk->asClass<Value_Operation>()->value()->isOfClass<Block>());
-    auto bind = std::make_shared<PartialBind>(Value::fromNumber(5), blk);
+    auto bind = std::make_shared<PartialBind>(Value::fromNumber(5), blk->asClass<Value_Operation>()->value());
     MachineState ms;
     ASSERT_EQ(Operation::Result::SUCCESS, bind->execute(ms));
     ASSERT_EQ(1, ms.stack().size());
@@ -51,9 +52,9 @@ TEST(Bind, NestedBind) {
     auto blk = p.parseValuePayload();
     ASSERT_TRUE(blk->isOfClass<Value_Operation>());
     ASSERT_TRUE(blk->asClass<Value_Operation>()->value()->isOfClass<Block>());
-    auto bind1 = std::make_shared<PartialBind>(Value::fromNumber(5), blk);
-    auto bind2 = std::make_shared<PartialBind>(Value::fromNumber(3), Callable(bind1));
-    auto bind3 = std::make_shared<PartialBind>(Value::fromNumber(8), Callable(bind2));
+    auto bind1 = std::make_shared<PartialBind>(Value::fromNumber(5), blk->asClass<Value_Operation>()->value());
+    auto bind2 = std::make_shared<PartialBind>(Value::fromNumber(3), bind1);
+    auto bind3 = std::make_shared<PartialBind>(Value::fromNumber(8), bind2);
     MachineState ms;
     ASSERT_EQ(Operation::Result::SUCCESS, bind3->execute(ms));
     ASSERT_EQ(1, ms.stack().size());
@@ -66,9 +67,9 @@ TEST(Bind, BindEquality) {
     Parser p2("operation dup");
     auto blk2 = p2.parseValuePayload();
     ASSERT_TRUE(blk2->isOfClass<Value_Operation>());
-    auto bind_1false = std::make_shared<PartialBind>(Value::fromBoolean(false), blk1);
-    auto bind_2false = std::make_shared<PartialBind>(Value::fromBoolean(false), blk2);
-    auto bind_1true = std::make_shared<PartialBind>(Value::fromBoolean(true), blk1);
+    auto bind_1false = std::make_shared<PartialBind>(Value::fromBoolean(false), blk1->asClass<Value_Operation>()->value());
+    auto bind_2false = std::make_shared<PartialBind>(Value::fromBoolean(false), blk2->asClass<Value_Operation>()->value());
+    auto bind_1true = std::make_shared<PartialBind>(Value::fromBoolean(true), blk1->asClass<Value_Operation>()->value());
 
     ASSERT_FALSE(bind_1false->equals(bind_2false));
     ASSERT_FALSE(bind_1false->equals(bind_1true));
@@ -85,13 +86,13 @@ TEST(Bind, NestedBindEquality) {
     Parser p2("block { mul dup }");
     auto blk2 = p2.parseValuePayload();
 
-    auto bind_blk1 = std::make_shared<PartialBind>(Value::fromNumber(5), blk1);
-    auto bind_blk2 = std::make_shared<PartialBind>(Value::fromNumber(5), blk2);
+    auto bind_blk1 = std::make_shared<PartialBind>(Value::fromNumber(5), blk1->asClass<Value_Operation>()->value());
+    auto bind_blk2 = std::make_shared<PartialBind>(Value::fromNumber(5), blk2->asClass<Value_Operation>()->value());
 
-    auto bind_blk1_10 = std::make_shared<PartialBind>(Value::fromNumber(10), Callable(bind_blk1));
-    auto bind_blk2_10 = std::make_shared<PartialBind>(Value::fromNumber(10), Callable(bind_blk2));
+    auto bind_blk1_10 = std::make_shared<PartialBind>(Value::fromNumber(10), bind_blk1);
+    auto bind_blk2_10 = std::make_shared<PartialBind>(Value::fromNumber(10), bind_blk2);
 
-    auto bind_blk1_15 = std::make_shared<PartialBind>(Value::fromNumber(15), Callable(bind_blk1));
+    auto bind_blk1_15 = std::make_shared<PartialBind>(Value::fromNumber(15), bind_blk1);
 
     ASSERT_FALSE(bind_blk1_10->equals(bind_blk2_10));
     ASSERT_TRUE(bind_blk1_10->equals(bind_blk1_10));
@@ -102,7 +103,7 @@ TEST(Bind, NestedBindEquality) {
 }
 
 TEST(Bind, OperationSerialize) {
-    auto bind = std::make_shared<PartialBind>(Value::fromNumber(5), Callable(std::make_shared<Dup>()));
+    auto bind = std::make_shared<PartialBind>(Value::fromNumber(5), std::make_shared<Dup>());
     Serializer s;
     bind->serialize(&s);
     auto bs = ByteStream::anonymous(s.data(), s.size());
@@ -113,7 +114,7 @@ TEST(Bind, OperationSerialize) {
 TEST(Bind, BlockSerialize) {
     Parser p1("block { sub mul }");
     auto blk1 = p1.parseValuePayload();
-    auto bind = std::make_shared<PartialBind>(Value::fromNumber(5), Callable(blk1));
+    auto bind = std::make_shared<PartialBind>(Value::fromNumber(5), blk1->asClass<Value_Operation>()->value());
     Serializer s;
     bind->serialize(&s);
     auto bs = ByteStream::anonymous(s.data(), s.size());
@@ -122,9 +123,9 @@ TEST(Bind, BlockSerialize) {
 }
 
 TEST(Bind, NestedSerialize) {
-    auto b0 = std::make_shared<PartialBind>(Value::fromNumber(5), Callable(std::make_shared<Dup>()));
-    auto b1 = std::make_shared<PartialBind>(Value::fromNumber(5), Callable(b0));
-    auto bind = std::make_shared<PartialBind>(Value::fromBoolean(false), Callable(b1));
+    auto b0 = std::make_shared<PartialBind>(Value::fromNumber(5), std::make_shared<Dup>());
+    auto b1 = std::make_shared<PartialBind>(Value::fromNumber(5), b0);
+    auto bind = std::make_shared<PartialBind>(Value::fromBoolean(false), b1);
     Serializer s;
     bind->serialize(&s);
     auto bs = ByteStream::anonymous(s.data(), s.size());

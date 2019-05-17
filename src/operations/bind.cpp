@@ -16,9 +16,9 @@
 #include <rtti/rtti.h>
 #include <value/tuple.h>
 #include <function/bind.h>
-#include <function/callable.h>
 #include <value/bind.h>
 #include <machine/state.h>
+#include <value/operation.h>
 
 Operation::Result Bind::execute(MachineState& s) {
     if (!s.stack().hasAtLeast(2)) {
@@ -28,17 +28,15 @@ Operation::Result Bind::execute(MachineState& s) {
 
     auto val = s.stack().pop();
     auto cvl = s.stack().pop();
+    auto clb = cvl->asClass<Value_Operation>();
 
-    Callable clb(cvl);
     if (val && clb) {
-        s.stack().push(Value::fromBind(std::make_shared<PartialBind>(val, clb)));
+        s.stack().push(Value::fromBind(std::make_shared<PartialBind>(val, clb->value())));
         return Operation::Result::SUCCESS;
     } else {
-
+        s.stack().push(cvl);
+        s.stack().push(val);
+        s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
+        return Operation::Result::ERROR;
     }
-
-    s.stack().push(cvl);
-    s.stack().push(val);
-    s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
-    return Operation::Result::ERROR;
 }

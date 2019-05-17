@@ -24,7 +24,7 @@ Values can be of one of the following types:
 * empty (the null value);
 * error (invalid operations push errors);
 * type (the type of a value);
-* bind (a pair of a value and a callable, e.g. a block or operation).
+* bind (a pair of a value and an operation).
 
 ## The stack
 

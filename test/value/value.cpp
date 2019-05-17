@@ -105,7 +105,7 @@ TEST(Value, Print) {
     ASSERT_EQ("string", Value::type(ValueType::STRING)->describe());
     auto tbl_val =Value::table({{Value::fromNumber(123), Value::fromNumber(42)}});
     ASSERT_EQ("[123 -> 42]", tbl_val->describe());
-    ASSERT_EQ("bind(empty, dup)", Value::fromBind(std::make_shared<PartialBind>(Value::empty(), Callable(std::make_shared<Dup>())))->describe());
+    ASSERT_EQ("bind(empty, dup)", Value::fromBind(std::make_shared<PartialBind>(Value::empty(), std::make_shared<Dup>()))->describe());
 }
 
 TEST(Value, String) {
@@ -191,7 +191,7 @@ TEST(Value, Table) {
 }
 
 TEST(Value, Bind) {
-    auto val_bind = Value::fromBind(std::make_shared<PartialBind>(Value::empty(), Callable(std::make_shared<Dup>())));
+    auto val_bind = Value::fromBind(std::make_shared<PartialBind>(Value::empty(), std::make_shared<Dup>()));
     ASSERT_TRUE(val_bind->isOfClass<Value_Operation>());
     ASSERT_TRUE(val_bind->equals(val_bind->clone()));
 }

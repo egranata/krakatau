@@ -22,7 +22,6 @@
 #include <value/block.h>
 #include <function/block.h>
 #include <value/boolean.h>
-#include <function/callable.h>
 #include <machine/state.h>
 
 Operation::Result Filter::execute(MachineState& s) {
@@ -36,10 +35,9 @@ Operation::Result Filter::execute(MachineState& s) {
 
     auto tpl = runtime_ptr_cast<Value_Tuple>(vcnt);
     auto tbl = runtime_ptr_cast<Value_Table>(vcnt);
+    auto cbk = vpred->asClass<Value_Operation>();
 
-    Callable cbk(vpred);
-
-    if(!cbk.operator bool()) {
+    if(cbk == nullptr) {
         s.stack().push(vcnt);
         s.stack().push(vpred);
         s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
@@ -59,7 +57,7 @@ Operation::Result Filter::execute(MachineState& s) {
         for(size_t i = 0; i < tpl->size(); ++i) {
             auto itm = tpl->at(i);
             s.stack().push(itm);
-            auto ok = cbk.execute(s);
+            auto ok = cbk->execute(s);
             if (ok != Operation::Result::SUCCESS) {
                 s.stack().push(vcnt);
                 s.stack().push(vpred);
@@ -82,7 +80,7 @@ Operation::Result Filter::execute(MachineState& s) {
         for(size_t i = 0; i < tbl->size(); ++i) {
             auto itm = tbl->pairAt(i);
             s.stack().push(itm);
-            auto ok = cbk.execute(s);
+            auto ok = cbk->execute(s);
             if (ok != Operation::Result::SUCCESS) {
                 s.stack().push(vcnt);
                 s.stack().push(vpred);
