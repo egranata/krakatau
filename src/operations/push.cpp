@@ -59,7 +59,7 @@ size_t Push::serialize(Serializer* s) const {
 }
 
 bool Push::equals(std::shared_ptr<Operation> rhs) const {
-    auto clr = runtime_ptr_cast<Push>(rhs);
+    auto clr = rhs->asClass<Push>();
     if (clr) {
         return value()->equals(clr->value());
     }

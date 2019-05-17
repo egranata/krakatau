@@ -63,7 +63,7 @@ TEST(OpLoader, Push) {
     auto op = opl->fromByteStream(bs.get());
     ASSERT_NE(nullptr, op);
     ASSERT_TRUE(op->isOfClass<Push>());
-    ASSERT_TRUE(runtime_ptr_cast<Push>(op)->value()->isOfClass<Value_Boolean>());
+    ASSERT_TRUE(op->asClass<Push>()->value()->isOfClass<Value_Boolean>());
     ASSERT_TRUE(runtime_ptr_cast<Value_Boolean>(runtime_ptr_cast<Push>(op)->value())->value());
 }
 

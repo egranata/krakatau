@@ -17,13 +17,12 @@
 #ifndef STUFF_OPERATION_OP
 #define STUFF_OPERATION_OP
 
-#include <value/value.h>
 #include <stack/stack.h>
 #include <operations/op_types.h>
 #include <memory>
 #include <string>
-#include <stdlib.h>
 #include <iostream>
+#include <rtti/rtti.h>
 
 class Serializer;
 class MachineState;
@@ -55,6 +54,12 @@ class Operation : public std::enable_shared_from_this<Operation> {
 
         template <typename T>
         bool isOfClass() const { return isOfType( T::getStaticClassId() ); };
+
+        template <typename T>
+        auto asClass() {
+            if (isOfClass<T>()) return runtime_ptr_cast<T>(this);
+            return (T*)nullptr;
+        }
 
     protected:
         Operation();
