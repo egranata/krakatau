@@ -40,9 +40,7 @@ class Callable {
         static Callable fromParser(Parser* p);
 
         Callable(std::shared_ptr<Operation>);
-        Callable(std::shared_ptr<Block>);
         Callable(std::shared_ptr<Value>);
-        Callable(std::shared_ptr<PartialBind>);
 
         explicit operator bool() const;
         std::string describe() const;
@@ -58,7 +56,7 @@ class Callable {
         Operation::Result execute(MachineState&) const;
     private:
         Callable(std::nullptr_t);
-        std::variant<std::shared_ptr<Operation>, std::shared_ptr<Block>, std::shared_ptr<PartialBind>> mPayload;
+        std::shared_ptr<Operation> mPayload;
 };
 
 #endif

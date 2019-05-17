@@ -66,7 +66,7 @@ TEST(Callable, ValidBlock) {
     ASSERT_EQ(1, ms.stack().size());
     ASSERT_TRUE(ms.stack().pop()->equals(Value::fromNumber(0)));
 
-    ASSERT_EQ(clb.operation(), nullptr);
+    ASSERT_NE(clb.operation(), nullptr);
     ASSERT_NE(nullptr, clb.block());
     ASSERT_EQ(nullptr, clb.bind());
 }
@@ -80,7 +80,7 @@ TEST(Callable, BlockValue) {
     ASSERT_EQ(1, ms.stack().size());
     ASSERT_TRUE(ms.stack().pop()->equals(Value::fromNumber(0)));
 
-    ASSERT_EQ(clb.operation(), nullptr);
+    ASSERT_NE(clb.operation(), nullptr);
     ASSERT_NE(nullptr, clb.block());
     ASSERT_EQ(nullptr, clb.bind());
 }
@@ -117,7 +117,7 @@ TEST(Callable, Bind) {
     ASSERT_TRUE(ms.stack().pop()->equals(Value::fromNumber(1)));
     ASSERT_TRUE(ms.stack().pop()->equals(Value::fromNumber(1)));
 
-    ASSERT_EQ(clb.operation(), nullptr);
+    ASSERT_NE(clb.operation(), nullptr);
     ASSERT_EQ(nullptr, clb.block());
     ASSERT_NE(nullptr, clb.bind());
 }
@@ -127,7 +127,7 @@ TEST(Callable, Describe) {
     Callable c2(Value::fromBlock(std::make_shared<Block>()));
     Callable c3(Value::fromBind(std::make_shared<PartialBind>(Value::empty(), Callable(std::make_shared<Dup>()))));
 
-    ASSERT_EQ("operation dup", c1.describe());
     ASSERT_EQ("block {\n}", c2.describe());
-    ASSERT_EQ("bind(empty, operation dup)", c3.describe());
+    ASSERT_EQ("bind(empty, dup)", c3.describe());
+    ASSERT_EQ("dup", c1.describe());
 }

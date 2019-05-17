@@ -30,8 +30,6 @@ Callable::Callable(std::nullptr_t) {}
 
 Callable::Callable(std::shared_ptr<Operation> o) : mPayload(o) {}
 
-Callable::Callable(std::shared_ptr<Block> b) : mPayload(b) {}
-
 Callable::Callable(std::shared_ptr<Value> v) {
     auto blk = runtime_ptr_cast<Value_Block>(v);
     auto opr = runtime_ptr_cast<Value_Operation>(v);
@@ -41,69 +39,32 @@ Callable::Callable(std::shared_ptr<Value> v) {
     if (bnd) mPayload = bnd->value();
 }
 
-Callable::Callable(std::shared_ptr<PartialBind> b) : mPayload(b) {}
-
 Callable::operator bool() const {
-    return std::visit([] (auto&& arg) -> bool {
-        using T = std::decay_t<decltype(arg)>;
-        if constexpr (std::is_same_v<T, std::shared_ptr<Operation>>) return arg.get() != nullptr;
-        if constexpr (std::is_same_v<T, std::shared_ptr<Block>>) return arg.get() != nullptr;
-        if constexpr (std::is_same_v<T, std::shared_ptr<PartialBind>>) return arg.get() != nullptr;
-        return false;
-    }, mPayload);
+    return mPayload != nullptr;
 }
 
 Operation::Result Callable::execute(MachineState& s) const {
-    return std::visit([&s] (auto&& arg) -> Operation::Result {
-        using T = std::decay_t<decltype(arg)>;
-        if constexpr (std::is_same_v<T, std::shared_ptr<Operation>>) return arg ? arg->execute(s) : Operation::Result::ERROR;
-        if constexpr (std::is_same_v<T, std::shared_ptr<Block>>) return arg ? arg->execute(s) : Operation::Result::ERROR;
-        if constexpr (std::is_same_v<T, std::shared_ptr<PartialBind>>) return arg ? arg->execute(s) : Operation::Result::ERROR;
-        return Operation::Result::ERROR;
-    }, mPayload);
+    return mPayload ? mPayload->execute(s) : Operation::Result::ERROR;
 }
 
 std::string Callable::describe() const {
-    IndentingStream is;
-    return std::visit([&is] (auto&& arg) -> std::string {
-        using T = std::decay_t<decltype(arg)>;
-        if constexpr (std::is_same_v<T, std::shared_ptr<Operation>>) {
-            if (arg) is.append("operation %s", arg->describe().c_str());
-        }
-        if constexpr (std::is_same_v<T, std::shared_ptr<Block>>) {
-            if (arg) is.append("%s", arg->describe().c_str());
-        }
-        if constexpr (std::is_same_v<T, std::shared_ptr<PartialBind>>) {
-            if (arg) is.append("%s", arg->describe().c_str());
-        }
-        return is.str();
-    }, mPayload);
+    if (mPayload) return mPayload->describe();
+    return "";
 }
 
 Callable Callable::clone() const {
-    return std::visit([] (auto&& arg) -> Callable {
-        using T = std::decay_t<decltype(arg)>;
-        if constexpr (std::is_same_v<T, std::shared_ptr<Operation>>) return arg ? Callable(arg->clone()) : Callable(nullptr);
-        if constexpr (std::is_same_v<T, std::shared_ptr<Block>>) return arg ? Callable(std::dynamic_pointer_cast<Block>(arg->clone())) : Callable(nullptr);
-        if constexpr (std::is_same_v<T, std::shared_ptr<PartialBind>>) return arg ? Callable(arg->clone()) : Callable(nullptr);
-        return Callable(nullptr);
-    }, mPayload);
+    if (mPayload) return Callable(mPayload->clone());
+    return Callable(nullptr);
 }
 
 size_t Callable::hash() const {
-    return std::visit([] (auto&& arg) -> size_t {
-        using T = std::decay_t<decltype(arg)>;
-        if constexpr (std::is_same_v<T, std::shared_ptr<Operation>>) return arg ? Value::fromOperation(arg)->hash() : 0;
-        if constexpr (std::is_same_v<T, std::shared_ptr<Block>>) return arg ? Value::fromBlock(arg)->hash() : 0;
-        if constexpr (std::is_same_v<T, std::shared_ptr<PartialBind>>) return arg ? Value::fromBind(arg)->hash() : 0;
-        return 0;
-    }, mPayload);
+    return mPayload ? Value::fromOperation(mPayload)->hash() : 0;
 }
 
 bool Callable::equals(Callable rhs) const {
-    return std::visit([] (auto&& me, auto&& them) -> bool {
-        return me->equals(them);
-    }, mPayload, rhs.mPayload);
+    if (mPayload && rhs.mPayload) return mPayload->equals(rhs.mPayload);
+    if (!mPayload && !rhs.mPayload) return true;
+    return false;
 }
 
 Callable Callable::fromByteStream(ByteStream* bs) {
@@ -164,51 +125,27 @@ Callable Callable::fromParser(Parser* p) {
 }
 
 size_t Callable::serialize(Serializer* s) {
-    return std::visit([s] (auto&& arg) -> size_t {
-        using T = std::decay_t<decltype(arg)>;
-        if constexpr (std::is_same_v<T, std::shared_ptr<Operation>>) {
-            if (arg) {
-                size_t wr = s->writeNumber(MARKER_OPERATION, 1);
-                wr += arg->serialize(s);
-                return wr;
-            }
-            else {
-                return s->writeNumber(MARKER_EMPTY, 1);
-            }
-        }
-        if constexpr (std::is_same_v<T, std::shared_ptr<Block>>) {
-            if (arg) {
-                size_t wr = s->writeNumber(MARKER_BLOCK, 1);
-                wr += arg->serialize(s);
-                return wr;
-            }
-            else {
-                return s->writeNumber(MARKER_EMPTY, 1);
-            }
-        }
-        if constexpr (std::is_same_v<T, std::shared_ptr<PartialBind>>) {
-            if (arg) {
-                size_t wr = s->writeNumber(MARKER_BIND, 1);
-                wr += arg->serialize(s);
-                return wr;
-            }
-            else {
-                return s->writeNumber(MARKER_EMPTY, 1);
-            }
-        }
-        return s->writeNumber(MARKER_EMPTY, 1);
-    }, mPayload);
+    if (mPayload == nullptr) return s->writeNumber(MARKER_EMPTY, 1);
+    size_t wr = 0;
+    if (auto b = block()) {
+        wr = s->writeNumber(MARKER_BLOCK, 1);
+        wr += b->serialize(s);
+    } else if (auto b = bind()) {
+        wr = s->writeNumber(MARKER_BIND, 1);
+        wr += b->serialize(s);
+    } else {
+        wr = s->writeNumber(MARKER_OPERATION, 1);
+        wr += mPayload->serialize(s);
+    }
+    return wr;
 }
 
 std::shared_ptr<Operation> Callable::operation() const {
-    if (auto op = std::get_if<std::shared_ptr<Operation>>(&mPayload)) return *op;
-    return nullptr;
+    return mPayload;
 }
 std::shared_ptr<Block> Callable::block() const {
-    if (auto blk = std::get_if<std::shared_ptr<Block>>(&mPayload)) return *blk;
-    return nullptr;
+    return std::dynamic_pointer_cast<Block>(mPayload);
 }
 std::shared_ptr<PartialBind> Callable::bind() const {
-    if (auto bnd = std::get_if<std::shared_ptr<PartialBind>>(&mPayload)) return *bnd;
-    return nullptr;
+    return std::dynamic_pointer_cast<PartialBind>(mPayload);
 }

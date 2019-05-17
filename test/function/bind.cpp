@@ -49,8 +49,8 @@ TEST(Bind, NestedBind) {
     auto blk = p.parseValuePayload();
     ASSERT_TRUE(blk->isOfClass<Value_Block>());
     auto bind1 = std::make_shared<PartialBind>(Value::fromNumber(5), blk);
-    auto bind2 = std::make_shared<PartialBind>(Value::fromNumber(3), bind1);
-    auto bind3 = std::make_shared<PartialBind>(Value::fromNumber(8), bind2);
+    auto bind2 = std::make_shared<PartialBind>(Value::fromNumber(3), Callable(bind1));
+    auto bind3 = std::make_shared<PartialBind>(Value::fromNumber(8), Callable(bind2));
     MachineState ms;
     ASSERT_EQ(Operation::Result::SUCCESS, bind3->execute(ms));
     ASSERT_EQ(1, ms.stack().size());
@@ -88,10 +88,10 @@ TEST(Bind, NestedBindEquality) {
     auto bind_blk1 = std::make_shared<PartialBind>(Value::fromNumber(5), blk1);
     auto bind_blk2 = std::make_shared<PartialBind>(Value::fromNumber(5), blk2);
 
-    auto bind_blk1_10 = std::make_shared<PartialBind>(Value::fromNumber(10), bind_blk1);
-    auto bind_blk2_10 = std::make_shared<PartialBind>(Value::fromNumber(10), bind_blk2);
+    auto bind_blk1_10 = std::make_shared<PartialBind>(Value::fromNumber(10), Callable(bind_blk1));
+    auto bind_blk2_10 = std::make_shared<PartialBind>(Value::fromNumber(10), Callable(bind_blk2));
 
-    auto bind_blk1_15 = std::make_shared<PartialBind>(Value::fromNumber(15), bind_blk1);
+    auto bind_blk1_15 = std::make_shared<PartialBind>(Value::fromNumber(15), Callable(bind_blk1));
 
     ASSERT_FALSE(bind_blk1_10->equals(bind_blk2_10));
     ASSERT_TRUE(bind_blk1_10->equals(bind_blk1_10));
