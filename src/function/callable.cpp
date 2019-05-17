@@ -69,30 +69,7 @@ bool Callable::equals(Callable rhs) const {
 
 Callable Callable::fromByteStream(ByteStream* bs) {
     auto opl = OperationLoader::loader();
-
-    auto okind = bs->readNumber(1);
-    if (!okind) return Callable(nullptr);
-    auto kind = okind.value();
-    switch (kind) {
-        case MARKER_OPERATION: {
-            auto op = opl->fromByteStream(bs);
-            return Callable(op);
-        }
-        case MARKER_BLOCK: {
-            auto blk = Block::fromByteStream(bs);
-            return Callable(blk);
-        }
-        case MARKER_VALUE: {
-            auto val = Value::fromByteStream(bs);
-            return Callable(val);
-        }
-        case MARKER_BIND: {
-            auto bnd = PartialBind::fromByteStream(bs);
-            return Callable(bnd);
-        }
-        case MARKER_EMPTY:
-        default: return Callable(nullptr);
-    }
+    return Callable(opl->fromByteStream(bs));
 }
 
 Callable Callable::fromParser(Parser* p) {
@@ -126,18 +103,7 @@ Callable Callable::fromParser(Parser* p) {
 
 size_t Callable::serialize(Serializer* s) {
     if (mPayload == nullptr) return s->writeNumber(MARKER_EMPTY, 1);
-    size_t wr = 0;
-    if (auto b = block()) {
-        wr = s->writeNumber(MARKER_BLOCK, 1);
-        wr += b->serialize(s);
-    } else if (auto b = bind()) {
-        wr = s->writeNumber(MARKER_BIND, 1);
-        wr += b->serialize(s);
-    } else {
-        wr = s->writeNumber(MARKER_OPERATION, 1);
-        wr += mPayload->serialize(s);
-    }
-    return wr;
+    return mPayload->serialize(s);
 }
 
 std::shared_ptr<Operation> Callable::operation() const {

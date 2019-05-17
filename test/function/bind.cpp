@@ -22,6 +22,7 @@
 #include <value/operation.h>
 #include <stream/serializer.h>
 #include <stream/byte_stream.h>
+#include <operations/op_loader.h>
 
 TEST(Bind, BindOfOperation) {
     auto op = std::make_shared<Dup>();
@@ -105,7 +106,7 @@ TEST(Bind, OperationSerialize) {
     Serializer s;
     bind->serialize(&s);
     auto bs = ByteStream::anonymous(s.data(), s.size());
-    auto deser = PartialBind::fromByteStream(bs.get());
+    auto deser = OperationLoader::loader()->fromByteStream(bs.get());
     ASSERT_TRUE(bind->equals(deser));
 }
 
@@ -116,7 +117,7 @@ TEST(Bind, BlockSerialize) {
     Serializer s;
     bind->serialize(&s);
     auto bs = ByteStream::anonymous(s.data(), s.size());
-    auto deser = PartialBind::fromByteStream(bs.get());
+    auto deser = OperationLoader::loader()->fromByteStream(bs.get());
     ASSERT_TRUE(bind->equals(deser));
 }
 
@@ -127,7 +128,7 @@ TEST(Bind, NestedSerialize) {
     Serializer s;
     bind->serialize(&s);
     auto bs = ByteStream::anonymous(s.data(), s.size());
-    auto deser = PartialBind::fromByteStream(bs.get());
+    auto deser = OperationLoader::loader()->fromByteStream(bs.get());
     ASSERT_TRUE(bind->equals(deser));
 }
 

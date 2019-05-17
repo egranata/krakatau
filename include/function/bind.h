@@ -26,7 +26,7 @@ class Parser;
 class Serializer;
 class ByteStream;
 
-class PartialBind : public Operation {
+class PartialBind : public BaseOperation<PartialBind, OperationType::PARTIALBIND> {
     public:
         PartialBind(std::shared_ptr<Value>, Callable);
 

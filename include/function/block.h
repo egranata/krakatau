@@ -29,7 +29,7 @@ class Serializer;
 class ByteStream;
 class Parser;
 
-class Block : public Operation {
+class Block : public DefaultConstructibleOperation<Block, OperationType::BLOCK> {
     public:
         static std::shared_ptr<Block> fromByteStream(ByteStream*);
         static std::shared_ptr<Block> fromParser(Parser*);

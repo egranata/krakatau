@@ -63,7 +63,8 @@ std::shared_ptr<PartialBind> PartialBind::fromParser(Parser* p) {
 }
 
 size_t PartialBind::serialize(Serializer* s) const {
-    size_t wr = value()->serialize(s);
+    size_t wr = this->Operation::serialize(s);
+    wr += value()->serialize(s);
     wr += callable().serialize(s);
     return wr;
 }

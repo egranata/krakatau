@@ -118,8 +118,9 @@ TEST(Block, Serialize) {
     blk.add(std::make_shared<Nop>());
     blk.serialize(&s);
     auto bs = ByteStream::anonymous(s.data(), s.size());
-    auto db = Block::fromByteStream(bs.get());
-    ASSERT_NE(db, nullptr);
+    auto dv = OperationLoader::loader()->fromByteStream(bs.get());
+    ASSERT_NE(dv, nullptr);
+    auto db = dv->asClass<Block>();
     ASSERT_EQ(blk.size(), db->size());
     ASSERT_TRUE(db->at(0)->isOfClass<Dup>());
     ASSERT_TRUE(db->at(1)->isOfClass<Nop>());
@@ -133,8 +134,9 @@ TEST(Block, SerializeWithSlots) {
     blk.add(std::make_shared<Nop>());
     blk.serialize(&s);
     auto bs = ByteStream::anonymous(s.data(), s.size());
-    auto db = Block::fromByteStream(bs.get());
-    ASSERT_NE(db, nullptr);
+    auto dv = OperationLoader::loader()->fromByteStream(bs.get());
+    ASSERT_NE(dv, nullptr);
+    auto db = dv->asClass<Block>();
     ASSERT_EQ(blk.size(), db->size());
     ASSERT_TRUE(db->at(0)->isOfClass<Dup>());
     ASSERT_TRUE(db->at(1)->isOfClass<Nop>());

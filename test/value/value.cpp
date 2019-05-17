@@ -32,6 +32,7 @@
 #include <parser/parser.h>
 #include <value/bind.h>
 #include <function/bind.h>
+#include <value/operation.h>
 
 TEST(Value, Number) {
     auto v(Value::fromNumber(123));
@@ -191,6 +192,6 @@ TEST(Value, Table) {
 
 TEST(Value, Bind) {
     auto val_bind = Value::fromBind(std::make_shared<PartialBind>(Value::empty(), Callable(std::make_shared<Dup>())));
-    ASSERT_TRUE(val_bind->isOfClass<Value_Bind>());
+    ASSERT_TRUE(val_bind->isOfClass<Value_Operation>());
     ASSERT_TRUE(val_bind->equals(val_bind->clone()));
 }

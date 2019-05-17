@@ -48,6 +48,9 @@
 #include <operations/typeof.h>
 #include <operations/unpack.h>
 
+#include <function/bind.h>
+#include <function/block.h>
+
 #define OPERATION_TYPE(NAME, CLASS, TOKEN, STRING, NUMBER) \
 void OpLoader ## CLASS () { \
             OperationLoader::loader()->addLoader(OperationType:: NAME, [] (ByteStream* bs) -> std::shared_ptr<Operation> { \

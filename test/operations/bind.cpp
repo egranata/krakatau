@@ -25,6 +25,7 @@
 #include <value/empty.h>
 #include <parser/parser.h>
 #include <operations/exec.h>
+#include <value/operation.h>
 
 TEST(Bind, ZeroArgs) {
     MachineState s;
@@ -64,7 +65,7 @@ TEST(Bind, Valid) {
     s.stack().push(Value::fromBoolean(true));
     Bind b;
     ASSERT_EQ(Operation::Result::SUCCESS, b.execute(s));
-    ASSERT_TRUE(s.stack().peek()->isOfClass<Value_Bind>());
+    ASSERT_TRUE(s.stack().peek()->isOfClass<Value_Operation>());
     Exec e;
     ASSERT_EQ(Operation::Result::SUCCESS, e.execute(s));
     ASSERT_EQ(2, s.stack().size());

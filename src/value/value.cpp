@@ -82,7 +82,7 @@ std::shared_ptr<Value> Value::table() {
 }
 
 std::shared_ptr<Value> Value::fromBind(std::shared_ptr<PartialBind> pb) {
-    return std::shared_ptr<Value>(new Value_Bind(pb));
+    return std::shared_ptr<Value>(new Value_Operation(pb));
 }
 
 std::shared_ptr<Value> Value::fromCallable(const Callable& c) {

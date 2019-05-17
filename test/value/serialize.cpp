@@ -142,6 +142,5 @@ TEST(ValueSerialize, Bind) {
     auto bs = ByteStream::anonymous(s.data(), s.size());
     auto dv = Value::fromByteStream(bs.get());
     ASSERT_NE(nullptr, dv);
-    ASSERT_TRUE(val->isOfClass<Value_Bind>());
     ASSERT_TRUE(val->equals(dv));
 }

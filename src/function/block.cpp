@@ -152,7 +152,8 @@ std::shared_ptr<Block> Block::fromParser(Parser* p) {
 }
 
 size_t Block::serialize(Serializer* s) const {
-    size_t wr = s->writeNumber(numSlotValues());
+    size_t wr = this->Operation::serialize(s);
+    wr += s->writeNumber(numSlotValues());
     for (size_t i = 0; i < numSlotValues(); ++i) {
         wr += s->writeIdentifier(slotValueAt(i).value());
     }
