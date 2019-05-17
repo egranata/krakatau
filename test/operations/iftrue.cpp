@@ -46,9 +46,7 @@ TEST(IfTrue, ParserTaken) {
     MachineState ms;
     Parser p("value main block { push number 5, push boolean true, iftrue dup }");
     ASSERT_EQ(1, ms.load(&p));
-    auto blk = runtime_ptr_cast<Value_Block>(ms.value_store().retrieve("main"));
-    ASSERT_NE(nullptr, blk);
-    ASSERT_EQ(Operation::Result::SUCCESS, blk->value()->execute(ms));
+    ASSERT_EQ(Operation::Result::SUCCESS, ms.execute());
     ASSERT_EQ(2, ms.stack().size());
     ASSERT_EQ(ms.stack().pop(), ms.stack().pop());
 }
@@ -57,9 +55,7 @@ TEST(IfTrue, ParserNotTaken) {
     MachineState ms;
     Parser p("value main block { push number 5, push boolean false, iftrue dup }");
     ASSERT_EQ(1, ms.load(&p));
-    auto blk = runtime_ptr_cast<Value_Block>(ms.value_store().retrieve("main"));
-    ASSERT_NE(nullptr, blk);
-    ASSERT_EQ(Operation::Result::SUCCESS, blk->value()->execute(ms));
+    ASSERT_EQ(Operation::Result::SUCCESS, ms.execute());
     ASSERT_EQ(1, ms.stack().size());
     ASSERT_TRUE(ms.stack().pop()->isOfClass<Value_Number>());
 }

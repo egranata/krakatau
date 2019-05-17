@@ -67,19 +67,6 @@ TEST(Value, Boolean) {
     ASSERT_TRUE(v->equals(v->clone()));
 }
 
-TEST(Value, Block) {
-    auto v(Value::fromBlock(std::make_shared<Block>()));
-    ASSERT_TRUE(v->isOfClass<Value_Block>());
-    ASSERT_NE(nullptr, runtime_ptr_cast<Value_Block>(v));
-    ASSERT_EQ(0, runtime_ptr_cast<Value_Block>(v)->value()->size());
-
-    ASSERT_FALSE(v->equals(Value::fromBoolean(true)));
-    ASSERT_TRUE(v->equals(Value::fromBlock(std::make_shared<Block>())));
-    ASSERT_TRUE(v->equals(v));
-
-    ASSERT_TRUE(v->equals(v->clone()));
-}
-
 TEST(Value, TypeMismatch) {
     auto v(Value::fromNumber(123));
     ASSERT_FALSE(v->isOfClass<Value_Boolean>());

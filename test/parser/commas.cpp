@@ -20,6 +20,7 @@
 #include <value/table.h>
 #include <function/block.h>
 #include <rtti/rtti.h>
+#include <value/operation.h>
 
 TEST(ParserCommas, EmptyTuple) {
     Parser p("value foo tuple (,)");
@@ -79,8 +80,9 @@ TEST(ParserCommas, EmptyBlock) {
     ASSERT_EQ(0, p.errorsCount());
     ASSERT_NE(val, nullptr);
     ASSERT_NE(nullptr, val->value);
-    ASSERT_TRUE(val->value->isOfClass<Value_Block>());
-    ASSERT_EQ(0, runtime_ptr_cast<Value_Block>(val->value)->value()->size());
+    auto opr = val->value->asClass<Value_Operation>();
+    ASSERT_NE(opr, nullptr);
+    ASSERT_EQ(0, runtime_ptr_cast<Block>(opr->value())->size());
 }
 
 TEST(ParserCommas, TrailingCommaBlock) {
@@ -94,7 +96,7 @@ TEST(ParserCommas, TrailingCommaBlock) {
     ASSERT_NE(nullptr, val1->value);
     ASSERT_NE(val2, nullptr);
     ASSERT_NE(nullptr, val2->value);
-    ASSERT_TRUE(val1->value->isOfClass<Value_Block>());
-    ASSERT_TRUE(val2->value->isOfClass<Value_Block>());
+    ASSERT_TRUE(val1->value->isOfClass<Value_Operation>());
+    ASSERT_TRUE(val2->value->isOfClass<Value_Operation>());
     ASSERT_TRUE(val1->value->equals(val2->value));
 }

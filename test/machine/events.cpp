@@ -22,6 +22,7 @@
 #include <function/block.h>
 #include <value/value_store.h>
 #include <machine/tracer.h>
+#include <value/operation.h>
 
 TEST(Events, NumBlocksEntered) {
     class Listener : public MachineEventsListener {
@@ -41,7 +42,7 @@ TEST(Events, NumBlocksEntered) {
     ASSERT_EQ(3, ms.load(&p));
     auto vblk = ms.value_store().retrieve("main");
     ASSERT_NE(nullptr, vblk);
-    auto blk = runtime_ptr_cast<Value_Block>(vblk);
+    auto blk = runtime_ptr_cast<Value_Operation>(vblk);
     ASSERT_NE(nullptr, blk);
     blk->execute(ms);
     ASSERT_EQ(5, l->numBlocks);
@@ -65,7 +66,7 @@ TEST(Events, NumBlocksExited) {
     ASSERT_EQ(3, ms.load(&p));
     auto vblk = ms.value_store().retrieve("main");
     ASSERT_NE(nullptr, vblk);
-    auto blk = runtime_ptr_cast<Value_Block>(vblk);
+    auto blk = runtime_ptr_cast<Value_Operation>(vblk);
     ASSERT_NE(nullptr, blk);
     blk->execute(ms);
     ASSERT_EQ(5, l->numBlocks);
@@ -89,7 +90,7 @@ TEST(Events, NumInstructionsRan) {
     ASSERT_EQ(3, ms.load(&p));
     auto vblk = ms.value_store().retrieve("main");
     ASSERT_NE(nullptr, vblk);
-    auto blk = runtime_ptr_cast<Value_Block>(vblk);
+    auto blk = runtime_ptr_cast<Value_Operation>(vblk);
     ASSERT_NE(nullptr, blk);
     blk->execute(ms);
     ASSERT_EQ(10, l->numInstructions);
@@ -117,7 +118,7 @@ TEST(Tracer, Description) {
     Parser p("value n0 block { load n1 exec } value n1 block { dup } value main block { load n0 dup exec exec }");
     ASSERT_EQ(3, ms.load(&p));
     auto vblk = ms.value_store().retrieve("main");
-    auto blk = runtime_ptr_cast<Value_Block>(vblk);
+    auto blk = runtime_ptr_cast<Value_Operation>(vblk);
     blk->execute(ms);
     ASSERT_EQ("block {\n >>  dup\n}\n block {\n      load \"n1\"\n  >>  exec\n }\n  block {\n       load \"n0\"\n       dup\n   >>  exec\n       exec\n  }", l->description);
 }
@@ -141,7 +142,7 @@ TEST(Events, CorrectMachineState) {
     ASSERT_EQ(1, ms.load(&p));
     auto vblk = ms.value_store().retrieve("main");
     ASSERT_NE(nullptr, vblk);
-    auto blk = runtime_ptr_cast<Value_Block>(vblk);
+    auto blk = runtime_ptr_cast<Value_Operation>(vblk);
     ASSERT_NE(nullptr, blk);
     blk->execute(ms);
     ASSERT_EQ(4, l->numInstructions);

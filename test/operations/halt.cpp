@@ -29,9 +29,7 @@ TEST(Halt, Operation) {
     MachineState ms;
     Parser p("value main block { load foo exec push number 12 } value foo block { halt push number 24 }");
     ASSERT_EQ(2, ms.load(&p));
-    auto blk = runtime_ptr_cast<Value_Block>(ms.value_store().retrieve("main"));
-    ASSERT_NE(nullptr, blk);
-    ASSERT_EQ(Operation::Result::HALT, blk->value()->execute(ms));
+    ASSERT_EQ(Operation::Result::HALT, ms.execute());
     ASSERT_EQ(0, ms.stack().size());
 }
 

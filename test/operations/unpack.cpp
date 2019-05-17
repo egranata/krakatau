@@ -51,12 +51,10 @@ TEST(Unpack, EmptyTuple) {
 }
 
 TEST(Unpack, Tuple) {
-    MachineState ms;
     Parser p("value main block { push tuple(number 123, boolean false, empty) unpack }");
-    auto vl = p.parseValue();
-    auto blk = runtime_ptr_cast<Value_Block>(vl->value);
-    ASSERT_NE(nullptr, blk);
-    blk->execute(ms);
+    MachineState ms;
+    ms.load(&p);
+    ms.execute();
     ASSERT_EQ(3, ms.stack().size());
     ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_Empty>());
     ms.stack().pop();

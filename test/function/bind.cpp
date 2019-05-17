@@ -36,7 +36,8 @@ TEST(Bind, BindOfOperation) {
 TEST(Bind, BindOfBlock) {
     Parser p("block { push number 4 add }");
     auto blk = p.parseValuePayload();
-    ASSERT_TRUE(blk->isOfClass<Value_Block>());
+    ASSERT_TRUE(blk->isOfClass<Value_Operation>());
+    ASSERT_TRUE(blk->asClass<Value_Operation>()->value()->isOfClass<Block>());
     auto bind = std::make_shared<PartialBind>(Value::fromNumber(5), blk);
     MachineState ms;
     ASSERT_EQ(Operation::Result::SUCCESS, bind->execute(ms));
@@ -47,7 +48,8 @@ TEST(Bind, BindOfBlock) {
 TEST(Bind, NestedBind) {
     Parser p("block { sub mul }");
     auto blk = p.parseValuePayload();
-    ASSERT_TRUE(blk->isOfClass<Value_Block>());
+    ASSERT_TRUE(blk->isOfClass<Value_Operation>());
+    ASSERT_TRUE(blk->asClass<Value_Operation>()->value()->isOfClass<Block>());
     auto bind1 = std::make_shared<PartialBind>(Value::fromNumber(5), blk);
     auto bind2 = std::make_shared<PartialBind>(Value::fromNumber(3), Callable(bind1));
     auto bind3 = std::make_shared<PartialBind>(Value::fromNumber(8), Callable(bind2));
@@ -60,7 +62,6 @@ TEST(Bind, NestedBind) {
 TEST(Bind, BindEquality) {
     Parser p1("block { sub mul }");
     auto blk1 = p1.parseValuePayload();
-    ASSERT_TRUE(blk1->isOfClass<Value_Block>());
     Parser p2("operation dup");
     auto blk2 = p2.parseValuePayload();
     ASSERT_TRUE(blk2->isOfClass<Value_Operation>());
@@ -80,10 +81,8 @@ TEST(Bind, BindEquality) {
 TEST(Bind, NestedBindEquality) {
     Parser p1("block { sub mul }");
     auto blk1 = p1.parseValuePayload();
-    ASSERT_TRUE(blk1->isOfClass<Value_Block>());
     Parser p2("block { mul dup }");
     auto blk2 = p2.parseValuePayload();
-    ASSERT_TRUE(blk2->isOfClass<Value_Block>());
 
     auto bind_blk1 = std::make_shared<PartialBind>(Value::fromNumber(5), blk1);
     auto bind_blk2 = std::make_shared<PartialBind>(Value::fromNumber(5), blk2);
@@ -113,7 +112,6 @@ TEST(Bind, OperationSerialize) {
 TEST(Bind, BlockSerialize) {
     Parser p1("block { sub mul }");
     auto blk1 = p1.parseValuePayload();
-    ASSERT_TRUE(blk1->isOfClass<Value_Block>());
     auto bind = std::make_shared<PartialBind>(Value::fromNumber(5), Callable(blk1));
     Serializer s;
     bind->serialize(&s);

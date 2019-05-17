@@ -28,6 +28,7 @@
 #include <operations/arith.h>
 #include <operations/loadslot.h>
 #include <parser/parser.h>
+#include <value/operation.h>
 
 TEST(Block, Size) {
     Block b;
@@ -246,6 +247,7 @@ TEST(Block, SlotsAreReentrant) {
 TEST(Block, Clone) {
     Parser p("block slots $a, $b, $c { loadslot $a push number 0 eq iftrue push number 3 add nop push boolean false eq iftrue halt }");
     auto vblk = p.parseValuePayload();
-    auto blk = vblk->asClass<Value_Block>()->value();
+    auto blk = vblk->asClass<Value_Operation>()->value();
+    ASSERT_TRUE(blk->isOfClass<Block>());
     ASSERT_TRUE(blk->equals(blk->clone()));
 }

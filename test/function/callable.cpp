@@ -21,6 +21,7 @@
 #include <rtti/rtti.h>
 #include <value/block.h>
 #include <function/bind.h>
+#include <value/operation.h>
 
 TEST(Callable, Empty) {
     MachineState ms;
@@ -59,7 +60,8 @@ TEST(Callable, ValidOp) {
 TEST(Callable, ValidBlock) {
     MachineState ms;
     auto vblk = Parser("block { push number 0 }").parseValuePayload();
-    auto blk = runtime_ptr_cast<Value_Block>(vblk)->value();
+    auto blk = runtime_ptr_cast<Value_Operation>(vblk)->value();
+    ASSERT_TRUE(blk->isOfClass<Block>());
     Callable clb(blk);
     ASSERT_TRUE(clb);
     ASSERT_EQ(Operation::Result::SUCCESS, clb.execute(ms));

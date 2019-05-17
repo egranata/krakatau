@@ -21,6 +21,7 @@
 #include <operations/op_loader.h>
 #include <operations/op.h>
 #include <rtti/enum.h>
+#include <value/operation.h>
 
 Value_Block::Value_Block(std::shared_ptr<Block> b) : mValue(b) {}
 
@@ -41,7 +42,7 @@ bool Value_Block::equals(std::shared_ptr<Value> v) const {
 
 std::shared_ptr<Value> Value_Block::fromByteStream(ByteStream* bs) {
     if (auto blk = Block::fromByteStream(bs)) {
-        return std::shared_ptr<Value>(new Value_Block(blk));
+        return std::shared_ptr<Value>(new Value_Operation(blk));
     }
 
     return nullptr;
@@ -55,7 +56,7 @@ size_t Value_Block::serialize(Serializer* s) {
 
 std::shared_ptr<Value> Value_Block::fromParser(Parser* p) {
     if (auto blk = Block::fromParser(p)) {
-        return std::shared_ptr<Value>(new Value_Block(blk));
+        return std::shared_ptr<Value>(new Value_Operation(blk));
     }
 
     return nullptr;
@@ -72,8 +73,7 @@ size_t Value_Block::hash() const {
 
 std::shared_ptr<Value> Value_Block::clone() const {
     auto newBlockOp = value()->clone();
-    auto newBlock = std::dynamic_pointer_cast<Block>(newBlockOp);
-    return Value::fromBlock(newBlock);
+    return Value::fromOperation(newBlockOp);
 }
 
 Operation::Result Value_Block::execute(MachineState& ms) {

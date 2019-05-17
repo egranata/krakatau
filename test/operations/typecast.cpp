@@ -29,11 +29,9 @@
 
 TEST(Typecast, BooleanToString) {
     Parser p("value main block { push boolean true push type string typecast }");
-    auto vl = p.parseValue();
-    auto blk = runtime_ptr_cast<Value_Block>(vl->value);
-    ASSERT_NE(nullptr, blk);
     MachineState ms;
-    blk->execute(ms);
+    ms.load(&p);
+    ms.execute();
     ASSERT_EQ(1, ms.stack().size());
     ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_String>());
     ASSERT_EQ("true", runtime_ptr_cast<Value_String>(ms.stack().peek())->value());
@@ -41,11 +39,9 @@ TEST(Typecast, BooleanToString) {
 
 TEST(Typecast, BooleanToSelf) {
     Parser p("value main block { push boolean true push type boolean typecast }");
-    auto vl = p.parseValue();
-    auto blk = runtime_ptr_cast<Value_Block>(vl->value);
-    ASSERT_NE(nullptr, blk);
     MachineState ms;
-    blk->execute(ms);
+    ms.load(&p);
+    ms.execute();
     ASSERT_EQ(1, ms.stack().size());
     ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_Boolean>());
     ASSERT_EQ(true, runtime_ptr_cast<Value_Boolean>(ms.stack().peek())->value());
@@ -53,11 +49,9 @@ TEST(Typecast, BooleanToSelf) {
 
 TEST(Typecast, InvalidType) {
     Parser p("value main block { push operation at push type error typecast }");
-    auto vl = p.parseValue();
-    auto blk = runtime_ptr_cast<Value_Block>(vl->value);
-    ASSERT_NE(nullptr, blk);
     MachineState ms;
-    blk->execute(ms);
+    ms.load(&p);
+    ms.execute();
     ASSERT_EQ(3, ms.stack().size());
     ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_Error>());
     ASSERT_EQ(ErrorCode::TYPE_MISMATCH, runtime_ptr_cast<Value_Error>(ms.stack().peek())->value());
@@ -65,11 +59,9 @@ TEST(Typecast, InvalidType) {
 
 TEST(Typecast, TupleToBlock) {
     Parser p("value main block { push tuple (operation push number 123, operation dup,), push type block, typecast, exec }");
-    auto vl = p.parseValue();
-    auto blk = runtime_ptr_cast<Value_Block>(vl->value);
-    ASSERT_NE(nullptr, blk);
     MachineState ms;
-    blk->execute(ms);
+    ms.load(&p);
+    ms.execute();
     ASSERT_EQ(2, ms.stack().size());
     ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_Number>());
     ASSERT_EQ(123, runtime_ptr_cast<Value_Number>(ms.stack().peek())->value());
@@ -80,11 +72,9 @@ TEST(Typecast, TupleToBlock) {
 
 TEST(Typecast, TupleToBoolean) {
     Parser p("value main block { push tuple (operation push number 123, operation dup,), push type boolean, typecast }");
-    auto vl = p.parseValue();
-    auto blk = runtime_ptr_cast<Value_Block>(vl->value);
-    ASSERT_NE(nullptr, blk);
     MachineState ms;
-    blk->execute(ms);
+    ms.load(&p);
+    ms.execute();
     ASSERT_EQ(3, ms.stack().size());
     ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_Error>());
     ASSERT_EQ(ErrorCode::TYPE_MISMATCH, runtime_ptr_cast<Value_Error>(ms.stack().peek())->value());
@@ -96,11 +86,9 @@ TEST(Typecast, TupleToBoolean) {
 
 TEST(Typecast, TableToTuple) {
     Parser p("value main block { push table [ number 1 -> boolean true, number 2 -> boolean false, ] push type tuple typecast }");
-    auto vl = p.parseValue();
-    auto blk = runtime_ptr_cast<Value_Block>(vl->value);
-    ASSERT_NE(nullptr, blk);
     MachineState ms;
-    blk->execute(ms);
+    ms.load(&p);
+    ms.execute();
     ASSERT_EQ(1, ms.stack().size());
     auto tpl = ms.stack().peek()->asClass<Value_Tuple>();
     ASSERT_NE(nullptr, tpl);
@@ -151,11 +139,9 @@ TEST(Typecast, TupleToTable) {
     Parser p("value main block { push tuple (tuple (number 1, string \"one\"), tuple (number 2, string \"two\"), tuple (number 3, string \"three\"), )" +
                                  std::string(" push type table") +
                                  " typecast }");
-    auto vl = p.parseValue();
-    auto blk = runtime_ptr_cast<Value_Block>(vl->value);
-    ASSERT_NE(nullptr, blk);
     MachineState ms;
-    blk->execute(ms);
+    ms.load(&p);
+    ms.execute();
     ASSERT_EQ(1, ms.stack().size());
     ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_Table>());
     ASSERT_EQ(3, ms.stack().peek()->asClass<Value_Table>()->size());

@@ -210,77 +210,77 @@ TEST(Parser, ParseBlock) {
     Parser p("value main block { load foo, dup, add, resetstack, push empty, store bar }");
     auto value = p.parseValue();
     ASSERT_NE(nullptr, value);
-    ASSERT_TRUE(value->value->isOfClass<Value_Block>());
-    auto blk = runtime_ptr_cast<Value_Block>(value->value);
-    ASSERT_EQ(6, blk->value()->size());
-    ASSERT_TRUE(blk->value()->at(0)->isOfClass<Load>());
-    ASSERT_TRUE(blk->value()->at(1)->isOfClass<Dup>());
-    ASSERT_TRUE(blk->value()->at(2)->isOfClass<Add>());
-    ASSERT_TRUE(blk->value()->at(3)->isOfClass<ResetStack>());
-    ASSERT_TRUE(blk->value()->at(4)->isOfClass<Push>());
-    ASSERT_TRUE(runtime_ptr_cast<Push>(blk->value()->at(4))->value()->isOfClass<Value_Empty>());
-    ASSERT_TRUE(blk->value()->at(5)->isOfClass<Store>());
-    ASSERT_EQ("bar", runtime_ptr_cast<Store>(blk->value()->at(5))->key());
+    ASSERT_TRUE(value->value->isOfClass<Value_Operation>());
+    auto blk = runtime_ptr_cast<Block>(value->value->asClass<Value_Operation>()->value());
+    ASSERT_EQ(6, blk->size());
+    ASSERT_TRUE(blk->at(0)->isOfClass<Load>());
+    ASSERT_TRUE(blk->at(1)->isOfClass<Dup>());
+    ASSERT_TRUE(blk->at(2)->isOfClass<Add>());
+    ASSERT_TRUE(blk->at(3)->isOfClass<ResetStack>());
+    ASSERT_TRUE(blk->at(4)->isOfClass<Push>());
+    ASSERT_TRUE(runtime_ptr_cast<Push>(blk->at(4))->value()->isOfClass<Value_Empty>());
+    ASSERT_TRUE(blk->at(5)->isOfClass<Store>());
+    ASSERT_EQ("bar", runtime_ptr_cast<Store>(blk->at(5))->key());
 }
 
 TEST(Parser, ParseBlockWithSlots) {
     Parser p("value main block slots a b, c, d { }");
     auto value = p.parseValue();
     ASSERT_NE(nullptr, value);
-    ASSERT_TRUE(value->value->isOfClass<Value_Block>());
-    auto blk = runtime_ptr_cast<Value_Block>(value->value);
-    ASSERT_EQ(4, blk->value()->numSlotValues());
-    ASSERT_EQ("a", blk->value()->slotValueAt(0).value());
-    ASSERT_EQ("b", blk->value()->slotValueAt(1).value());
-    ASSERT_EQ("c", blk->value()->slotValueAt(2).value());
-    ASSERT_EQ("d", blk->value()->slotValueAt(3).value());
-    ASSERT_FALSE(blk->value()->slotValueAt(4).has_value());
+    ASSERT_TRUE(value->value->isOfClass<Value_Operation>());
+    auto blk = runtime_ptr_cast<Block>(value->value->asClass<Value_Operation>()->value());
+    ASSERT_EQ(4, blk->numSlotValues());
+    ASSERT_EQ("a", blk->slotValueAt(0).value());
+    ASSERT_EQ("b", blk->slotValueAt(1).value());
+    ASSERT_EQ("c", blk->slotValueAt(2).value());
+    ASSERT_EQ("d", blk->slotValueAt(3).value());
+    ASSERT_FALSE(blk->slotValueAt(4).has_value());
 }
 
 TEST(Parser, ParseBlockEmptySlots) {
     Parser p("value main block slots { push number 1 }");
     auto value = p.parseValue();
     ASSERT_NE(nullptr, value);
-    ASSERT_TRUE(value->value->isOfClass<Value_Block>());
-    auto blk = runtime_ptr_cast<Value_Block>(value->value);
-    ASSERT_EQ(0, blk->value()->numSlotValues());
-    ASSERT_FALSE(blk->value()->slotValueAt(0).has_value());
-    ASSERT_EQ(1, blk->value()->size());
-    ASSERT_TRUE(blk->value()->at(0)->isOfClass<Push>());
+    ASSERT_TRUE(value->value->isOfClass<Value_Operation>());
+    auto blk = runtime_ptr_cast<Block>(value->value->asClass<Value_Operation>()->value());
+    ASSERT_EQ(0, blk->numSlotValues());
+    ASSERT_FALSE(blk->slotValueAt(0).has_value());
+    ASSERT_EQ(1, blk->size());
+    ASSERT_TRUE(blk->at(0)->isOfClass<Push>());
 }
 
 TEST(Parser, ParseNewlineBlock) {
     Parser p("value main block {\n  load foo\n  dup\n  add\n  resetstack\n  push empty\n  store bar\n}");
     auto value = p.parseValue();
     ASSERT_NE(nullptr, value);
-    ASSERT_TRUE(value->value->isOfClass<Value_Block>());
-    auto blk = runtime_ptr_cast<Value_Block>(value->value);
-    ASSERT_EQ(6, blk->value()->size());
-    ASSERT_TRUE(blk->value()->at(0)->isOfClass<Load>());
-    ASSERT_TRUE(blk->value()->at(1)->isOfClass<Dup>());
-    ASSERT_TRUE(blk->value()->at(2)->isOfClass<Add>());
-    ASSERT_TRUE(blk->value()->at(3)->isOfClass<ResetStack>());
-    ASSERT_TRUE(blk->value()->at(4)->isOfClass<Push>());
-    ASSERT_TRUE(runtime_ptr_cast<Push>(blk->value()->at(4))->value()->isOfClass<Value_Empty>());
-    ASSERT_TRUE(blk->value()->at(5)->isOfClass<Store>());
-    ASSERT_EQ("bar", runtime_ptr_cast<Store>(blk->value()->at(5))->key());
+    ASSERT_TRUE(value->value->isOfClass<Value_Operation>());
+    auto blk = runtime_ptr_cast<Block>(value->value->asClass<Value_Operation>()->value());
+    ASSERT_EQ(6, blk->size());
+    ASSERT_TRUE(blk->at(0)->isOfClass<Load>());
+    ASSERT_TRUE(blk->at(1)->isOfClass<Dup>());
+    ASSERT_TRUE(blk->at(2)->isOfClass<Add>());
+    ASSERT_TRUE(blk->at(3)->isOfClass<ResetStack>());
+    ASSERT_TRUE(blk->at(4)->isOfClass<Push>());
+    ASSERT_TRUE(runtime_ptr_cast<Push>(blk->at(4))->value()->isOfClass<Value_Empty>());
+    ASSERT_TRUE(blk->at(5)->isOfClass<Store>());
+    ASSERT_EQ("bar", runtime_ptr_cast<Store>(blk->at(5))->key());
 }
 
 TEST(Parser, ParseSemicolonBlock) {
     Parser p("value main block {load foo;\n  dup\n  add;\n  resetstack; push empty\n  store bar\n}");
     auto value = p.parseValue();
     ASSERT_NE(nullptr, value);
-    ASSERT_TRUE(value->value->isOfClass<Value_Block>());
-    auto blk = runtime_ptr_cast<Value_Block>(value->value);
-    ASSERT_EQ(6, blk->value()->size());
-    ASSERT_TRUE(blk->value()->at(0)->isOfClass<Load>());
-    ASSERT_TRUE(blk->value()->at(1)->isOfClass<Dup>());
-    ASSERT_TRUE(blk->value()->at(2)->isOfClass<Add>());
-    ASSERT_TRUE(blk->value()->at(3)->isOfClass<ResetStack>());
-    ASSERT_TRUE(blk->value()->at(4)->isOfClass<Push>());
-    ASSERT_TRUE(runtime_ptr_cast<Push>(blk->value()->at(4))->value()->isOfClass<Value_Empty>());
-    ASSERT_TRUE(blk->value()->at(5)->isOfClass<Store>());
-    ASSERT_EQ("bar", runtime_ptr_cast<Store>(blk->value()->at(5))->key());
+    ASSERT_TRUE(value->value->isOfClass<Value_Operation>());
+    auto blk = runtime_ptr_cast<Block>(value->value->asClass<Value_Operation>()->value());
+    ASSERT_EQ(6, blk->size());
+    ASSERT_TRUE(blk->at(0)->isOfClass<Load>());
+    ASSERT_TRUE(blk->at(1)->isOfClass<Dup>());
+    ASSERT_TRUE(blk->at(2)->isOfClass<Add>());
+    ASSERT_TRUE(blk->at(3)->isOfClass<ResetStack>());
+    ASSERT_TRUE(blk->at(4)->isOfClass<Push>());
+    ASSERT_TRUE(runtime_ptr_cast<Push>(blk->at(4))->value()->isOfClass<Value_Empty>());
+    ASSERT_TRUE(blk->at(5)->isOfClass<Store>());
+    ASSERT_EQ("bar", runtime_ptr_cast<Store>(blk->at(5))->key());
 }
 
 TEST(Parser, ParseTwoValues) {

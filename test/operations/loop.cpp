@@ -29,9 +29,7 @@ TEST(Loop, Parser) {
     MachineState ms;
     Parser p("value main block { push boolean false load count exec } value count block { not dup iftrue loop }");
     ASSERT_EQ(2, ms.load(&p));
-    auto blk = runtime_ptr_cast<Value_Block>(ms.value_store().retrieve("main"));
-    ASSERT_NE(nullptr, blk);
-    ASSERT_EQ(Operation::Result::SUCCESS, blk->execute(ms));
+    ASSERT_EQ(Operation::Result::SUCCESS, ms.execute());
     ASSERT_EQ(1, ms.stack().size());
     ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_Boolean>());
     ASSERT_FALSE(runtime_ptr_cast<Value_Boolean>(ms.stack().peek())->value());

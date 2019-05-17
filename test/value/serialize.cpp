@@ -99,21 +99,6 @@ TEST(ValueSerialize, Tuple) {
     ASSERT_TRUE(val->equals(dv));
 }
 
-TEST(ValueSerialize, Block) {
-    auto blk = std::make_shared<Block>();
-    blk->add(std::make_shared<Nop>());
-    blk->add(std::make_shared<ResetStack>());
-    blk->add(std::make_shared<Pop>());
-    auto val = Value::fromBlock(blk);
-    Serializer s;
-    val->serialize(&s);
-    auto bs = ByteStream::anonymous(s.data(), s.size());
-    auto dv = Value::fromByteStream(bs.get());
-    ASSERT_NE(nullptr, dv);
-    ASSERT_TRUE(dv->isOfClass<Value_Block>());
-    ASSERT_EQ(3, runtime_ptr_cast<Value_Block>(dv)->value()->size());
-}
-
 TEST(ValueSerialize, Operation) {
     auto val = Value::fromOperation(std::shared_ptr<Operation>(new ResetStack()));
     Serializer s;
