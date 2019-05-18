@@ -42,7 +42,7 @@ OPERATION_TYPE(TYPECAST, Typecast, typecast, "typecast", 43)
 OPERATION_TYPE(LOADSLOT, Loadslot, loadslot, "loadslot", 44)
 OPERATION_TYPE(STORESLOT, Storeslot, storeslot, "storeslot", 45)
 OPERATION_TYPE(APPEND, Append, append, "append", 46)
-OPERATION_TYPE(PARTIALBIND, PartialBind, partialbind, "partialbind", 48)
+OPERATION_TYPE(PARTIALBIND, PartialBind,, "partialbind", 48)
 #undef OPERATION_TYPE
 #endif
 

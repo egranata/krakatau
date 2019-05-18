@@ -468,6 +468,12 @@ TEST(Parser, InvalidBind) {
     ASSERT_EQ(nullptr, p.parseValue());
 }
 
+TEST(Parser, PartialBindOperation) {
+    Parser p("value foo operation partialbind number 1 operation dup");
+    ASSERT_EQ(nullptr, p.parseValue());
+    ASSERT_NE(0, p.errorsCount());
+}
+
 TEST(Parser, PreviousTokens) {
     Parser p("hello world value");
     ASSERT_EQ(0, p.parsedTokensCount());
