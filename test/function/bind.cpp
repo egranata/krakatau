@@ -137,3 +137,19 @@ TEST(Bind, ParseValue) {
     Parser p1("value foo bind number 12 operation exec");
     ASSERT_NE(nullptr, p1.parseValue());
 }
+
+TEST(Bind, FromTuple) {
+    Parser p("value main block { push operation dup push number 5 push number 2 pack push type bind typecast }");
+    MachineState ms;
+    ms.load(&p);
+    ms.execute();
+    ASSERT_EQ(1, ms.stack().size());
+    auto val = ms.stack().pop();
+    ASSERT_NE(nullptr, val->asClass<Value_Operation>());
+    auto bnd = val->asClass<Value_Operation>()->bind();
+    ASSERT_NE(nullptr, bnd);
+    ASSERT_TRUE(Value::fromNumber(5)->equals(bnd->value()));
+    ASSERT_TRUE(bnd->callable()->isOfClass<Dup>());
+    bnd->execute(ms);
+    ASSERT_EQ(2, ms.stack().size());
+}

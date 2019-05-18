@@ -24,6 +24,8 @@
 #include <value/operation.h>
 #include <value/block.h>
 #include <value/table.h>
+#include <function/bind.h>
+#include <value/bind.h>
 
 Value_Tuple::Value_Tuple() = default;
 
@@ -164,5 +166,11 @@ std::shared_ptr<Value> Value_Tuple::doTypecast(ValueType vt) {
         }
 
         return vtbl;
+    }).onType(ValueType::BIND, [] (Value_Tuple* self) -> std::shared_ptr<Value> {
+        if (self->size() != 2) return nullptr;
+        if (self->at(1)->asClass<Value_Operation>() == nullptr) return nullptr;
+        auto val = self->at(0);
+        auto opr = self->at(1)->asClass<Value_Operation>()->value();
+        return Value::fromOperation(std::shared_ptr<Operation>(new PartialBind(val, opr)));
     }).doTypecast(this, vt);
 }
