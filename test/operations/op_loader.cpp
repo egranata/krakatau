@@ -15,7 +15,7 @@
 #include <operations/at.h>
 #include <operations/arith.h>
 #include <operations/push.h>
-#include <function/block.h>
+#include <operations/block.h>
 #include <operations/op_loader.h>
 #include <operations/resetstack.h>
 #include <value/boolean.h>

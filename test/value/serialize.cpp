@@ -22,7 +22,7 @@
 #include <value/number.h>
 #include <error/error_codes.h>
 #include <value/block.h>
-#include <function/block.h>
+#include <operations/block.h>
 #include <operations/bind.h>
 #include <value/value_types.h>
 #include <value/tuple.h>

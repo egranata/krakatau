@@ -21,7 +21,7 @@
 #include <value/tuple.h>
 #include <rtti/rtti.h>
 #include <value/block.h>
-#include <function/block.h>
+#include <operations/block.h>
 #include <value/error.h>
 #include <operations/arith.h>
 #include <operations/dup.h>

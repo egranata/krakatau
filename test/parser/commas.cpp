@@ -18,7 +18,7 @@
 #include <value/block.h>
 #include <value/tuple.h>
 #include <value/table.h>
-#include <function/block.h>
+#include <operations/block.h>
 #include <rtti/rtti.h>
 #include <value/operation.h>
 

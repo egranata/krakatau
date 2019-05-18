@@ -19,7 +19,7 @@
 
 #include <machine/state.h>
 #include <machine/events.h>
-#include <function/block.h>
+#include <operations/block.h>
 #include <operations/op.h>
 #include <optional>
 #include <string>

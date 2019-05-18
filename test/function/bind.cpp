@@ -23,7 +23,7 @@
 #include <stream/serializer.h>
 #include <stream/byte_stream.h>
 #include <operations/op_loader.h>
-#include <function/block.h>
+#include <operations/block.h>
 
 TEST(Bind, BindOfOperation) {
     auto op = std::make_shared<Dup>();

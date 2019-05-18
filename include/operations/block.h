@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef STUFF_FUNCTION_BLOCK
-#define STUFF_FUNCTION_BLOCK
+#ifndef STUFF_OPERATION_BLOCK
+#define STUFF_OPERATION_BLOCK
 
 #include <memory>
 #include <operations/op.h>

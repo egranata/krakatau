@@ -21,7 +21,7 @@
 #include <stream/serializer.h>
 #include <stream/byte_stream.h>
 #include <operations/op_loader.h>
-#include <function/block.h>
+#include <operations/block.h>
 #include <value/value_table.h>
 #include <parser/parser.h>
 

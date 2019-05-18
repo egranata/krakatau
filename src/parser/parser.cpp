@@ -15,7 +15,7 @@
 #include <parser/parser.h>
 #include <stdlib.h>
 #include <value/tuple.h>
-#include <function/block.h>
+#include <operations/block.h>
 #include <rtti/rtti.h>
 #include <operations/op.h>
 #include <stream/indenting_stream.h>

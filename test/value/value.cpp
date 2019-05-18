@@ -14,7 +14,7 @@
 
 #include <value/value.h>
 #include <gtest/gtest.h>
-#include <function/block.h>
+#include <operations/block.h>
 #include <value/number.h>
 #include <value/boolean.h>
 #include <value/empty.h>

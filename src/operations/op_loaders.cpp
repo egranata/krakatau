@@ -19,7 +19,7 @@
 #include <operations/arith.h>
 #include <operations/at.h>
 #include <operations/bind.h>
-#include <function/block.h>
+#include <operations/block.h>
 #include <operations/break.h>
 #include <operations/clear.h>
 #include <operations/dup.h>

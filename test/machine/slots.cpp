@@ -14,7 +14,7 @@
 
 #include <machine/state.h>
 #include <machine/slots_handler.h>
-#include <function/block.h>
+#include <operations/block.h>
 #include <machine/events.h>
 #include <parser/parser.h>
 #include <gtest/gtest.h>

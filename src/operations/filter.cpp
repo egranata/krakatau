@@ -20,7 +20,7 @@
 #include <value/table.h>
 #include <value/operation.h>
 #include <value/block.h>
-#include <function/block.h>
+#include <operations/block.h>
 #include <value/boolean.h>
 #include <machine/state.h>
 

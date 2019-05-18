@@ -19,7 +19,7 @@
 #include <value/number.h>
 #include <value/error.h>
 #include <value/block.h>
-#include <function/block.h>
+#include <operations/block.h>
 #include <value/tuple.h>
 #include <value/type.h>
 #include <value/boolean.h>

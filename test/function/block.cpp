@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <function/block.h>
+#include <operations/block.h>
 #include <gtest/gtest.h>
 #include <operations/nop.h>
 #include <operations/push.h>

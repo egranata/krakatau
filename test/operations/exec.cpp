@@ -17,7 +17,7 @@
 #include <operations/exec.h>
 #include <operations/dup.h>
 #include <value/value.h>
-#include <function/block.h>
+#include <operations/block.h>
 #include <gtest/gtest.h>
 #include <value/number.h>
 #include <value/operation.h>

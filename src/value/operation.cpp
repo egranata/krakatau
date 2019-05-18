@@ -20,7 +20,7 @@
 #include <parser/parser.h>
 #include <operations/op_loader.h>
 #include <operations/bind.h>
-#include <function/block.h>
+#include <operations/block.h>
 
 Value_Operation::Value_Operation(std::shared_ptr<Operation> b) : mValue(b) {}
 

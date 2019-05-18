@@ -17,7 +17,7 @@
 #include <gtest/gtest.h>
 #include <operations/push.h>
 #include <value/value.h>
-#include <function/block.h>
+#include <operations/block.h>
 #include <rtti/rtti.h>
 #include <parser/parser.h>
 #include <value/block.h>

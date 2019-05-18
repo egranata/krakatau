@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <function/block.h>
+#include <operations/block.h>
 #include <stream/indenting_stream.h>
 #include <stream/byte_stream.h>
 #include <operations/op_loader.h>

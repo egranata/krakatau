@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include <value/block.h>
-#include <function/block.h>
+#include <operations/block.h>
 #include <stream/byte_stream.h>
 #include <parser/parser.h>
 #include <value/operation.h>

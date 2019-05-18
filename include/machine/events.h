@@ -18,7 +18,7 @@
 #define STUFF_MACHINE_EVENTS
 
 #include <machine/state.h>
-#include <function/block.h>
+#include <operations/block.h>
 #include <operations/op.h>
 #include <memory>
 

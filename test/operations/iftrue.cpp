@@ -14,7 +14,7 @@
 
 #include <machine/state.h>
 #include <value/value.h>
-#include <function/block.h>
+#include <operations/block.h>
 #include <gtest/gtest.h>
 #include <value/number.h>
 #include <value/error.h>
