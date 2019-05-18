@@ -19,7 +19,7 @@
 
 #include <machine/state.h>
 #include <machine/events.h>
-#include <operations/block.h>
+#include <operation/block.h>
 
 class SlotsHandler : public MachineEventsListener {
     public:

@@ -19,12 +19,12 @@
 #include <value/number.h>
 #include <value/error.h>
 #include <value/block.h>
-#include <operations/block.h>
+#include <operation/block.h>
 #include <value/tuple.h>
 #include <value/type.h>
 #include <value/boolean.h>
 #include <rtti/rtti.h>
-#include <operations/pop.h>
+#include <operation/pop.h>
 #include <stream/serializer.h>
 #include <parser/parser.h>
 #include <value/operation.h>

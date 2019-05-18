@@ -22,7 +22,7 @@
 #include <stream/byte_stream.h>
 #include <stream/serializer.h>
 #include <parser/parser.h>
-#include <operations/op.h>
+#include <operation/op.h>
 #include <vector>
 #include <optional>
 #include <value/value_table.h>

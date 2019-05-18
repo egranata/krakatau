@@ -18,7 +18,7 @@
 #define STUFF_VALUE_OPERATION
 
 #include <value/value.h>
-#include <operations/op.h>
+#include <operation/op.h>
 
 class PartialBind;
 class Block;

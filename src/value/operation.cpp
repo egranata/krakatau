@@ -13,14 +13,14 @@
 // limitations under the License.
 
 #include <value/operation.h>
-#include <operations/op.h>
+#include <operation/op.h>
 #include <rtti/rtti.h>
 #include <stream/byte_stream.h>
 #include <stream/serializer.h>
 #include <parser/parser.h>
-#include <operations/op_loader.h>
-#include <operations/bind.h>
-#include <operations/block.h>
+#include <operation/op_loader.h>
+#include <operation/bind.h>
+#include <operation/block.h>
 
 Value_Operation::Value_Operation(std::shared_ptr<Operation> b) : mValue(b) {}
 

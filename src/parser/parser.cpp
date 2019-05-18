@@ -15,9 +15,9 @@
 #include <parser/parser.h>
 #include <stdlib.h>
 #include <value/tuple.h>
-#include <operations/block.h>
+#include <operation/block.h>
 #include <rtti/rtti.h>
-#include <operations/op.h>
+#include <operation/op.h>
 #include <stream/indenting_stream.h>
 
 Parser::Buffer::~Buffer() = default;

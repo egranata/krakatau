@@ -21,8 +21,8 @@
 #include <streambuf>
 #include <sstream>
 #include <value/value_store.h>
-#include <operations/push.h>
-#include <operations/exec.h>
+#include <operation/push.h>
+#include <operation/exec.h>
 #include <value/block.h>
 #include <rtti/rtti.h>
 #include <stream/indenting_stream.h>

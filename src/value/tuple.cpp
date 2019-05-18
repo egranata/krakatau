@@ -20,11 +20,11 @@
 #include <stream/serializer.h>
 #include <parser/parser.h>
 #include <value/typecast_helper.h>
-#include <operations/block.h>
+#include <operation/block.h>
 #include <value/operation.h>
 #include <value/block.h>
 #include <value/table.h>
-#include <operations/bind.h>
+#include <operation/bind.h>
 #include <value/bind.h>
 
 Value_Tuple::Value_Tuple() = default;

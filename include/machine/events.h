@@ -18,8 +18,8 @@
 #define STUFF_MACHINE_EVENTS
 
 #include <machine/state.h>
-#include <operations/block.h>
-#include <operations/op.h>
+#include <operation/block.h>
+#include <operation/op.h>
 #include <memory>
 
 class MachineEventsListener : public std::enable_shared_from_this<MachineEventsListener> {

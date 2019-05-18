@@ -14,24 +14,24 @@
 
 #include <value/value.h>
 #include <gtest/gtest.h>
-#include <operations/block.h>
+#include <operation/block.h>
 #include <value/number.h>
 #include <value/boolean.h>
 #include <value/empty.h>
 #include <value/string.h>
 #include <value/block.h>
 #include <value/operation.h>
-#include <operations/dup.h>
+#include <operation/dup.h>
 #include <value/error.h>
 #include <value/tuple.h>
 #include <value/type.h>
 #include <rtti/rtti.h>
 #include <value/table.h>
-#include <operations/at.h>
+#include <operation/at.h>
 #include <error/error_codes.h>
 #include <parser/parser.h>
 #include <value/bind.h>
-#include <operations/bind.h>
+#include <operation/bind.h>
 #include <value/operation.h>
 
 TEST(Value, Number) {

@@ -19,7 +19,7 @@
 #include <value/value.h>
 #include <rtti/rtti.h>
 #include <value/block.h>
-#include <operations/block.h>
+#include <operation/block.h>
 #include <value/value_store.h>
 #include <machine/tracer.h>
 #include <value/operation.h>

@@ -19,8 +19,8 @@
 
 #include <machine/state.h>
 #include <machine/events.h>
-#include <operations/block.h>
-#include <operations/op.h>
+#include <operation/block.h>
+#include <operation/op.h>
 #include <optional>
 #include <string>
 

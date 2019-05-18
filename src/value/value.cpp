@@ -14,7 +14,7 @@
 
 #include <value/value.h>
 #include <stdlib.h>
-#include <operations/block.h>
+#include <operation/block.h>
 #include <value/number.h>
 #include <value/boolean.h>
 #include <value/empty.h>
@@ -24,12 +24,12 @@
 #include <value/tuple.h>
 #include <value/table.h>
 #include <value/bind.h>
-#include <operations/op.h>
+#include <operation/op.h>
 #include <value/error.h>
 #include <value/type.h>
 #include <rtti/rtti.h>
 #include <stream/byte_stream.h>
-#include <operations/bind.h>
+#include <operation/bind.h>
 #include <parser/parser.h>
 #include <value/value_loader.h>
 

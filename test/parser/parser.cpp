@@ -21,21 +21,21 @@
 #include <value/tuple.h>
 #include <rtti/rtti.h>
 #include <value/block.h>
-#include <operations/block.h>
+#include <operation/block.h>
 #include <value/error.h>
-#include <operations/arith.h>
-#include <operations/dup.h>
-#include <operations/load.h>
-#include <operations/store.h>
-#include <operations/push.h>
+#include <operation/arith.h>
+#include <operation/dup.h>
+#include <operation/load.h>
+#include <operation/store.h>
+#include <operation/push.h>
 #include <value/operation.h>
-#include <operations/resetstack.h>
+#include <operation/resetstack.h>
 #include <value/type.h>
 #include <value/string.h>
 #include <value/table.h>
 #include <stream/shared_file.h>
 #include <value/bind.h>
-#include <operations/bind.h>
+#include <operation/bind.h>
 
 TEST(Parser, Next) {
     Parser p("hello world 1234");
