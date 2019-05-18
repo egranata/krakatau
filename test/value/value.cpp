@@ -31,7 +31,7 @@
 #include <error/error_codes.h>
 #include <parser/parser.h>
 #include <value/bind.h>
-#include <function/bind.h>
+#include <operations/bind.h>
 #include <value/operation.h>
 
 TEST(Value, Number) {

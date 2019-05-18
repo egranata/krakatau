@@ -18,6 +18,7 @@
 #include <operations/append.h>
 #include <operations/arith.h>
 #include <operations/at.h>
+#include <operations/bind.h>
 #include <function/block.h>
 #include <operations/break.h>
 #include <operations/clear.h>
@@ -46,9 +47,6 @@
 #include <operations/typecast.h>
 #include <operations/typeof.h>
 #include <operations/unpack.h>
-
-#include <function/bind.h>
-#include <function/block.h>
 
 #define OPERATION_TYPE(NAME, CLASS, TOKEN, STRING, NUMBER) \
 void OpLoader ## CLASS () { \

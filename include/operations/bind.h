@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef STUFF_FUNCTION_BIND
-#define STUFF_FUNCTION_BIND
+#ifndef STUFF_OPERATION_BIND
+#define STUFF_OPERATION_BIND
 
 #include <operations/op.h>
 #include <value/value.h>

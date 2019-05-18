@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <function/bind.h>
+#include <operations/bind.h>
 #include <gtest/gtest.h>
 #include <parser/parser.h>
 #include <machine/state.h>

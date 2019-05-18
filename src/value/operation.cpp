@@ -19,7 +19,7 @@
 #include <stream/serializer.h>
 #include <parser/parser.h>
 #include <operations/op_loader.h>
-#include <function/bind.h>
+#include <operations/bind.h>
 #include <function/block.h>
 
 Value_Operation::Value_Operation(std::shared_ptr<Operation> b) : mValue(b) {}

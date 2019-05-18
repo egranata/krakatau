@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <function/bind.h>
+#include <operations/bind.h>
 #include <stream/indenting_stream.h>
 #include <stream/serializer.h>
 #include <parser/parser.h>

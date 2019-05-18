@@ -23,7 +23,7 @@
 #include <error/error_codes.h>
 #include <value/block.h>
 #include <function/block.h>
-#include <function/bind.h>
+#include <operations/bind.h>
 #include <value/value_types.h>
 #include <value/tuple.h>
 #include <operations/nop.h>

@@ -24,7 +24,7 @@
 #include <value/operation.h>
 #include <value/block.h>
 #include <value/table.h>
-#include <function/bind.h>
+#include <operations/bind.h>
 #include <value/bind.h>
 
 Value_Tuple::Value_Tuple() = default;

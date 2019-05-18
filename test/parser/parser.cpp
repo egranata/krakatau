@@ -35,7 +35,7 @@
 #include <value/table.h>
 #include <stream/shared_file.h>
 #include <value/bind.h>
-#include <function/bind.h>
+#include <operations/bind.h>
 
 TEST(Parser, Next) {
     Parser p("hello world 1234");

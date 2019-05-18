@@ -29,7 +29,7 @@
 #include <value/type.h>
 #include <rtti/rtti.h>
 #include <stream/byte_stream.h>
-#include <function/bind.h>
+#include <operations/bind.h>
 #include <parser/parser.h>
 #include <value/value_loader.h>
 

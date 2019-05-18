@@ -15,7 +15,7 @@
 #include <value/bind.h>
 #include <stream/byte_stream.h>
 #include <parser/parser.h>
-#include <function/bind.h>
+#include <operations/bind.h>
 #include <value/operation.h>
 
 std::shared_ptr<Value> Value_Bind::fromByteStream(ByteStream* bs) {
