@@ -457,10 +457,10 @@ TEST(Parser, ValidBind) {
     auto b_block = v_block->value->asClass<Value_Operation>();
     auto b_nested = v_nested->value->asClass<Value_Operation>();
 
-    ASSERT_NE(nullptr, b_op->value()->asClass<PartialBind>());
+    ASSERT_NE(nullptr, b_op->bind());
     ASSERT_NE(nullptr, b_block->value()->asClass<PartialBind>());
     ASSERT_NE(nullptr, b_nested->value()->asClass<PartialBind>());
-    ASSERT_NE(nullptr, b_nested->value()->asClass<PartialBind>()->callable()->asClass<PartialBind>());
+    ASSERT_NE(nullptr, b_nested->bind()->callable()->asClass<PartialBind>());
 }
 
 TEST(Parser, InvalidBind) {

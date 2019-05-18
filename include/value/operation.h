@@ -20,6 +20,8 @@
 #include <value/value.h>
 #include <operations/op.h>
 
+class PartialBind;
+class Block;
 class MachineState;
 
 class Value_Operation : public Value {
@@ -30,10 +32,13 @@ class Value_Operation : public Value {
         static std::shared_ptr<Value> fromParser(Parser*);
 
         Value_Operation(std::shared_ptr<Operation>);
-        std::shared_ptr<Operation> value() const;
         virtual std::string describe() const override;
         bool equals(std::shared_ptr<Value>) const override;
         size_t serialize(Serializer*) override;
+
+        std::shared_ptr<Operation> value() const;
+        std::shared_ptr<PartialBind> bind() const;
+        std::shared_ptr<Block> block() const;
 
         size_t hash() const override;
         std::shared_ptr<Value> clone() const override;

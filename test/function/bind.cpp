@@ -39,7 +39,7 @@ TEST(Bind, BindOfBlock) {
     Parser p("block { push number 4 add }");
     auto blk = p.parseValuePayload();
     ASSERT_TRUE(blk->isOfClass<Value_Operation>());
-    ASSERT_TRUE(blk->asClass<Value_Operation>()->value()->isOfClass<Block>());
+    ASSERT_NE(nullptr, blk->asClass<Value_Operation>()->block());
     auto bind = std::make_shared<PartialBind>(Value::fromNumber(5), blk->asClass<Value_Operation>()->value());
     MachineState ms;
     ASSERT_EQ(Operation::Result::SUCCESS, bind->execute(ms));

@@ -19,11 +19,20 @@
 #include <stream/serializer.h>
 #include <parser/parser.h>
 #include <operations/op_loader.h>
+#include <function/bind.h>
+#include <function/block.h>
 
 Value_Operation::Value_Operation(std::shared_ptr<Operation> b) : mValue(b) {}
 
 std::shared_ptr<Operation> Value_Operation::value() const {
     return mValue;
+}
+
+std::shared_ptr<PartialBind> Value_Operation::bind() const {
+    return std::dynamic_pointer_cast<PartialBind>(value());
+}
+std::shared_ptr<Block> Value_Operation::block() const {
+    return std::dynamic_pointer_cast<Block>(value());
 }
 
 std::string Value_Operation::describe() const {

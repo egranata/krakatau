@@ -95,7 +95,7 @@ TEST(MachineState, LoadBlock) {
     ASSERT_EQ(1, ms.load(bs.get()));
     auto op = ms.value_store().retrieve("test")->asClass<Value_Operation>();
     ASSERT_NE(op, nullptr);
-    auto blk = runtime_ptr_cast<Block>(op->value());
+    auto blk = op->block();
     ASSERT_NE(blk, nullptr);
     ASSERT_EQ(1, blk->size());
 }
