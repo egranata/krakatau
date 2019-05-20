@@ -40,6 +40,7 @@
 #include <operation/push.h>
 #include <operation/reduce.h>
 #include <operation/resetstack.h>
+#include <operation/select.h>
 #include <operation/size.h>
 #include <operation/store.h>
 #include <operation/storeslot.h>
