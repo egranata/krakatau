@@ -76,3 +76,7 @@ size_t Serializer::writeData(size_t n, uint8_t* buf) {
     }
     return wr;
 }
+
+size_t Serializer::writeBoolean(bool b) {
+    return writeNumber(b ? 1 : 0, 1);
+}

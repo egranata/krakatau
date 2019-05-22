@@ -28,6 +28,7 @@ class Serializer {
         size_t writeData(size_t, uint8_t*);
         size_t writeNumber(uint64_t, size_t = 8);
         size_t writeIdentifier(const std::string&, char = '\'');
+        size_t writeBoolean(bool);
 
         size_t size() const;
         const uint8_t *data() const;

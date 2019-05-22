@@ -46,6 +46,7 @@ class ByteStream {
 
        std::optional<std::string> readIdentifier(char marker = '\'');
        std::optional<std::string> readData();
+       std::optional<bool> readBoolean();
 
     private:
         ByteStream(const uint8_t*, size_t);

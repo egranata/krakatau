@@ -178,3 +178,16 @@ TEST(ByteStream, ReadData) {
     os = bs->readData();
     ASSERT_FALSE(os.has_value());
 }
+
+TEST(ByteStream, ReadBoolean) {
+    std::vector<uint8_t> i = {0x0, 0x1, 0x2, 0x1};
+    auto bs = ByteStream::anonymous((uint8_t*)i.data(), i.size());
+
+    ASSERT_EQ(false, bs->readBoolean());
+    ASSERT_EQ(true, bs->readBoolean());
+
+    ASSERT_EQ(std::nullopt, bs->readBoolean());
+    ASSERT_EQ(true, bs->readBoolean());
+
+    ASSERT_EQ(std::nullopt, bs->readBoolean());
+}

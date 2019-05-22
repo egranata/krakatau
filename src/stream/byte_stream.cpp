@@ -197,3 +197,16 @@ std::optional<std::string> ByteStream::readData() {
 
     return ss.str();
 }
+
+std::optional<bool> ByteStream::readBoolean() {
+    if (eof()) return std::nullopt;
+
+    auto on = readNumber(1);
+    if (!on.has_value()) return std::nullopt;
+    size_t n = on.value();
+    switch (n) {
+        case 0: return false;
+        case 1: return true;
+        default: return std::nullopt;
+    }
+}

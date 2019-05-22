@@ -55,3 +55,12 @@ TEST(Serializer, Data) {
     auto bs = ByteStream::anonymous(s.data(), s.size());
     ASSERT_EQ("hello world", bs->readData().value_or(""));
 }
+
+TEST(Serializer, Boolean) {
+    Serializer s;
+    s.writeBoolean(false);
+    s.writeBoolean(true);
+    auto bs = ByteStream::anonymous(s.data(), s.size());
+    ASSERT_EQ(false, bs->readBoolean().value());
+    ASSERT_EQ(true, bs->readBoolean().value());
+}
