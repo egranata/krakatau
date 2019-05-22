@@ -177,11 +177,11 @@ TEST(Value, Table) {
     ASSERT_EQ(1, tbl->size());
     ASSERT_TRUE(tbl->keyAt(0)->isOfClass<Value_Number>());
     ASSERT_TRUE(tbl->valueAt(0)->isOfClass<Value_Number>());
-    ASSERT_TRUE(tbl->find(Value::fromNumber(123))->isOfClass<Value_Number>());
+    ASSERT_TRUE(tbl->find(Value::fromNumber(123), nullptr)->isOfClass<Value_Number>());
     tbl->append(Value::fromNumber(456), Value::fromBoolean(false));
     ASSERT_EQ(2, tbl->size());
-    ASSERT_TRUE(tbl->find(Value::fromNumber(123))->isOfClass<Value_Number>());
-    ASSERT_TRUE(tbl->find(Value::fromNumber(456))->isOfClass<Value_Boolean>());
+    ASSERT_TRUE(tbl->find(Value::fromNumber(123), nullptr)->isOfClass<Value_Number>());
+    ASSERT_TRUE(tbl->find(Value::fromNumber(456), nullptr)->isOfClass<Value_Boolean>());
 
     Parser p("table [number 1 -> boolean true, number 0 -> boolean false, number 2 -> empty]");
     auto v = p.parseValuePayload();

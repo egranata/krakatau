@@ -36,7 +36,7 @@ class Value_Table : public Value {
         std::shared_ptr<Value> pairAt(size_t i) const;
         std::shared_ptr<Value> keyAt(size_t i) const;
         std::shared_ptr<Value> valueAt(size_t i) const;
-        std::shared_ptr<Value> find(std::shared_ptr<Value>) const;
+        std::shared_ptr<Value> find(std::shared_ptr<Value>, std::shared_ptr<Value>) const;
         virtual std::string describe() const override;
         bool equals(std::shared_ptr<Value>) const override;
         size_t serialize(Serializer*) override;

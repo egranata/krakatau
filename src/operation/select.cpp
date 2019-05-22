@@ -31,7 +31,7 @@ Select::Select(std::shared_ptr<Value_Table> cases, std::shared_ptr<Value_Operati
 Operation::Result Select::execute(MachineState& ms) {
     auto val = ms.stack().pop();
 
-    auto op = mCases->find(val);
+    auto op = mCases->find(val, nullptr);
     if (op && op->isOfClass<Value_Operation>()) {
         return op->asClass<Value_Operation>()->execute(ms);
     } else {

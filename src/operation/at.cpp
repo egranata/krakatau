@@ -58,7 +58,7 @@ Operation::Result At::execute(MachineState& s) {
     }
 
     if (tbl) {
-        s.stack().push(tbl->find(nval));
+        s.stack().push(tbl->find(nval, Value::empty()));
         return Operation::Result::SUCCESS;
     }
 

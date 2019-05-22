@@ -359,9 +359,9 @@ TEST(Parser, ParseTable) {
     auto tbl = runtime_ptr_cast<Value_Table>(value->value);
     ASSERT_NE(nullptr, tbl);
     ASSERT_EQ(2, tbl->size());
-    ASSERT_TRUE(tbl->find(Value::fromNumber(123))->equals(Value::fromBoolean(false)));
-    ASSERT_TRUE(tbl->find(Value::fromNumber(456))->equals(Value::fromBoolean(true)));
-    ASSERT_TRUE(tbl->find(Value::fromNumber(121))->equals(Value::empty()));
+    ASSERT_TRUE(tbl->find(Value::fromNumber(123), nullptr)->equals(Value::fromBoolean(false)));
+    ASSERT_TRUE(tbl->find(Value::fromNumber(456), nullptr)->equals(Value::fromBoolean(true)));
+    ASSERT_EQ(nullptr, tbl->find(Value::fromNumber(121), nullptr));
 }
 
 TEST(Parser, ParseInvalidTable) {

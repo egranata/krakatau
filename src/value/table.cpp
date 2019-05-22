@@ -51,9 +51,9 @@ std::shared_ptr<Value> Value_Table::valueAt(size_t i) const {
     auto v = mTable.valueAt(i);
     return v ? v : Value::empty();
 }
-std::shared_ptr<Value> Value_Table::find(std::shared_ptr<Value> k) const {
+std::shared_ptr<Value> Value_Table::find(std::shared_ptr<Value> k, std::shared_ptr<Value> deft) const {
     auto v = mTable.find(k);
-    return v ? v : Value::empty();
+    return v ? v : deft;
 }
 
 std::string Value_Table::describe() const {
@@ -84,7 +84,7 @@ bool Value_Table::equals(std::shared_ptr<Value> v) const {
     for(size_t i = 0; i < size(); ++i) {
         auto mk = keyAt(i);
         auto mv = valueAt(i);
-        auto tv = tbl->find(mk);
+        auto tv = tbl->find(mk, Value::empty());
         if (!mv->equals(tv)) return false;
     }
 
