@@ -22,7 +22,7 @@
 #include <rtti/rtti.h>
 #include <machine/state.h>
 
-Select::Select(std::shared_ptr<Value_Table> cases) : Select(cases, std::make_shared<Value_Operation>(std::make_shared<Nop>())) {}
+Select::Select(std::shared_ptr<Value_Table> cases) : Select(cases, nullptr) {}
 Select::Select(std::shared_ptr<Value_Table> cases, std::shared_ptr<Value_Operation> orelse) {
     mCases = cases;
     mDefault = orelse;
@@ -32,26 +32,41 @@ Operation::Result Select::execute(MachineState& ms) {
     auto val = ms.stack().pop();
 
     auto op = mCases->find(val, nullptr);
-    if (op && op->isOfClass<Value_Operation>()) {
+    if (op == nullptr) {
+        if (mDefault) {
+            return mDefault->execute(ms);
+        } else {
+            ms.stack().push(val);
+            ms.stack().push(Value::error(ErrorCode::NOT_FOUND));
+            return Operation::Result::ERROR;
+        }
+    } else if (op->isOfClass<Value_Operation>()) {
         return op->asClass<Value_Operation>()->execute(ms);
     } else {
-        return mDefault->execute(ms);
+        ms.stack().push(val);
+        ms.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
+        return Operation::Result::ERROR;
     }
 }
 
 bool Select::equals(std::shared_ptr<Operation> op) const {
     if (auto rhs = op->asClass<Select>()) {
-        return rhs->mCases->equals(mCases) &&
-               rhs->mDefault->equals(mDefault);
+        if (rhs->mCases->equals(mCases) == false) return false;
+        if (rhs->mDefault && mDefault) return rhs->mDefault->equals(mDefault);
+        return mDefault == rhs->mDefault;
     }
 
     return false;
 }
 
 std::shared_ptr<Operation> Select::clone() const {
-    return std::make_shared<Select>(
-        std::dynamic_pointer_cast<Value_Table>(cases()->clone()),
-        std::dynamic_pointer_cast<Value_Operation>(orElse()->clone()));
+    if (mDefault == nullptr) {
+        return std::make_shared<Select>(std::dynamic_pointer_cast<Value_Table>(cases()->clone()));
+    } else {
+        return std::make_shared<Select>(
+            std::dynamic_pointer_cast<Value_Table>(cases()->clone()),
+            std::dynamic_pointer_cast<Value_Operation>(orElse()->clone()));
+    }
 }
 
 std::shared_ptr<Value_Table> Select::cases() const {
@@ -64,7 +79,7 @@ std::shared_ptr<Value_Operation> Select::orElse() const {
 std::string Select::describe() const {
     IndentingStream is;
     is.append("select %s", mCases->describe().c_str());
-    if (!mDefault->value()->isOfClass<Nop>())
+    if (mDefault)
         is.append(" else %s", mDefault->describe().c_str());
     return is.str();
 }
@@ -72,19 +87,27 @@ std::string Select::describe() const {
 size_t Select::serialize(Serializer* s) const {
     size_t wr = this->Operation::serialize(s);
     wr += cases()->serialize(s);
-    wr += orElse()->serialize(s);
+    wr += s->writeBoolean(mDefault == nullptr);
+    if (mDefault) wr += orElse()->serialize(s);
     return wr;
 }
 
 std::shared_ptr<Operation> Select::fromByteStream(ByteStream* bs) {
     auto tbl = Value::fromByteStream(bs);
     if (tbl == nullptr || !tbl->isOfClass<Value_Table>()) return nullptr;
-    auto dft = Value::fromByteStream(bs);
-    if (dft == nullptr || !dft->isOfClass<Value_Operation>()) return nullptr;
 
-    return std::make_shared<Select>(
-        std::dynamic_pointer_cast<Value_Table>(tbl),
-        std::dynamic_pointer_cast<Value_Operation>(dft));
+    auto hasdft = bs->readBoolean();
+    if (!hasdft) return nullptr;
+    if (hasdft.value()) {
+        return std::make_shared<Select>(std::dynamic_pointer_cast<Value_Table>(tbl));
+    } else {
+        auto dft = Value::fromByteStream(bs);
+        if (dft == nullptr || !dft->isOfClass<Value_Operation>()) return nullptr;
+
+        return std::make_shared<Select>(
+            std::dynamic_pointer_cast<Value_Table>(tbl),
+            std::dynamic_pointer_cast<Value_Operation>(dft));
+    }
 }
 
 std::shared_ptr<Operation> Select::fromParser(Parser* p) {
@@ -104,6 +127,5 @@ std::shared_ptr<Operation> Select::fromParser(Parser* p) {
             std::dynamic_pointer_cast<Value_Operation>(dft));
     }
 
-    return std::make_shared<Select>(
-        std::dynamic_pointer_cast<Value_Table>(tbl));
+    return std::make_shared<Select>(std::dynamic_pointer_cast<Value_Table>(tbl));
 }
