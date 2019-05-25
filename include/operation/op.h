@@ -22,6 +22,7 @@
 #include <memory>
 #include <string>
 #include <iostream>
+#include <value/error.h>
 #include <rtti/rtti.h>
 
 class Serializer;

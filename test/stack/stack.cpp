@@ -15,7 +15,9 @@
 #include <stack/stack.h>
 #include <value/value.h>
 #include <gtest/gtest.h>
+#include <value/number.h>
 #include <value/empty.h>
+#include <value/boolean.h>
 
 TEST(Stack, PushPop) {
     Stack s;

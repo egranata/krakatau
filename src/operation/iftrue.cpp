@@ -21,6 +21,7 @@
 #include <stream/serializer.h>
 #include <parser/parser.h>
 #include <machine/state.h>
+#include <value/boolean.h>
 
 IfTrue::IfTrue(std::shared_ptr<Operation> op) {
     mOperation = op;

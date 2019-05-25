@@ -35,25 +35,32 @@ class Serializer;
 class Parser;
 class Operation;
 
+class Value_Number;
+class Value_Empty;
+class Value_Operation;
+class Value_Boolean;
 class Value_Tuple;
 class Value_Table;
+class Value_Type;
+class Value_Error;
+class Value_String;
 
 class Value : public std::enable_shared_from_this<Value> {
     public:
-        static std::shared_ptr<Value> empty();
-        static std::shared_ptr<Value> fromBoolean(bool);
-        static std::shared_ptr<Value> fromNumber(uint64_t);
-        static std::shared_ptr<Value> fromBlock(std::shared_ptr<Block>);
-        static std::shared_ptr<Value> fromOperation(std::shared_ptr<Operation>);
-        static std::shared_ptr<Value> fromString(const std::string&);
-        static std::shared_ptr<Value> error(ErrorCode);
-        static std::shared_ptr<Value> type(ValueType);
-        static std::shared_ptr<Value> fromBind(std::shared_ptr<PartialBind>);
-        static std::shared_ptr<Value> fromByteStream(ByteStream*);
-        static std::shared_ptr<Value> fromParser(Parser*);
-
+        static std::shared_ptr<Value_Empty> empty();
+        static std::shared_ptr<Value_Boolean> fromBoolean(bool);
+        static std::shared_ptr<Value_Number> fromNumber(uint64_t);
+        static std::shared_ptr<Value_Operation> fromBlock(std::shared_ptr<Block>);
+        static std::shared_ptr<Value_Operation> fromOperation(std::shared_ptr<Operation>);
+        static std::shared_ptr<Value_String> fromString(const std::string&);
+        static std::shared_ptr<Value_Error> error(ErrorCode);
+        static std::shared_ptr<Value_Type> type(ValueType);
+        static std::shared_ptr<Value_Operation> fromBind(std::shared_ptr<PartialBind>);
         static std::shared_ptr<Value_Tuple> tuple(std::initializer_list<std::shared_ptr<Value>>);
         static std::shared_ptr<Value_Table> table(std::initializer_list<std::pair<std::shared_ptr<Value>,std::shared_ptr<Value>>>);
+
+        static std::shared_ptr<Value> fromByteStream(ByteStream*);
+        static std::shared_ptr<Value> fromParser(Parser*);
 
         virtual ~Value();
         virtual ValueType getClassId() const { return ValueType::EMPTY; }

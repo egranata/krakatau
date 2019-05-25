@@ -25,6 +25,7 @@
 #include <rtti/rtti.h>
 #include <value/bind.h>
 #include <operation/bind.h>
+#include <value/empty.h>
 
 TEST(Exec, Block) {
     MachineState s;

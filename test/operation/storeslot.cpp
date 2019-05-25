@@ -22,8 +22,10 @@
 #include <stream/byte_stream.h>
 #include <operation/op_loader.h>
 #include <operation/block.h>
+#include <value/number.h>
 #include <value/value_table.h>
 #include <parser/parser.h>
+#include <value/string.h>
 
 TEST(Storeslot, StoreValue) {
     MachineState ms;

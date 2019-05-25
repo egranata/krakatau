@@ -26,6 +26,7 @@
 #include <value/block.h>
 #include <value/number.h>
 #include <value/table.h>
+#include <value/empty.h>
 
 TEST(Typecast, BooleanToString) {
     Parser p("value main block { push boolean true push type string typecast }");

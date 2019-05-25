@@ -20,6 +20,8 @@
 #include <gtest/gtest.h>
 #include <rtti/rtti.h>
 #include <value/error.h>
+#include <value/empty.h>
+#include <value/string.h>
 
 TEST(Parse, ZeroArgs) {
     MachineState s;

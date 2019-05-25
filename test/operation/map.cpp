@@ -27,6 +27,7 @@
 #include <rtti/rtti.h>
 #include <parser/parser.h>
 #include <value/number.h>
+#include <value/empty.h>
 
 TEST(Map, ZeroArgs) {
     MachineState s;

@@ -19,6 +19,7 @@
 #include <value/string.h>
 #include <value/table.h>
 #include <machine/state.h>
+#include <value/empty.h>
 
 Operation::Result At::execute(MachineState& s) {
     if (!s.stack().hasAtLeast(2)) {

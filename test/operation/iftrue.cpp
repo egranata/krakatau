@@ -23,6 +23,7 @@
 #include <value/block.h>
 #include <operation/push.h>
 #include <operation/iftrue.h>
+#include <value/boolean.h>
 
 TEST(IfTrue, Taken) {
     MachineState ms;

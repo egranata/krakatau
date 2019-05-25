@@ -23,7 +23,9 @@
 #include <operation/op_loader.h>
 #include <operation/block.h>
 #include <value/value_table.h>
+#include <value/number.h>
 #include <parser/parser.h>
+#include <value/string.h>
 
 TEST(Loadslot, PresentValue) {
     MachineState ms;

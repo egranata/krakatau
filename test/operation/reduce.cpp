@@ -27,6 +27,7 @@
 #include <rtti/rtti.h>
 #include <parser/parser.h>
 #include <value/number.h>
+#include <value/empty.h>
 
 TEST(Reduce, ZeroArgs) {
     MachineState s;

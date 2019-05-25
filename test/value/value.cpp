@@ -69,7 +69,7 @@ TEST(Value, Boolean) {
 }
 
 TEST(Value, TypeMismatch) {
-    auto v(Value::fromNumber(123));
+    std::shared_ptr<Value> v = Value::fromNumber(123);
     ASSERT_FALSE(v->isOfClass<Value_Boolean>());
     ASSERT_FALSE(v->isOfClass<Value_Empty>());
     ASSERT_EQ(nullptr, runtime_ptr_cast<Value_Boolean>(v));

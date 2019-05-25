@@ -24,6 +24,8 @@
 #include <stream/byte_stream.h>
 #include <operation/op_loader.h>
 #include <operation/block.h>
+#include <value/number.h>
+#include <value/boolean.h>
 
 TEST(Bind, BindOfOperation) {
     auto op = std::make_shared<Dup>();

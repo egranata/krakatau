@@ -24,6 +24,7 @@
 #include <value/error.h>
 #include <value/boolean.h>
 #include <value/number.h>
+#include <value/empty.h>
 
 TEST(Call, NoSuchValue) {
     MachineState ms;

@@ -19,6 +19,7 @@
 #include <value/error.h>
 #include <error/error_codes.h>
 #include <rtti/rtti.h>
+#include <value/empty.h>
 
 TEST(Pop, Test) {
     MachineState s;

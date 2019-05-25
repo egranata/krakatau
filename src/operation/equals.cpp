@@ -15,6 +15,7 @@
 #include <operation/equals.h>
 #include <value/value.h>
 #include <machine/state.h>
+#include <value/boolean.h>
 
 Operation::Result Equals::execute(MachineState& s) {
     if (!s.stack().hasAtLeast(2)) {

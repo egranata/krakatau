@@ -22,6 +22,7 @@
 #include <rtti/rtti.h>
 #include <value/string.h>
 #include <value/table.h>
+#include <value/empty.h>
 
 TEST(Size, EmptyStack) {
     MachineState s;

@@ -19,6 +19,7 @@
 #include <error/error_codes.h>
 #include <rtti/rtti.h>
 #include <machine/state.h>
+#include <value/boolean.h>
 
 template<class T, OperationType OpType, class P>
 Operation::Result Binary_Arithmetic_Operation<T,OpType,P>::execute(MachineState& s) {

@@ -34,6 +34,7 @@
 #include <value/string.h>
 #include <value/table.h>
 #include <value/bind.h>
+#include <value/type.h>
 
 TEST(ValueSerialize, Boolean) {
     auto val = Value::fromBoolean(true);

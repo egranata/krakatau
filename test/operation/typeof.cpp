@@ -18,6 +18,7 @@
 #include <gtest/gtest.h>
 #include <value/type.h>
 #include <rtti/rtti.h>
+#include <value/boolean.h>
 
 TEST(Typeof, EmptyStack) {
     MachineState s;

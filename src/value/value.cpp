@@ -40,40 +40,40 @@ bool Value::isOfType(ValueType vt) const {
     return (vt == ValueType::NONE);
 }
 
-std::shared_ptr<Value> Value::empty() {
-    return std::shared_ptr<Value>(new Value_Empty());
+std::shared_ptr<Value_Empty> Value::empty() {
+    return std::make_shared<Value_Empty>();
 }
 
-std::shared_ptr<Value> Value::fromNumber(uint64_t n) {
-    return std::shared_ptr<Value>(new Value_Number(n));
+std::shared_ptr<Value_Number> Value::fromNumber(uint64_t n) {
+    return std::make_shared<Value_Number>(n);
 }
 
-std::shared_ptr<Value> Value::fromBoolean(bool b) {
-    return std::shared_ptr<Value>(new Value_Boolean(b));
+std::shared_ptr<Value_Boolean> Value::fromBoolean(bool b) {
+    return std::make_shared<Value_Boolean>(b);
 }
 
-std::shared_ptr<Value> Value::fromBlock(std::shared_ptr<Block> b) {
-    return std::shared_ptr<Value>(new Value_Operation(b));
+std::shared_ptr<Value_Operation> Value::fromBlock(std::shared_ptr<Block> b) {
+    return std::make_shared<Value_Operation>(b);
 }
 
-std::shared_ptr<Value> Value::fromOperation(std::shared_ptr<Operation> b) {
-    return std::shared_ptr<Value>(new Value_Operation(b));
+std::shared_ptr<Value_Operation> Value::fromOperation(std::shared_ptr<Operation> b) {
+    return std::make_shared<Value_Operation>(b);
 }
 
-std::shared_ptr<Value> Value::fromString(const std::string& s) {
-    return std::shared_ptr<Value>(new Value_String(s));
+std::shared_ptr<Value_String> Value::fromString(const std::string& s) {
+    return std::make_shared<Value_String>(s);
 }
 
-std::shared_ptr<Value> Value::error(ErrorCode ec) {
-    return std::shared_ptr<Value>(new Value_Error(ec));
+std::shared_ptr<Value_Error> Value::error(ErrorCode ec) {
+    return std::make_shared<Value_Error>(ec);
 }
 
-std::shared_ptr<Value> Value::type(ValueType vt) {
-    return std::shared_ptr<Value>(new Value_Type(vt));
+std::shared_ptr<Value_Type> Value::type(ValueType vt) {
+    return std::make_shared<Value_Type>(vt);
 }
 
-std::shared_ptr<Value> Value::fromBind(std::shared_ptr<PartialBind> pb) {
-    return std::shared_ptr<Value>(new Value_Operation(pb));
+std::shared_ptr<Value_Operation> Value::fromBind(std::shared_ptr<PartialBind> pb) {
+    return std::make_shared<Value_Operation>(pb);
 }
 
 std::shared_ptr<Value> Value::fromByteStream(ByteStream* bs) {

@@ -25,13 +25,21 @@
 class Stack {
     public:
         Stack();
+
         bool empty() const;
+
         void push(std::shared_ptr<Value>);
+
         std::shared_ptr<Value> peek() const;
+
         std::shared_ptr<Value> pop();
+
         size_t size() const;
+
         bool hasAtLeast(size_t) const;
+
         void reset();
+
         std::string describe();
     private:
         std::stack<std::shared_ptr<Value>> mValues;

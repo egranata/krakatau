@@ -19,6 +19,7 @@
 #include <value/boolean.h>
 #include <value/empty.h>
 #include <rtti/rtti.h>
+#include <value/string.h>
 
 TEST(Equals, NotEnoughState) {
     MachineState s;

@@ -22,6 +22,7 @@
 #include <parser/parser.h>
 #include <value/block.h>
 #include <stream/serializer.h>
+#include <value/empty.h>
 #include <stream/byte_stream.h>
 
 TEST(Break, Result) {

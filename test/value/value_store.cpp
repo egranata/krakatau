@@ -21,8 +21,8 @@
 
 TEST(ValueStore, InsertNew) {
     ValueStore vs;
-    auto v1 = Value::empty();
-    auto v2 = Value::fromNumber(12);
+    std::shared_ptr<Value> v1 = Value::empty();
+    std::shared_ptr<Value> v2 = Value::fromNumber(12);
     ASSERT_TRUE(vs.store("key1", v1));
     ASSERT_TRUE(vs.store("key2", v2));
 
@@ -37,8 +37,8 @@ TEST(ValueStore, InsertNew) {
 
 TEST(ValueStore, Overwrite) {
     ValueStore vs;
-    auto v1 = Value::empty();
-    auto v2 = Value::fromNumber(12);
+    std::shared_ptr<Value> v1 = Value::empty();
+    std::shared_ptr<Value> v2 = Value::fromNumber(12);
 
     vs.store("key", v1);
     ASSERT_FALSE(vs.store("key", v2));

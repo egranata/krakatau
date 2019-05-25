@@ -18,6 +18,7 @@
 #include <value/string.h>
 #include <value/table.h>
 #include <machine/state.h>
+#include <value/number.h>
 
 Operation::Result Size::execute(MachineState& s) {
     if (!s.stack().hasAtLeast(1)) {

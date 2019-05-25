@@ -17,6 +17,7 @@
 #include <value/tuple.h>
 #include <gtest/gtest.h>
 #include <rtti/rtti.h>
+#include <value/boolean.h>
 
 TEST(Value, HashConsistent) {
     auto val(Value::fromNumber(123));

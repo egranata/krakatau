@@ -21,6 +21,7 @@
 #include <parser/parser.h>
 #include <rtti/rtti.h>
 #include <machine/state.h>
+#include <value/string.h>
 
 Storeslot::Storeslot(const std::string& k) {
     mKey = k;
