@@ -57,19 +57,24 @@ TEST(Call, PushesValues) {
     Parser p("value foo block { nop }");
     ms.load(&p);
     std::shared_ptr<Value_Tuple> tpl = Value::tuple({
-        Value::fromNumber(12), Value::fromNumber(24)
+        Value::fromNumber(1), Value::fromNumber(2),
+        Value::fromNumber(3), Value::fromNumber(4),
+        Value::fromNumber(5)
     });
     std::shared_ptr<Call> c = std::make_shared<Call>("foo", tpl);
 
     ASSERT_EQ(Operation::Result::SUCCESS, c->execute(ms));
-    ASSERT_EQ(2, ms.stack().size());
-    ASSERT_TRUE(Value::fromNumber(24)->equals(ms.stack().pop()));
-    ASSERT_TRUE(Value::fromNumber(12)->equals(ms.stack().pop()));
+    ASSERT_EQ(5, ms.stack().size());
+    ASSERT_TRUE(Value::fromNumber(1)->equals(ms.stack().pop()));
+    ASSERT_TRUE(Value::fromNumber(2)->equals(ms.stack().pop()));
+    ASSERT_TRUE(Value::fromNumber(3)->equals(ms.stack().pop()));
+    ASSERT_TRUE(Value::fromNumber(4)->equals(ms.stack().pop()));
+    ASSERT_TRUE(Value::fromNumber(5)->equals(ms.stack().pop()));
 }
 
 TEST(Call, RunsBlock) {
     MachineState ms;
-    Parser p("value foo block { mul }");
+    Parser p("value foo block { swap sub }");
     ms.load(&p);
     std::shared_ptr<Value_Tuple> tpl = Value::tuple({
         Value::fromNumber(12), Value::fromNumber(24)
@@ -78,7 +83,26 @@ TEST(Call, RunsBlock) {
 
     ASSERT_EQ(Operation::Result::SUCCESS, c->execute(ms));
     ASSERT_EQ(1, ms.stack().size());
-    ASSERT_TRUE(Value::fromNumber(288)->equals(ms.stack().peek()));
+    ASSERT_TRUE(Value::fromNumber(12)->equals(ms.stack().peek()));
+}
+
+TEST(Call, SlotsOlder) {
+    MachineState ms;
+    Parser p("value foo block slots $a,$b { loadslot $a } value bar block slots $a,$b { loadslot $b }");
+    ms.load(&p);
+    std::shared_ptr<Value_Tuple> tpl = Value::tuple({
+        Value::fromNumber(12), Value::fromNumber(24)
+    });
+    std::shared_ptr<Call> c_foo = std::make_shared<Call>("foo", tpl);
+    std::shared_ptr<Call> c_bar = std::make_shared<Call>("bar", tpl);
+
+    ASSERT_EQ(Operation::Result::SUCCESS, c_foo->execute(ms));
+    ASSERT_EQ(1, ms.stack().size());
+    ASSERT_TRUE(Value::fromNumber(12)->equals(ms.stack().pop()));
+
+    ASSERT_EQ(Operation::Result::SUCCESS, c_bar->execute(ms));
+    ASSERT_EQ(1, ms.stack().size());
+    ASSERT_TRUE(Value::fromNumber(24)->equals(ms.stack().pop()));
 }
 
 TEST(Call, Equality) {

@@ -61,8 +61,11 @@ Operation::Result Call::execute(MachineState& ms) {
         ms.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
         return Operation::Result::ERROR;
     }
-    for(size_t i = 0; i < arguments()->size(); ++i) {
-        ms.stack().push(arguments()->at(i));
+
+    const size_t n = arguments()->size();
+
+    for(size_t i = 0; i < n; ++i) {
+        ms.stack().push(arguments()->at(n-i-1));
     }
     return op->asClass<Value_Operation>()->execute(ms);
 }
