@@ -21,17 +21,15 @@ bool Stack::empty() const {
     return mValues.empty();
 }
 
-void Stack::push(Value* v) {
-    std::shared_ptr<Value> sp(v);
-    push(sp);
-}
 void Stack::push(std::shared_ptr<Value> v) {
     mValues.push(v);
 }
+
 std::shared_ptr<Value> Stack::peek() const {
     if (mValues.size()) return mValues.top();
     return nullptr;
 }
+
 std::shared_ptr<Value> Stack::pop() {
     if (empty()) return nullptr;
     auto sp = peek();
@@ -41,6 +39,7 @@ std::shared_ptr<Value> Stack::pop() {
 size_t Stack::size() const {
     return mValues.size();
 }
+
 bool Stack::hasAtLeast(size_t n) const {
     return size() >= n;
 }

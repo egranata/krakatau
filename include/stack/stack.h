@@ -26,7 +26,6 @@ class Stack {
     public:
         Stack();
         bool empty() const;
-        void push(Value*);
         void push(std::shared_ptr<Value>);
         std::shared_ptr<Value> peek() const;
         std::shared_ptr<Value> pop();
