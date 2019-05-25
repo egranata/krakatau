@@ -21,6 +21,7 @@
 #include <operation/bind.h>
 #include <operation/block.h>
 #include <operation/break.h>
+#include <operation/call.h>
 #include <operation/clear.h>
 #include <operation/dup.h>
 #include <operation/equals.h>
