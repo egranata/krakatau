@@ -39,7 +39,7 @@ TEST(Filter, ZeroArgs) {
 TEST(Filter, OneArg) {
     MachineState s;
     Filter flt;
-    s.stack().push(Value::tuple());
+    s.stack().push(Value::tuple({}));
     ASSERT_EQ(Operation::Result::ERROR, flt.execute(s));
     ASSERT_EQ(ErrorCode::INSUFFICIENT_ARGUMENTS, runtime_ptr_cast<Value_Error>(s.stack().pop())->value());
     ASSERT_EQ(1, s.stack().size());
@@ -48,7 +48,7 @@ TEST(Filter, OneArg) {
 TEST(Filter, MistypedArgs) {
     MachineState s;
     Filter flt;
-    s.stack().push(Value::tuple());
+    s.stack().push(Value::tuple({}));
     s.stack().push(Value::empty());
     ASSERT_EQ(Operation::Result::ERROR, flt.execute(s));
     ASSERT_EQ(ErrorCode::TYPE_MISMATCH, runtime_ptr_cast<Value_Error>(s.stack().pop())->value());
@@ -58,7 +58,7 @@ TEST(Filter, MistypedArgs) {
 TEST(Filter, TupleFilterTakeAll) {
     MachineState s;
     Filter flt;
-    auto vtpl = Value::tuple();
+    auto vtpl = Value::tuple({});
     auto tpl = runtime_ptr_cast<Value_Tuple>(vtpl);
     tpl->append(Value::empty())->append(Value::fromNumber(123))->append(Value::fromBoolean(false));
     auto vop = Value::fromOperation(std::shared_ptr<Operation>(new Push(Value::fromBoolean(true))));
@@ -71,7 +71,7 @@ TEST(Filter, TupleFilterTakeAll) {
 TEST(Filter, TupleFilterTakeNone) {
     MachineState s;
     Filter flt;
-    auto vtpl = Value::tuple();
+    auto vtpl = Value::tuple({});
     auto tpl = runtime_ptr_cast<Value_Tuple>(vtpl);
     tpl->append(Value::empty())->append(Value::fromNumber(123))->append(Value::fromBoolean(false));
     auto vop = Value::fromOperation(std::shared_ptr<Operation>(new Push(Value::fromBoolean(false))));
@@ -85,7 +85,7 @@ TEST(Filter, TupleFilterTakeNone) {
 TEST(Filter, TupleOpTypeMismatch) {
     MachineState s;
     Filter flt;
-    auto vtpl = Value::tuple();
+    auto vtpl = Value::tuple({});
     auto tpl = runtime_ptr_cast<Value_Tuple>(vtpl);
     tpl->append(Value::empty())->append(Value::fromNumber(123))->append(Value::fromBoolean(false));
     auto vop = Value::fromOperation(std::shared_ptr<Operation>(new Push(Value::empty())));
@@ -101,7 +101,7 @@ TEST(Filter, TupleOpTypeMismatch) {
 TEST(Filter, TupleBlock) {
     MachineState s;
     Filter flt;
-    auto vtpl = Value::tuple();
+    auto vtpl = Value::tuple({});
     auto tpl = runtime_ptr_cast<Value_Tuple>(vtpl);
     tpl->append(Value::empty())->append(Value::fromNumber(123))->append(Value::fromBoolean(false));
     auto vblk = Parser("block { typeof push type number eq }").parseValuePayload();
@@ -116,7 +116,7 @@ TEST(Filter, TupleBlock) {
 TEST(Filter, TableFilterTakeAll) {
     MachineState s;
     Filter flt;
-    auto vtbl = Value::table();
+    auto vtbl = Value::table({});
     auto tbl = runtime_ptr_cast<Value_Table>(vtbl);
     tbl->append(Value::fromNumber(1), Value::fromString("one"))->append(Value::fromNumber(2), Value::fromString("two"));
     auto vop = Value::fromOperation(std::shared_ptr<Operation>(new Push(Value::fromBoolean(true))));
@@ -129,7 +129,7 @@ TEST(Filter, TableFilterTakeAll) {
 TEST(Filter, TableFilterTakeNone) {
     MachineState s;
     Filter flt;
-    auto vtbl = Value::table();
+    auto vtbl = Value::table({});
     auto tbl = runtime_ptr_cast<Value_Table>(vtbl);
     tbl->append(Value::fromNumber(1), Value::fromString("one"))->append(Value::fromNumber(2), Value::fromString("two"));
     auto vop = Value::fromOperation(std::shared_ptr<Operation>(new Push(Value::fromBoolean(false))));
@@ -143,7 +143,7 @@ TEST(Filter, TableFilterTakeNone) {
 TEST(Filter, TableOpTypeMismatch) {
     MachineState s;
     Filter flt;
-    auto vtbl = Value::table();
+    auto vtbl = Value::table({});
     auto tbl = runtime_ptr_cast<Value_Table>(vtbl);
     tbl->append(Value::fromNumber(1), Value::fromString("one"))->append(Value::fromNumber(2), Value::fromString("two"));
     auto vop = Value::fromOperation(std::shared_ptr<Operation>(new Push(Value::empty())));
@@ -159,7 +159,7 @@ TEST(Filter, TableOpTypeMismatch) {
 TEST(Filter, TableBlock) {
     MachineState s;
     Filter flt;
-    auto vtbl = Value::table();
+    auto vtbl = Value::table({});
     auto tbl = runtime_ptr_cast<Value_Table>(vtbl);
     tbl->append(Value::fromNumber(1), Value::fromString("one"))->append(Value::fromNumber(2), Value::fromString("two"));
     auto vblk = Parser("block { push number 0 at push number 2 eq }").parseValuePayload();

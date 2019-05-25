@@ -39,7 +39,7 @@ Operation::Result Pack::execute(MachineState& ms) {
         return Operation::Result::ERROR;
     }
 
-    auto valtpl = Value::tuple();
+    auto valtpl = Value::tuple({});
     auto tpl = runtime_ptr_cast<Value_Tuple>(valtpl);
     for(size_t i = 0; i < cnt; ++i) {
         tpl->append(ms.stack().pop());

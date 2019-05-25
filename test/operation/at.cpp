@@ -36,7 +36,7 @@ TEST(At, ZeroArgs) {
 TEST(At, OneArg) {
     MachineState s;
     At at;
-    s.stack().push(Value::tuple());
+    s.stack().push(Value::tuple({}));
     ASSERT_EQ(Operation::Result::ERROR, at.execute(s));
     ASSERT_EQ(ErrorCode::INSUFFICIENT_ARGUMENTS, runtime_ptr_cast<Value_Error>(s.stack().pop())->value());
     ASSERT_EQ(1, s.stack().size());
@@ -45,7 +45,7 @@ TEST(At, OneArg) {
 TEST(At, MistypedArgs) {
     MachineState s;
     At at;
-    s.stack().push(Value::tuple());
+    s.stack().push(Value::tuple({}));
     s.stack().push(Value::empty());
     ASSERT_EQ(Operation::Result::ERROR, at.execute(s));
     ASSERT_EQ(ErrorCode::TYPE_MISMATCH, runtime_ptr_cast<Value_Error>(s.stack().pop())->value());
@@ -104,7 +104,7 @@ TEST(At, ValidString) {
 TEST(At, Table) {
     MachineState s;
     At at;
-    auto val = Value::table();
+    auto val = Value::table({});
     auto tbl = runtime_ptr_cast<Value_Table>(val);
     tbl->append(Value::fromBoolean(false), Value::fromNumber(123));
     tbl->append(Value::fromBoolean(true), Value::fromBoolean(456));

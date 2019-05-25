@@ -41,7 +41,7 @@ TEST(Size, ValidElement) {
 TEST(Size, Tuple) {
     MachineState s;
     Size sz;
-    auto val = Value::tuple();
+    auto val = Value::tuple({});
     auto tpl = runtime_ptr_cast<Value_Tuple>(val);
     tpl->append(Value::empty());
     tpl->append(Value::empty());
@@ -67,7 +67,7 @@ TEST(Size, String) {
 TEST(Size, Table) {
     MachineState s;
     Size sz;
-    auto val = Value::table();
+    auto val = Value::table({});
     auto tbl = runtime_ptr_cast<Value_Table>(val);
     tbl->append(Value::fromBoolean(false), Value::empty());
     tbl->append(Value::fromBoolean(true), Value::empty());

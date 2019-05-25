@@ -92,7 +92,7 @@ bool Value_Table::equals(std::shared_ptr<Value> v) const {
 }
 
 std::shared_ptr<Value> Value_Table::fromByteStream(ByteStream* bs) {
-    auto val_tbl = Value::table();
+    auto val_tbl = Value::table({});
     auto tbl = runtime_ptr_cast<Value_Table>(val_tbl);
 
     if (auto _cnt = bs->readNumber()) {
@@ -122,7 +122,7 @@ size_t Value_Table::serialize(Serializer* s) {
 
 std::shared_ptr<Value> Value_Table::fromParser(Parser* p) {
     if (!p->expectedError(TokenKind::OPEN_SQUARE)) return nullptr;
-    auto valtbl = Value::table();
+    auto valtbl = Value::table({});
     auto tbl = runtime_ptr_cast<Value_Table>(valtbl);
     while(true) {
         if (p->nextIf(TokenKind::COMMA)) continue;
@@ -166,13 +166,13 @@ std::shared_ptr<Value> Value_Table::clone() const {
 
 std::shared_ptr<Value> Value_Table::doTypecast(ValueType vt) {
     return TypecastHelper<Value_Table>().onType(ValueType::TUPLE, [] (Value_Table* self) -> std::shared_ptr<Value> {
-        auto val_tpl = Value::tuple();
+        auto val_tpl = Value::tuple({});
         auto tpl = val_tpl->asClass<Value_Tuple>();
 
         for (size_t i = 0; i < self->size(); ++i) {
             auto key = self->keyAt(i);
             auto val = self->valueAt(i);
-            auto cvtpl = Value::tuple();
+            auto cvtpl = Value::tuple({});
             auto ctpl = cvtpl->asClass<Value_Tuple>();
             ctpl->append(key)->append(val);
             tpl->append(cvtpl);

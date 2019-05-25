@@ -24,8 +24,8 @@ TEST(Value, HashConsistent) {
 }
 
 TEST(Value, IdenticalSameHash) {
-    auto val1(Value::tuple());
-    auto val2(Value::tuple());
+    auto val1(Value::tuple({}));
+    auto val2(Value::tuple({}));
 
     runtime_ptr_cast<Value_Tuple>(val1)->append(Value::fromNumber(12));
     runtime_ptr_cast<Value_Tuple>(val1)->append(Value::fromBoolean(false));

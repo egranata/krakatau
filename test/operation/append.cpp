@@ -37,7 +37,7 @@ TEST(Append, ZeroArgs) {
 TEST(Append, OneArg) {
     MachineState s;
     Append a;
-    s.stack().push(Value::tuple());
+    s.stack().push(Value::tuple({}));
     ASSERT_EQ(Operation::Result::ERROR, a.execute(s));
     ASSERT_EQ(ErrorCode::INSUFFICIENT_ARGUMENTS, runtime_ptr_cast<Value_Error>(s.stack().pop())->value());
     ASSERT_EQ(1, s.stack().size());

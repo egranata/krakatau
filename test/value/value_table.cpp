@@ -54,7 +54,7 @@ TEST(ValueTable, InsertEqual) {
 TEST(ValueTable, FindMissing) {
     ValueTable vt;
     vt.add(Value::empty(), Value::fromNumber(12));
-    ASSERT_EQ(nullptr, vt.find(Value::tuple()));
+    ASSERT_EQ(nullptr, vt.find(Value::tuple({})));
 }
 
 TEST(ValueTable, KeyAt) {

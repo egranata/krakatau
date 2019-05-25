@@ -45,7 +45,7 @@ TEST(Pack, NotATuple) {
 TEST(Unpack, EmptyTuple) {
     MachineState ms;
     Unpack pk;
-    ms.stack().push(Value::tuple());
+    ms.stack().push(Value::tuple({}));
     ASSERT_EQ(Operation::Result::SUCCESS, pk.execute(ms));
     ASSERT_EQ(0, ms.stack().size());
 }

@@ -68,16 +68,8 @@ std::shared_ptr<Value> Value::error(ErrorCode ec) {
     return std::shared_ptr<Value>(new Value_Error(ec));
 }
 
-std::shared_ptr<Value> Value::tuple() {
-    return std::shared_ptr<Value>(new Value_Tuple());
-}
-
 std::shared_ptr<Value> Value::type(ValueType vt) {
     return std::shared_ptr<Value>(new Value_Type(vt));
-}
-
-std::shared_ptr<Value> Value::table() {
-    return std::shared_ptr<Value>(new Value_Table());
 }
 
 std::shared_ptr<Value> Value::fromBind(std::shared_ptr<PartialBind> pb) {

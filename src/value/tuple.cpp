@@ -78,7 +78,7 @@ bool Value_Tuple::equals(std::shared_ptr<Value> v) const {
 }
 
 std::shared_ptr<Value> Value_Tuple::fromByteStream(ByteStream* bs) {
-    auto val_tpl = Value::tuple();
+    auto val_tpl = Value::tuple({});
     auto tpl = runtime_ptr_cast<Value_Tuple>(val_tpl);
 
     if (auto _cnt = bs->readNumber()) {
@@ -105,7 +105,7 @@ size_t Value_Tuple::serialize(Serializer* s) {
 
 std::shared_ptr<Value> Value_Tuple::fromParser(Parser* p) {
     if (!p->expectedError(TokenKind::OPEN_PAREN)) return nullptr;
-    auto valtpl = Value::tuple();
+    auto valtpl = Value::tuple({});
     auto tpl = runtime_ptr_cast<Value_Tuple>(valtpl);
     while(true) {
         if (p->nextIf(TokenKind::COMMA)) continue;
@@ -155,7 +155,7 @@ std::shared_ptr<Value> Value_Tuple::doTypecast(ValueType vt) {
 
         return Value::fromBlock(blk);
     }).onType(ValueType::TABLE, [] (Value_Tuple* self) -> std::shared_ptr<Value> {
-        auto vtbl = Value::table();
+        auto vtbl = Value::table({});
         auto tbl = vtbl->asClass<Value_Table>();
 
         for (size_t i = 0; i < self->size(); ++i) {

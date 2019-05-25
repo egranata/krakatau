@@ -39,7 +39,7 @@ TEST(Reduce, ZeroArgs) {
 TEST(Reduce, OneArg) {
     MachineState s;
     Reduce r;
-    s.stack().push(Value::tuple());
+    s.stack().push(Value::tuple({}));
     ASSERT_EQ(Operation::Result::ERROR, r.execute(s));
     ASSERT_EQ(ErrorCode::INSUFFICIENT_ARGUMENTS, runtime_ptr_cast<Value_Error>(s.stack().pop())->value());
     ASSERT_EQ(1, s.stack().size());
@@ -48,8 +48,8 @@ TEST(Reduce, OneArg) {
 TEST(Reduce, TwoArgs) {
     MachineState s;
     Reduce r;
-    s.stack().push(Value::tuple());
-    s.stack().push(Value::tuple());
+    s.stack().push(Value::tuple({}));
+    s.stack().push(Value::tuple({}));
     ASSERT_EQ(Operation::Result::ERROR, r.execute(s));
     ASSERT_EQ(ErrorCode::INSUFFICIENT_ARGUMENTS, runtime_ptr_cast<Value_Error>(s.stack().pop())->value());
     ASSERT_EQ(2, s.stack().size());
@@ -59,7 +59,7 @@ TEST(Reduce, MistypedArgs) {
     MachineState s;
     Reduce r;
     s.stack().push(Value::fromBoolean(false));
-    s.stack().push(Value::tuple());
+    s.stack().push(Value::tuple({}));
     s.stack().push(Value::empty());
     ASSERT_EQ(Operation::Result::ERROR, r.execute(s));
     ASSERT_EQ(ErrorCode::TYPE_MISMATCH, runtime_ptr_cast<Value_Error>(s.stack().pop())->value());

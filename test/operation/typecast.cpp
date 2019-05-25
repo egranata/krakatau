@@ -107,7 +107,7 @@ TEST(Typecast, TableToTuple) {
 
 TEST(Typecast, InvalidTupleToTable) {
     Typecast tc;
-    auto vtpl = Value::tuple();
+    auto vtpl = Value::tuple({});
     auto tpl = runtime_ptr_cast<Value_Tuple>(vtpl);
     tpl->append(Value::fromNumber(123));
     tpl->append(Value::empty());
@@ -115,7 +115,7 @@ TEST(Typecast, InvalidTupleToTable) {
     ms.stack().push(vtpl);
     ms.stack().push(Value::type(ValueType::TABLE));
     ASSERT_EQ(Operation::Result::ERROR, tc.execute(ms));
-    vtpl = Value::tuple();
+    vtpl = Value::tuple({});
     tpl = runtime_ptr_cast<Value_Tuple>(vtpl);
     tpl->append(Parser("tuple (number 123, boolean true,)").parseValuePayload());
     tpl->append(Parser("tuple (boolean false,empty,empty,)").parseValuePayload());
@@ -126,7 +126,7 @@ TEST(Typecast, InvalidTupleToTable) {
 
 TEST(Typecast, EmptyTupleToTable) {
     Typecast tc;
-    auto vtpl = Value::tuple();
+    auto vtpl = Value::tuple({});
     MachineState ms;
     ms.stack().push(vtpl);
     ms.stack().push(Value::type(ValueType::TABLE));

@@ -51,7 +51,7 @@ std::shared_ptr<Value> ValueTable::at(size_t n) const {
     if (n >= size()) return nullptr;
     auto k = keyAt(n);
     auto v = valueAt(n);
-    auto vtpl = Value::tuple();
+    auto vtpl = Value::tuple({});
     auto tpl = runtime_ptr_cast<Value_Tuple>(vtpl);
     tpl->append(k);
     tpl->append(v);

@@ -52,7 +52,7 @@ Operation::Result Filter::execute(MachineState& s) {
     }
 
     if (tpl) {
-        auto vtpl_result = Value::tuple();
+        auto vtpl_result = Value::tuple({});
         auto tpl_result = runtime_ptr_cast<Value_Tuple>(vtpl_result);
         for(size_t i = 0; i < tpl->size(); ++i) {
             auto itm = tpl->at(i);
@@ -75,7 +75,7 @@ Operation::Result Filter::execute(MachineState& s) {
         s.stack().push(vtpl_result);
         return Operation::Result::SUCCESS;
     } else {
-        auto vtbl_result = Value::table();
+        auto vtbl_result = Value::table({});
         auto tbl_result = runtime_ptr_cast<Value_Table>(vtbl_result);
         for(size_t i = 0; i < tbl->size(); ++i) {
             auto itm = tbl->pairAt(i);

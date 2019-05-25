@@ -170,7 +170,7 @@ TEST(Value, Type) {
 }
 
 TEST(Value, Table) {
-    auto tbl_val = Value::table();
+    auto tbl_val = Value::table({});
     auto tbl = runtime_ptr_cast<Value_Table>(tbl_val);
     ASSERT_EQ(0, tbl->size());
     tbl->append(Value::fromNumber(123), Value::fromNumber(42));
