@@ -58,7 +58,7 @@ class MachineState {
         size_t load(Parser*);
         size_t serialize(Serializer*);
 
-        bool loadNativeLibrary(const char*);
+        bool loadNativeLibrary(std::string);
 
         void pushSlot(std::shared_ptr<Block>);
         void popSlot();

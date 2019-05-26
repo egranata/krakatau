@@ -169,7 +169,7 @@ TEST(MachineState, ExecuteBind) {
 }
 
 TEST(MachineState, LoadNative) {
-    Parser p("value main block { loadnative \"./libnative_time.so\" call time::now () }");
+    Parser p("value main block { loadnative \"time\" call time::now () }");
     MachineState ms;
     ASSERT_EQ(1, ms.load(&p));
     auto ret = ms.execute();
