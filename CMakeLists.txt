@@ -22,6 +22,7 @@ ADD_LIBRARY(core SHARED ${coresources} ${FLEX_lexer_OUTPUTS})
 
 target_include_directories(core PUBLIC include)
 target_link_libraries(core ${FLEX_LIBRARIES})
+target_link_libraries(core dl)
 
 # Download and unpack googletest at configure time
 configure_file(CMakeLists.gtest.txt.in googletest-download/CMakeLists.txt)

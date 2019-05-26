@@ -20,6 +20,7 @@
 #include <value/block.h>
 #include <machine/slots_handler.h>
 #include <value/operation.h>
+#include <native/dll.h>
 
 MachineState::MachineState() {
     appendListener(std::make_shared<SlotsHandler>(*this));
@@ -125,4 +126,14 @@ void MachineState::popSlot() {
 std::shared_ptr<ValueTable> MachineState::currentSlot() const {
     if (mSlots.empty()) return nullptr;
     return mSlots.top();
+}
+
+bool MachineState::loadNativeLibrary(const char* path) {
+    using LibraryLoaderFunction = bool (*)(MachineState&);
+    DynamicLibrary dll(path);
+    if (!dll) return false;
+    auto llf = dll.find<LibraryLoaderFunction>("krakatau_load");
+    if (llf == nullptr) return false;
+    auto ok = llf(*this);
+    return ok;
 }

@@ -58,6 +58,8 @@ class MachineState {
         size_t load(Parser*);
         size_t serialize(Serializer*);
 
+        bool loadNativeLibrary(const char*);
+
         void pushSlot(std::shared_ptr<Block>);
         void popSlot();
         std::shared_ptr<ValueTable> currentSlot() const;
