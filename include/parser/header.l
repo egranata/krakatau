@@ -73,7 +73,14 @@ slots           {
                     return std::make_unique<Token>(TokenKind::SEMICOLON, yytext);
                 }
 \"(\\.|[^"\\])*\" {
-                    return std::make_unique<Token>(TokenKind::STRING, yytext);
+                    std::string s(yytext);
+                    if (s.size() < 2) {
+                        s = "";
+                    } else {
+                        s = s.substr(1);
+                        s.pop_back();
+                    }
+                    return std::make_unique<Token>(TokenKind::STRING, s);
                   }
 [ \t\n]+          /* do nothing */
 <<EOF>>         { return nullptr; }

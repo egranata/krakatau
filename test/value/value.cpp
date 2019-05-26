@@ -120,6 +120,17 @@ TEST(Value, String) {
     ASSERT_TRUE(v->equals(v->clone()));
 }
 
+TEST(Value, StringFromParserIsUnquoted) {
+    Parser p("value foo string \"hello world\"");
+    auto nv = p.parseValue();
+    ASSERT_NE(nullptr, nv);
+    ASSERT_NE(nv->value, nullptr);
+    auto val = nv->value;
+    ASSERT_TRUE(val->isOfClass<Value_String>());
+    auto vs = val->asClass<Value_String>();
+    ASSERT_EQ("hello world", vs->value());
+}
+
 TEST(Value, Error) {
     auto v(Value::error(ErrorCode::DIV_BY_ZERO));
     ASSERT_TRUE(v->isOfClass<Value_Error>());

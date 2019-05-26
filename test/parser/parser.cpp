@@ -342,7 +342,7 @@ TEST(Parser, ParseString) {
     auto value = p.parseValue();
     ASSERT_NE(nullptr, value);
     ASSERT_TRUE(value->value->isOfClass<Value_String>());
-    ASSERT_EQ("\"dup\"", runtime_ptr_cast<Value_String>(value->value)->value());
+    ASSERT_EQ("dup", runtime_ptr_cast<Value_String>(value->value)->value());
 }
 
 TEST(Parser, ParseInvalidString) {

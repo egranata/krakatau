@@ -20,7 +20,7 @@
 
 TEST(Lexer, LexString) {
     std::vector<Token> expected = {
-        {TokenKind::STRING, "\"test string\""},
+        {TokenKind::STRING, "test string"},
         {TokenKind::IDENTIFIER, "_is_a_valid_prefix"},
         {TokenKind::IDENTIFIER, "$he:llo"},
         {TokenKind::NUMBER, "123456"},

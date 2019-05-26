@@ -51,11 +51,7 @@ std::shared_ptr<Operation> Loadnative::fromByteStream(ByteStream* bs) {
 
 std::shared_ptr<Operation> Loadnative::fromParser(Parser* p) {
     if (auto ident = p->nextIf(TokenKind::STRING)) {
-        if (ident->value().empty()) return nullptr;
-        auto path = ident->value();
-        path = path.substr(1);
-        if (path.empty()) return nullptr;
-        path.pop_back();
+        const auto& path = ident->value();
         if (path.empty()) return nullptr;
         return std::shared_ptr<Operation>(new Loadnative(path));
     }
