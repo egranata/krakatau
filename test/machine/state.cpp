@@ -176,4 +176,5 @@ TEST(MachineState, LoadNative) {
     ASSERT_EQ(Operation::Result::SUCCESS, ret.value());
     ASSERT_EQ(1, ms.stack().size());
     ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_Number>());
+    ASSERT_TRUE(ms.stack().peek()->asClass<Value_Number>()->value() >= 1558656000);
 }
