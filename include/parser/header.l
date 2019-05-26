@@ -25,8 +25,7 @@
 
 DIGIT	[0-9] 
 ALPHA	[a-zA-Z_$] 
-ALNUM	[0-9a-zA-Z] 
-IDENT	[0-9a-zA-Z$_]
+IDENT	[0-9a-zA-Z$_:]
 %%
 {DIGIT}+        {
                     return std::make_unique<Token>(TokenKind::NUMBER, yytext);
