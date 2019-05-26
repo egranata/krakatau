@@ -80,3 +80,47 @@ TEST(NativeOperations, FindPresentOperation) {
     ASSERT_NE(nullptr, fl.mParser);
     ASSERT_NE(nullptr, fl.mLoader);
 }
+
+TEST(NativeOperations, GetLoaderNoBucket) {
+    NativeOperations no;
+    auto fl = no.getLoader("no::op");
+    ASSERT_EQ(nullptr, fl.mParser);
+    ASSERT_EQ(nullptr, fl.mLoader);
+}
+
+TEST(NativeOperations, GetLoaderNoOp) {
+    NativeOperations no;
+    auto bucket = no.create("bucket");
+
+    auto fl = no.getLoader("bucket::noop");
+    ASSERT_EQ(nullptr, fl.mParser);
+    ASSERT_EQ(nullptr, fl.mLoader);
+}
+
+TEST(NativeOperations, GetLoaderNoSeparator) {
+    NativeOperations no;
+    NativeOperations::NativeOperationLoader l = {
+            [] (Parser*) -> std::shared_ptr<Native> { return nullptr; },
+            [] (ByteStream*) -> std::shared_ptr<Native> { return nullptr; }
+    };
+    auto bucket = no.create("bucket");
+    ASSERT_TRUE(bucket->registerOperation("op", l));
+
+    auto fl = no.getLoader("bucketop");
+    ASSERT_EQ(nullptr, fl.mParser);
+    ASSERT_EQ(nullptr, fl.mLoader);
+}
+
+TEST(NativeOperations, GetLoaderOk) {
+    NativeOperations no;
+    NativeOperations::NativeOperationLoader l = {
+            [] (Parser*) -> std::shared_ptr<Native> { return nullptr; },
+            [] (ByteStream*) -> std::shared_ptr<Native> { return nullptr; }
+    };
+    auto bucket = no.create("bucket");
+    ASSERT_TRUE(bucket->registerOperation("op", l));
+
+    auto fl = no.getLoader("bucket::op");
+    ASSERT_NE(nullptr, fl.mParser);
+    ASSERT_NE(nullptr, fl.mLoader);
+}

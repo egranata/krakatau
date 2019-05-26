@@ -48,3 +48,13 @@ NativeOperations::NativeOperationLoader NativeOperations::Bucket::find(const std
     if (i == mLoaders.end()) return {nullptr, nullptr};
     return i->second;
 }
+
+NativeOperations::NativeOperationLoader NativeOperations::getLoader(const std::string& name) const {
+    auto i = name.find("::");
+    if (i <= 0) return {nullptr, nullptr};
+    auto bn = name.substr(0,i);
+    auto ln = name.substr(i+2);
+    auto bucket = find(bn);
+    if (bucket) return bucket->find(ln);
+    else return {nullptr, nullptr};
+}

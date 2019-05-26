@@ -58,6 +58,8 @@ class NativeOperations {
         std::shared_ptr<Bucket> find(const std::string&) const;
         std::shared_ptr<Bucket> create(const std::string&);
 
+        NativeOperationLoader getLoader(const std::string&) const;
+
     private:
         std::unordered_map<std::string, std::shared_ptr<Bucket>> mLoaderNamespaces;
 
