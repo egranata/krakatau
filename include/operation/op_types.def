@@ -1,6 +1,7 @@
 #ifndef OPERATION_TYPE
 #error "define OPERATION_TYPE before including this file"
 #else
+OPERATION_TYPE(NATIVE, Native,, "native", 4)
 OPERATION_TYPE(ADD, Add, add, "add", 5)
 OPERATION_TYPE(SUBTRACT, Subtract, sub, "subtract", 6)
 OPERATION_TYPE(MULTIPLY, Multiply, mul, "multiply", 7)

@@ -33,6 +33,10 @@ ValueStore& MachineState::value_store() {
     return mValueStore;
 }
 
+NativeOperations& MachineState::native_operations() {
+    return mNativeOperations;
+}
+
 bool MachineState::loadOneValue(ByteStream* bs) {
     auto rname = bs->readIdentifier();
     if (!rname) return false;

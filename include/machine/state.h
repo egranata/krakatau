@@ -27,6 +27,7 @@
 #include <optional>
 #include <value/value_table.h>
 #include <stack>
+#include <native/native_operations.h>
 
 class Block;
 class MachineEventsListener;
@@ -39,6 +40,7 @@ class MachineState {
 
         Stack& stack();
         ValueStore& value_store();
+        NativeOperations& native_operations();
 
         void onEnteringBlock(std::shared_ptr<Block>);
         void onExecutingOperation(size_t);
@@ -70,6 +72,7 @@ class MachineState {
 
         Stack mStack;
         ValueStore mValueStore;
+        NativeOperations mNativeOperations;
 
         std::vector<std::shared_ptr<MachineEventsListener>> mListeners;
         std::stack<std::shared_ptr<ValueTable>> mSlots;

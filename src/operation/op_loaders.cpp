@@ -34,6 +34,7 @@
 #include <operation/logical.h>
 #include <operation/loop.h>
 #include <operation/map.h>
+#include <operation/native.h>
 #include <operation/nop.h>
 #include <operation/pack.h>
 #include <operation/parse.h>
