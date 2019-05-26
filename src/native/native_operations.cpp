@@ -13,14 +13,21 @@
 // limitations under the License.
 
 #include <native/native_operations.h>
+#include <machine/state.h>
+#include <value/value_store.h>
+#include <value/operation.h>
+#include <value/value.h>
+#include <stream/indenting_stream.h>
 
-NativeOperations::Bucket::Bucket(const std::string& name) : mName(name), mLoaders() {}
+NativeOperations::NativeOperations(MachineState& ms) : mMachineState(ms) {}
+
+NativeOperations::Bucket::Bucket(const std::string& name, MachineState& ms) : mMachineState(ms), mName(name), mLoaders() {}
 
 std::shared_ptr<NativeOperations::Bucket> NativeOperations::create(const std::string& name) {
     auto i = mLoaderNamespaces.find(name);
     if (i != mLoaderNamespaces.end()) return i->second;
 
-    mLoaderNamespaces.emplace(name, std::shared_ptr<Bucket>(new Bucket(name)));
+    mLoaderNamespaces.emplace(name, std::shared_ptr<Bucket>(new Bucket(name, mMachineState)));
 
     return find(name);
 }
@@ -39,22 +46,24 @@ bool NativeOperations::Bucket::registerOperation(const std::string& name, Native
     auto i = mLoaders.find(name);
     if (i == mLoaders.end()) {
         mLoaders.emplace(name, loader);
-        return true;
+        IndentingStream is;
+        is.append("%s::%s", this->name().c_str(), name.c_str());
+        return mMachineState.value_store().store(is.str(), Value::fromOperation(loader.mCreator()));
     } else return false;
 }
 
 NativeOperations::NativeOperationLoader NativeOperations::Bucket::find(const std::string& name) const {
     auto i = mLoaders.find(name);
-    if (i == mLoaders.end()) return {nullptr, nullptr};
+    if (i == mLoaders.end()) return {nullptr};
     return i->second;
 }
 
 NativeOperations::NativeOperationLoader NativeOperations::getLoader(const std::string& name) const {
     auto i = name.find("::");
-    if (i <= 0) return {nullptr, nullptr};
+    if (i <= 0) return {nullptr,};
     auto bn = name.substr(0,i);
     auto ln = name.substr(i+2);
     auto bucket = find(bn);
     if (bucket) return bucket->find(ln);
-    else return {nullptr, nullptr};
+    else return {nullptr,};
 }

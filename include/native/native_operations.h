@@ -27,16 +27,16 @@
 #include <unordered_map>
 #include <memory>
 
+class MachineState;
+
 class NativeOperations {
     public:
-        NativeOperations() = default;
+        NativeOperations(MachineState&);
 
-        using FromStream = std::function<std::shared_ptr<Native>(ByteStream*)>;
-        using FromParser = std::function<std::shared_ptr<Native>(Parser*)>;
+        using CreateFunction = std::function<std::shared_ptr<Native>()>;
 
         using NativeOperationLoader = struct {
-            FromParser mParser;
-            FromStream mLoader;
+            CreateFunction mCreator;
         };
 
         class Bucket {
@@ -47,7 +47,9 @@ class NativeOperations {
                 std::string name() const;
 
             private:
-                Bucket(const std::string&);
+                Bucket(const std::string&, MachineState&);
+
+                MachineState& mMachineState;
 
                 std::string mName;
                 std::unordered_map<std::string, NativeOperationLoader> mLoaders;
@@ -61,6 +63,8 @@ class NativeOperations {
         NativeOperationLoader getLoader(const std::string&) const;
 
     private:
+        MachineState& mMachineState;
+
         std::unordered_map<std::string, std::shared_ptr<Bucket>> mLoaderNamespaces;
 
         friend class Bucket;

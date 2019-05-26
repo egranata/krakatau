@@ -16,6 +16,6 @@
 
 #pragma once
 
-class MachineState;
+class NativeOperations;
 
-extern "C" bool krakatau_load(MachineState&);
+extern "C" bool krakatau_load(NativeOperations&);

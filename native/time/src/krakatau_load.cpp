@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-#include <machine/state.h>
+#include <native/native_operations.h>
 #include <value/operation.h>
-#include <now.h>
+#include <../include/now.h>
 
-extern "C" bool krakatau_load(MachineState& ms) {
-    ValueStore& vs = ms.value_store();
+extern "C" bool krakatau_load(NativeOperations& no) {
+    auto bucket = no.create("time");
+    if (!bucket) return false;
 
-    vs.store("time::now", Value::fromOperation(std::make_shared<Now>()));
+    bucket->registerOperation("now", { [] () -> std::shared_ptr<Native> {
+        return std::make_shared<Now>();
+    } });
 
     return true;
 }

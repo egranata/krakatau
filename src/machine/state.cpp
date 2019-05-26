@@ -22,7 +22,7 @@
 #include <value/operation.h>
 #include <native/dll.h>
 
-MachineState::MachineState() {
+MachineState::MachineState() : mNativeOperations(*this) {
     appendListener(std::make_shared<SlotsHandler>(*this));
 }
 
@@ -129,11 +129,11 @@ std::shared_ptr<ValueTable> MachineState::currentSlot() const {
 }
 
 bool MachineState::loadNativeLibrary(const char* path) {
-    using LibraryLoaderFunction = bool (*)(MachineState&);
+    using LibraryLoaderFunction = bool (*)(NativeOperations&);
     DynamicLibrary dll(path);
     if (!dll) return false;
     auto llf = dll.find<LibraryLoaderFunction>("krakatau_load");
     if (llf == nullptr) return false;
-    auto ok = llf(*this);
+    auto ok = llf(native_operations());
     return ok;
 }
