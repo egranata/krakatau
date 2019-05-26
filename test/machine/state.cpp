@@ -167,3 +167,13 @@ TEST(MachineState, ExecuteBind) {
     ASSERT_TRUE(ms.stack().pop()->isOfClass<Value_Number>());
     ASSERT_TRUE(ms.stack().pop()->isOfClass<Value_Number>());
 }
+
+TEST(MachineState, LoadNative) {
+    Parser p("value main block { loadnative \"./libnative_time.so\" call time::now () }");
+    MachineState ms;
+    ASSERT_EQ(1, ms.load(&p));
+    auto ret = ms.execute();
+    ASSERT_EQ(Operation::Result::SUCCESS, ret.value());
+    ASSERT_EQ(1, ms.stack().size());
+    ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_Number>());
+}

@@ -70,3 +70,8 @@ file(GLOB_RECURSE testsources CONFIGURE_DEPENDS test/*.cpp)
 add_executable(tests ${testsources})
 target_include_directories(tests PUBLIC include ${GTEST_INCLUDE_DIRS})
 target_link_libraries(tests gtest_main core)
+
+file(GLOB_RECURSE native_time_sources CONFIGURE_DEPENDS native/time/src/*.cpp)
+add_library(native_time SHARED ${native_time_sources})
+target_include_directories(native_time PUBLIC include native/time/include)
+target_link_libraries(native_time core)

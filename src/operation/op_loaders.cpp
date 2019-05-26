@@ -30,6 +30,7 @@
 #include <operation/halt.h>
 #include <operation/iftrue.h>
 #include <operation/load.h>
+#include <operation/loadnative.h>
 #include <operation/loadslot.h>
 #include <operation/logical.h>
 #include <operation/loop.h>
