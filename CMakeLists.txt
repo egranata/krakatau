@@ -7,23 +7,21 @@ add_compile_options(-Wno-return-type-c-linkage)
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
-project (stuff)
-set (stuff_VERSION_MAJOR 0)
-set (stuff_VERSION_MINOR 1)
-
-file(GLOB_RECURSE lexsources CONFIGURE_DEPENDS include/parser/*.l)
+project (krakatau)
+set (krakatau_VERSION_MAJOR 0)
+set (krakatau_VERSION_MINOR 1)
 
 find_package(FLEX)
-FLEX_TARGET(stuff ${lexsources} ${CMAKE_CURRENT_BINARY_DIR}/lexer.cpp)
 
-file(GLOB_RECURSE stuffsources CONFIGURE_DEPENDS src/*.cpp)
+file(GLOB_RECURSE lexsources CONFIGURE_DEPENDS include/parser/*.l)
+FLEX_TARGET(lexer ${lexsources} ${CMAKE_CURRENT_BINARY_DIR}/lexer.cpp)
+set_source_files_properties(${FLEX_lexer_OUTPUTS} PROPERTIES COMPILE_FLAGS -Wno-sign-compare)
 
-set_source_files_properties(${FLEX_stuff_OUTPUTS} PROPERTIES COMPILE_FLAGS -Wno-sign-compare)
+file(GLOB_RECURSE coresources CONFIGURE_DEPENDS src/*.cpp)
+ADD_LIBRARY(core SHARED ${coresources} ${FLEX_lexer_OUTPUTS})
 
-ADD_LIBRARY(stuff SHARED ${stuffsources} ${FLEX_stuff_OUTPUTS})
-
-target_include_directories(stuff PUBLIC include)
-target_link_libraries(stuff ${FLEX_LIBRARIES})
+target_include_directories(core PUBLIC include)
+target_link_libraries(core ${FLEX_LIBRARIES})
 
 # Download and unpack googletest at configure time
 configure_file(CMakeLists.gtest.txt.in googletest-download/CMakeLists.txt)
@@ -60,14 +58,14 @@ endif()
 file(GLOB_RECURSE assemblersources CONFIGURE_DEPENDS assembler/*.cpp)
 add_executable(assembler ${assemblersources})
 target_include_directories(assembler PUBLIC include)
-target_link_libraries(assembler stuff)
+target_link_libraries(assembler core)
 
 file(GLOB_RECURSE runnersources CONFIGURE_DEPENDS runner/*.cpp)
 add_executable(runner ${runnersources})
 target_include_directories(runner PUBLIC include)
-target_link_libraries(runner stuff)
+target_link_libraries(runner core)
 
 file(GLOB_RECURSE testsources CONFIGURE_DEPENDS test/*.cpp)
 add_executable(tests ${testsources})
 target_include_directories(tests PUBLIC include ${GTEST_INCLUDE_DIRS})
-target_link_libraries(tests gtest_main stuff)
+target_link_libraries(tests gtest_main core)
