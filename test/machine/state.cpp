@@ -178,3 +178,14 @@ TEST(MachineState, LoadNative) {
     ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_Number>());
     ASSERT_TRUE(ms.stack().peek()->asClass<Value_Number>()->value() >= 1558656000);
 }
+
+TEST(MachineState, LoadInvalidNative) {
+    Parser p("value main block { loadnative \"nothing\" }");
+    MachineState ms;
+    ASSERT_EQ(1, ms.load(&p));
+    auto ret = ms.execute();
+    ASSERT_EQ(Operation::Result::ERROR, ret.value());
+    ASSERT_EQ(1, ms.stack().size());
+    ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_Error>());
+    ASSERT_EQ(ms.stack().peek()->asClass<Value_Error>()->value(), ErrorCode::NOT_FOUND);
+}

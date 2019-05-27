@@ -29,10 +29,7 @@ Loadnative::Loadnative(const std::string& k) {
 
 Operation::Result Loadnative::execute(MachineState& ms) {
     if (ms.loadNativeLibrary(key().c_str())) return Operation::Result::SUCCESS;
-    else {
-        ms.stack().push(Value::error(ErrorCode::NOT_FOUND));
-        return Operation::Result::ERROR;
-    }
+    else return Operation::Result::ERROR;
 }
 
 std::string Loadnative::describe() const {

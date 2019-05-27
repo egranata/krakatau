@@ -19,6 +19,8 @@
 #include <value/value.h>
 #include <stream/indenting_stream.h>
 #include <operation/native.h>
+#include <native/dll.h>
+#include <value/error.h>
 
 NativeOperations::NativeOperations(MachineState& ms) : mMachineState(ms) {}
 
@@ -76,4 +78,40 @@ std::shared_ptr<Value_Operation> NativeOperations::getOperation(const std::strin
     auto bucket = find(bn);
     if (bucket) return bucket->find(ln);
     else return nullptr;
+}
+
+bool NativeOperations::loadNativeLibrary(const std::string& name) {
+    if (mNativeLibraries.find(name) != mNativeLibraries.end()) return true;
+
+    if (name.find('/') != std::string::npos) {
+        mMachineState.stack().push(Value::error(ErrorCode::SYNTAX_ERROR));
+        return false;
+    }
+
+    IndentingStream path;
+    path.append("./lib/libnative_%s.so", name.c_str());
+    DynamicLibrary dll(path.str().c_str());
+    if (!dll) {
+        mMachineState.stack().push(Value::error(ErrorCode::NOT_FOUND));
+        return false;
+    }
+
+    auto llf = dll.find<NativeOperations::LibraryEntryPoint>("krakatau_load");
+    if (llf == nullptr) {
+        mMachineState.stack().push(Value::error(ErrorCode::NOT_IMPLEMENTED));
+        return false;
+    }
+
+    if (auto odesc = llf()) {
+        const auto& desc = *odesc;
+
+        const bool ok = desc.load(mMachineState);
+        if (ok) mNativeLibraries.emplace(name, desc.bucket);
+        else mMachineState.stack().push(Value::error(ErrorCode::UNEXPECTED_RESULT));
+
+        return ok;
+    } else {
+         mMachineState.stack().push(Value::error(ErrorCode::UNEXPECTED_RESULT));
+        return false;
+    }
 }

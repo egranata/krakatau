@@ -21,7 +21,6 @@
 #include <machine/slots_handler.h>
 #include <value/operation.h>
 #include <stream/indenting_stream.h>
-#include <native/dll.h>
 
 MachineState::MachineState() : mNativeOperations(*this) {
     appendListener(std::make_shared<SlotsHandler>(*this));
@@ -130,17 +129,5 @@ std::shared_ptr<ValueTable> MachineState::currentSlot() const {
 }
 
 bool MachineState::loadNativeLibrary(std::string name) {
-    if (name.find('/') != std::string::npos) return false;
-    IndentingStream path;
-    path.append("./lib/libnative_%s.so", name.c_str());
-    DynamicLibrary dll(path.str().c_str());
-    if (!dll) return false;
-    auto llf = dll.find<NativeOperations::LibraryEntryPoint>("krakatau_load");
-    if (llf == nullptr) return false;
-    if (auto odesc = llf()) {
-        const auto& desc = *odesc;
-        return desc.load(*this);
-    }
-
-    return false;
+    return native_operations().loadNativeLibrary(name);
 }

@@ -70,6 +70,8 @@ class NativeOperations {
 
         using LibraryEntryPoint = std::optional<LibraryDescriptor>(*)();
 
+        bool loadNativeLibrary(const std::string&);
+
         std::shared_ptr<Bucket> find(const std::string&) const;
         std::shared_ptr<Bucket> create(const std::string&);
 
@@ -79,6 +81,7 @@ class NativeOperations {
         MachineState& mMachineState;
 
         std::unordered_map<std::string, std::shared_ptr<Bucket>> mLoaderNamespaces;
+        std::unordered_map<std::string, std::string> mNativeLibraries;
 
         friend class Bucket;
 
