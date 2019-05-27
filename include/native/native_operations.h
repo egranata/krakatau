@@ -18,33 +18,36 @@
 #define STUFF_NATIVE_NATIVEOPERATIONS
 
 #include <operation/op.h>
-#include <operation/native.h>
 #include <stream/byte_stream.h>
 #include <parser/parser.h>
 #include <string>
-#include <unordered_set>
+#include <vector>
 #include <functional>
 #include <unordered_map>
+#include <optional>
 #include <memory>
 
+class Native;
+class Value_Operation;
 class MachineState;
 
 class NativeOperations {
     public:
         NativeOperations(MachineState&);
 
-        using CreateFunction = std::function<std::shared_ptr<Native>()>;
+        class Bucket;
+        using CreateFunction = std::function<std::shared_ptr<Native>(std::shared_ptr<Bucket>)>;
 
         using NativeOperationLoader = struct {
             CreateFunction mCreator;
         };
 
-        class Bucket {
+        class Bucket : public std::enable_shared_from_this<Bucket> {
             public:
-                bool registerOperation(const std::string&, NativeOperationLoader);
-                NativeOperationLoader find(const std::string&) const;
+                bool newOperation(NativeOperationLoader);
 
                 std::string name() const;
+                std::shared_ptr<Value_Operation> find(const std::string&) const;
 
             private:
                 Bucket(const std::string&, MachineState&);
@@ -52,15 +55,25 @@ class NativeOperations {
                 MachineState& mMachineState;
 
                 std::string mName;
-                std::unordered_map<std::string, NativeOperationLoader> mLoaders;
+                std::vector<NativeOperationLoader> mLoaders;
+                std::unordered_map<std::string, std::shared_ptr<Value_Operation>> mOperations;
 
                 friend class NativeOperations;
         };
 
+        struct LibraryDescriptor {
+            std::string bucket;
+            std::vector<NativeOperationLoader> loaders;
+
+            bool load(MachineState&) const;
+        };
+
+        using LibraryEntryPoint = std::optional<LibraryDescriptor>(*)();
+
         std::shared_ptr<Bucket> find(const std::string&) const;
         std::shared_ptr<Bucket> create(const std::string&);
 
-        NativeOperationLoader getLoader(const std::string&) const;
+        std::shared_ptr<Value_Operation> getOperation(const std::string&) const;
 
     private:
         MachineState& mMachineState;

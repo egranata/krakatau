@@ -133,11 +133,14 @@ bool MachineState::loadNativeLibrary(std::string name) {
     if (name.find('/') != std::string::npos) return false;
     IndentingStream path;
     path.append("./lib/libnative_%s.so", name.c_str());
-    using LibraryLoaderFunction = bool (*)(NativeOperations&);
     DynamicLibrary dll(path.str().c_str());
     if (!dll) return false;
-    auto llf = dll.find<LibraryLoaderFunction>("krakatau_load");
+    auto llf = dll.find<NativeOperations::LibraryEntryPoint>("krakatau_load");
     if (llf == nullptr) return false;
-    auto ok = llf(native_operations());
-    return ok;
+    if (auto odesc = llf()) {
+        const auto& desc = *odesc;
+        return desc.load(*this);
+    }
+
+    return false;
 }

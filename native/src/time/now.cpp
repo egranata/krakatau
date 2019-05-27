@@ -20,7 +20,7 @@
 #include <value/number.h>
 #include <machine/state.h>
 
-Now::Now() : Native("now") {}
+Now::Now(std::shared_ptr<NativeOperations::Bucket> b) : Native(b, "now") {}
 
 Operation::Result Now::execute(MachineState& ms) {
     ms.stack().push(Value::fromNumber(::time(nullptr)));
@@ -28,5 +28,5 @@ Operation::Result Now::execute(MachineState& ms) {
 }
 
 std::shared_ptr<Operation> Now::clone() const {
-    return std::make_shared<Now>();
+    return std::make_shared<Now>(bucket());
 }

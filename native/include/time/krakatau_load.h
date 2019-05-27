@@ -16,6 +16,7 @@
 
 #pragma once
 
-class NativeOperations;
+#include <optional>
+#include <native/native_operations.h>
 
-extern "C" bool krakatau_load(NativeOperations&);
+extern "C" std::optional<NativeOperations::LibraryDescriptor> krakatau_load();

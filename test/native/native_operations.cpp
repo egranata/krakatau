@@ -18,6 +18,20 @@
 #include <gtest/gtest.h>
 #include <rtti/rtti.h>
 
+namespace {
+    class TestOp : public Native {
+    public:
+        TestOp(std::shared_ptr<NativeOperations::Bucket> b) : Native(b, "testop") {}
+
+        Operation::Result execute(MachineState&) override {
+            return Operation::Result::SUCCESS;
+        }
+        std::shared_ptr<Operation> clone() const override {
+            return std::make_shared<TestOp>(bucket());
+        }
+    };
+}
+
 TEST(NativeOperations, FindMissingBucket) {
     MachineState ms;
     NativeOperations& no = ms.native_operations();
@@ -36,28 +50,28 @@ TEST(NativeOperations, CreateOperation) {
     MachineState ms;
     NativeOperations& no = ms.native_operations();
     NativeOperations::NativeOperationLoader l = {
-            [] () -> std::shared_ptr<Native> { return nullptr; },
+            [] (std::shared_ptr<NativeOperations::Bucket> b) -> std::shared_ptr<Native> { return std::make_shared<TestOp>(b); },
     };
     auto bucket = no.create("bucket");
-    ASSERT_TRUE(bucket->registerOperation("op", l));
+    ASSERT_TRUE(bucket->newOperation(l));
 }
 
 TEST(NativeOperations, DisallowDuplicates) {
     MachineState ms;
     NativeOperations& no = ms.native_operations();
     NativeOperations::NativeOperationLoader l1 = {
-            [] () -> std::shared_ptr<Native> { return nullptr; },
+            [] (std::shared_ptr<NativeOperations::Bucket> b) -> std::shared_ptr<Native> { return std::make_shared<TestOp>(b); },
     };
 
     NativeOperations::NativeOperationLoader l2 = {
-            [] () -> std::shared_ptr<Native> { return nullptr; },
+            [] (std::shared_ptr<NativeOperations::Bucket> b) -> std::shared_ptr<Native> { return std::make_shared<TestOp>(b); },
     };
 
     auto bucket = no.create("bucket");
 
-    ASSERT_TRUE(bucket->registerOperation("op", l1));
-    ASSERT_FALSE(bucket->registerOperation("op", l1));
-    ASSERT_FALSE(bucket->registerOperation("op", l2));
+    ASSERT_TRUE(bucket->newOperation(l1));
+    ASSERT_FALSE(bucket->newOperation(l1));
+    ASSERT_FALSE(bucket->newOperation(l2));
 }
 
 TEST(NativeOperations, FindMissingOperation) {
@@ -65,27 +79,27 @@ TEST(NativeOperations, FindMissingOperation) {
     NativeOperations& no = ms.native_operations();
     auto bucket = no.create("bucket");
     auto l = bucket->find("no");
-    ASSERT_EQ(nullptr, l.mCreator);
+    ASSERT_EQ(nullptr, l);
 }
 
 TEST(NativeOperations, FindPresentOperation) {
     MachineState ms;
     NativeOperations& no = ms.native_operations();
     NativeOperations::NativeOperationLoader l = {
-            [] () -> std::shared_ptr<Native> { return nullptr; },
+            [] (std::shared_ptr<NativeOperations::Bucket> b) -> std::shared_ptr<Native> { return std::make_shared<TestOp>(b); },
     };
     auto bucket = no.create("bucket");
-    ASSERT_TRUE(bucket->registerOperation("op", l));
+    ASSERT_TRUE(bucket->newOperation(l));
 
-    auto fl = bucket->find("op");
-    ASSERT_NE(nullptr, fl.mCreator);
+    auto fl = bucket->find("testop");
+    ASSERT_NE(nullptr, fl);
 }
 
 TEST(NativeOperations, GetLoaderNoBucket) {
     MachineState ms;
     NativeOperations& no = ms.native_operations();
-    auto fl = no.getLoader("no::op");
-    ASSERT_EQ(nullptr, fl.mCreator);
+    auto fl = no.getOperation("no::op");
+    ASSERT_EQ(nullptr, fl);
 }
 
 TEST(NativeOperations, GetLoaderNoOp) {
@@ -93,32 +107,32 @@ TEST(NativeOperations, GetLoaderNoOp) {
     NativeOperations& no = ms.native_operations();
     auto bucket = no.create("bucket");
 
-    auto fl = no.getLoader("bucket::noop");
-    ASSERT_EQ(nullptr, fl.mCreator);
+    auto fl = no.getOperation("bucket::noop");
+    ASSERT_EQ(nullptr, fl);
 }
 
 TEST(NativeOperations, GetLoaderNoSeparator) {
     MachineState ms;
     NativeOperations& no = ms.native_operations();
     NativeOperations::NativeOperationLoader l = {
-            [] () -> std::shared_ptr<Native> { return nullptr; },
+            [] (std::shared_ptr<NativeOperations::Bucket> b) -> std::shared_ptr<Native> { return std::make_shared<TestOp>(b); },
     };
     auto bucket = no.create("bucket");
-    ASSERT_TRUE(bucket->registerOperation("op", l));
+    ASSERT_TRUE(bucket->newOperation(l));
 
-    auto fl = no.getLoader("bucketop");
-    ASSERT_EQ(nullptr, fl.mCreator);
+    auto fl = no.getOperation("bucketop");
+    ASSERT_EQ(nullptr, fl);
 }
 
 TEST(NativeOperations, GetLoaderOk) {
     MachineState ms;
     NativeOperations& no = ms.native_operations();
     NativeOperations::NativeOperationLoader l = {
-            [] () -> std::shared_ptr<Native> { return nullptr; },
+            [] (std::shared_ptr<NativeOperations::Bucket> b) -> std::shared_ptr<Native> { return std::make_shared<TestOp>(b); },
     };
     auto bucket = no.create("bucket");
-    ASSERT_TRUE(bucket->registerOperation("op", l));
+    ASSERT_TRUE(bucket->newOperation(l));
 
-    auto fl = no.getLoader("bucket::op");
-    ASSERT_NE(nullptr, fl.mCreator);
+    auto fl = no.getOperation("bucket::testop");
+    ASSERT_NE(nullptr, fl);
 }

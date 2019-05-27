@@ -18,6 +18,7 @@
 #include <value/operation.h>
 #include <value/value.h>
 #include <stream/indenting_stream.h>
+#include <operation/native.h>
 
 NativeOperations::NativeOperations(MachineState& ms) : mMachineState(ms) {}
 
@@ -42,28 +43,37 @@ std::string NativeOperations::Bucket::name() const {
     return mName;
 }
 
-bool NativeOperations::Bucket::registerOperation(const std::string& name, NativeOperationLoader loader) {
-    auto i = mLoaders.find(name);
-    if (i == mLoaders.end()) {
-        mLoaders.emplace(name, loader);
-        IndentingStream is;
-        is.append("%s::%s", this->name().c_str(), name.c_str());
-        return mMachineState.value_store().store(is.str(), Value::fromOperation(loader.mCreator()));
-    } else return false;
+bool NativeOperations::Bucket::newOperation(NativeOperationLoader loader) {
+    if (auto newop = loader.mCreator(shared_from_this())) {
+        mLoaders.push_back(loader);
+        auto opval = Value::fromOperation(newop);
+        mOperations.emplace(newop->name(), opval);
+        return mMachineState.value_store().store(newop->fullyQualifiedName(), opval);
+    }
+    return false;
 }
 
-NativeOperations::NativeOperationLoader NativeOperations::Bucket::find(const std::string& name) const {
-    auto i = mLoaders.find(name);
-    if (i == mLoaders.end()) return {nullptr};
+std::shared_ptr<Value_Operation> NativeOperations::Bucket::find(const std::string& name) const {
+    auto i = mOperations.find(name);
+    if (i == mOperations.end()) return nullptr;
     return i->second;
 }
 
-NativeOperations::NativeOperationLoader NativeOperations::getLoader(const std::string& name) const {
+bool NativeOperations::LibraryDescriptor::load(MachineState& ms) const {
+    if (auto bucket = ms.native_operations().create(this->bucket)) {
+        for(const auto& loader : this->loaders) {
+            if (false == bucket->newOperation(loader)) return false;
+        }
+        return true;
+    } else return false;
+}
+
+std::shared_ptr<Value_Operation> NativeOperations::getOperation(const std::string& name) const {
     auto i = name.find("::");
     if (i <= 0) return {nullptr,};
     auto bn = name.substr(0,i);
     auto ln = name.substr(i+2);
     auto bucket = find(bn);
     if (bucket) return bucket->find(ln);
-    else return {nullptr,};
+    else return nullptr;
 }

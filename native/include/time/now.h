@@ -17,10 +17,11 @@
 #pragma once
 
 #include <operation/native.h>
+#include <native/native_operations.h>
 
 class Now : public Native {
     public:
-        Now();
+        Now(std::shared_ptr<NativeOperations::Bucket>);
 
         virtual Operation::Result execute(MachineState&) override;
         std::shared_ptr<Operation> clone() const override;

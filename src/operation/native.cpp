@@ -18,7 +18,7 @@
 #include <parser/parser.h>
 #include <stream/serializer.h>
 
-Native::Native(const std::string& n) : mName(n) {}
+Native::Native(std::shared_ptr<NativeOperations::Bucket> b, const std::string& n) : mBucket(b), mName(n) {}
 
 std::shared_ptr<Operation> Native::fromByteStream(ByteStream*) {
     return nullptr;
@@ -30,7 +30,7 @@ std::shared_ptr<Operation> Native::fromParser(Parser*) {
 
 std::string Native::describe() const {
     IndentingStream is;
-    is.append("native %s", name().c_str());
+    is.append("native %s", fullyQualifiedName().c_str());
     return is.str();
 }
 
@@ -42,7 +42,7 @@ size_t Native::serialize(Serializer* s) const {
 
 bool Native::equals(std::shared_ptr<Operation> op) const {
     if (auto n = op->asClass<Native>()) {
-        return n->name() == name();
+        return n->fullyQualifiedName() == fullyQualifiedName();
     }
 
     return false;
@@ -52,3 +52,12 @@ std::string Native::name() const {
     return mName;
 }
 
+std::shared_ptr<NativeOperations::Bucket> Native::bucket() const {
+    return mBucket;
+}
+
+std::string Native::fullyQualifiedName() const {
+    IndentingStream is;
+    is.append("%s::%s", bucket()->name().c_str(), name().c_str());
+    return is.str();
+}

@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-#include <native/native_operations.h>
 #include <value/operation.h>
 #include <time/now.h>
 
-extern "C" bool krakatau_load(NativeOperations& no) {
-    auto bucket = no.create("time");
-    if (!bucket) return false;
-
-    bucket->registerOperation("now", { [] () -> std::shared_ptr<Native> {
-        return std::make_shared<Now>();
-    } });
-
-    return true;
+extern "C" std::optional<NativeOperations::LibraryDescriptor> krakatau_load() {
+    return NativeOperations::LibraryDescriptor {
+        "time",
+        {
+            {[] (std::shared_ptr<NativeOperations::Bucket> b) -> std::shared_ptr<Native> {
+                return std::make_shared<Now>(b);
+            }}
+        }
+    };
 }

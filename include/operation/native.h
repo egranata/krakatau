@@ -19,6 +19,7 @@
 
 #include <operation/op.h>
 #include <string>
+#include <native/native_operations.h>
 
 class Native : public BaseOperation<Native, OperationType::NATIVE> {
     public:
@@ -30,11 +31,14 @@ class Native : public BaseOperation<Native, OperationType::NATIVE> {
         bool equals(std::shared_ptr<Operation>) const override;
 
         std::string name() const;
+        std::string fullyQualifiedName() const;
+        std::shared_ptr<NativeOperations::Bucket> bucket() const;
 
     protected:
+        std::shared_ptr<NativeOperations::Bucket> mBucket;
         std::string mName;
 
-        Native(const std::string&);
+        Native(std::shared_ptr<NativeOperations::Bucket>, const std::string&);
 };
 
 #endif
