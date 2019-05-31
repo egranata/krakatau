@@ -18,7 +18,8 @@
 #define STUFF_VALUE_VALUETABLE
 
 #include <unordered_map>
-#include <value/value.h>
+#include <value/hasher.h>
+#include <value/equater.h>
 
 class ValueTable {
     public:
@@ -31,16 +32,6 @@ class ValueTable {
         std::shared_ptr<Value> at(size_t) const;
 
     private:
-        struct ValueHasher {
-            size_t operator()(const std::shared_ptr<Value>& val) const {
-                return val->hash();
-            }
-        };
-        struct ValueEquater {
-            bool operator()(const std::shared_ptr<Value>& a, const std::shared_ptr<Value>& b) const {
-                return a->equals(b);
-            }
-        };
         using ValueMap = std::unordered_map<std::shared_ptr<Value>, std::shared_ptr<Value>, ValueHasher, ValueEquater>;
         ValueMap mMap;
 };

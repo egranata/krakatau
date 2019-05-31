@@ -14,24 +14,16 @@
  * limitations under the License.
  */
 
-#ifndef STUFF_VALUE_VALUESET
-#define STUFF_VALUE_VALUESET
+#ifndef STUFF_VALUE_EQUATER
+#define STUFF_VALUE_EQUATER
 
-#include <unordered_set>
-#include <value/hasher.h>
-#include <value/equater.h>
+#include <stdint.h>
+#include <memory>
 
-class ValueSet {
-    public:
-        ValueSet();
-        bool add(std::shared_ptr<Value>);
-        bool find(std::shared_ptr<Value>) const;
-        size_t size() const;
-        std::shared_ptr<Value> at(size_t) const;
+class Value;
 
-    private:
-        using Set = std::unordered_set<std::shared_ptr<Value>, ValueHasher, ValueEquater>;
-        Set mSet;
+struct ValueEquater {
+    bool operator()(const std::shared_ptr<Value>& a, const std::shared_ptr<Value>& b) const;
 };
 
 #endif
