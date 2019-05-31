@@ -23,6 +23,7 @@
 #include <operation/block.h>
 #include <value/boolean.h>
 #include <machine/state.h>
+#include <value/set.h>
 
 Operation::Result Map::execute(MachineState& s) {
     if (!s.stack().hasAtLeast(2)) {

@@ -20,6 +20,7 @@
 #include <value/table.h>
 #include <machine/state.h>
 #include <value/empty.h>
+#include <value/set.h>
 
 Operation::Result At::execute(MachineState& s) {
     if (!s.stack().hasAtLeast(2)) {
@@ -34,6 +35,7 @@ Operation::Result At::execute(MachineState& s) {
     auto tpl = runtime_ptr_cast<Value_Tuple>(obj);
     auto str = runtime_ptr_cast<Value_String>(obj);
     auto tbl = runtime_ptr_cast<Value_Table>(obj);
+    auto set = runtime_ptr_cast<Value_Set>(obj);
 
     if (n && tpl) {
         if (n->value() >= tpl->size()) {
@@ -55,6 +57,17 @@ Operation::Result At::execute(MachineState& s) {
         }
         auto ch = str->value().at(n->value());
         s.stack().push(Value::fromNumber(ch));
+        return Operation::Result::SUCCESS;
+    }
+
+    if (n && set) {
+        if (n->value() >= set->size()) {
+            s.stack().push(obj);
+            s.stack().push(nval);
+            s.stack().push(Value::error(ErrorCode::OUT_OF_BOUNDS));
+            return Operation::Result::ERROR;
+        }
+        s.stack().push(set->valueAt(n->value()));
         return Operation::Result::SUCCESS;
     }
 

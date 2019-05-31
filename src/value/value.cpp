@@ -23,6 +23,7 @@
 #include <value/string.h>
 #include <value/tuple.h>
 #include <value/table.h>
+#include <value/set.h>
 #include <value/bind.h>
 #include <operation/op.h>
 #include <value/error.h>
@@ -107,4 +108,7 @@ std::shared_ptr<Value_Tuple> Value::tuple(std::initializer_list<std::shared_ptr<
 }
 std::shared_ptr<Value_Table> Value::table(std::initializer_list<std::pair<std::shared_ptr<Value>,std::shared_ptr<Value>>> elems) {
     return std::make_shared<Value_Table>(elems);
+}
+std::shared_ptr<Value_Set> Value::set(std::initializer_list<std::shared_ptr<Value>> elems) {
+    return std::make_shared<Value_Set>(elems);
 }

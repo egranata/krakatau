@@ -29,6 +29,7 @@
 #include <value/table.h>
 #include <operation/at.h>
 #include <error/error_codes.h>
+#include <value/set.h>
 #include <parser/parser.h>
 #include <value/bind.h>
 #include <operation/bind.h>
@@ -103,9 +104,11 @@ TEST(Value, Print) {
     auto tpl_val = Value::tuple({Value::empty(), Value::fromString("hello"), Value::fromNumber(12)});
     ASSERT_EQ("(empty, hello, 12)", tpl_val->describe());
     ASSERT_EQ("string", Value::type(ValueType::STRING)->describe());
-    auto tbl_val =Value::table({{Value::fromNumber(123), Value::fromNumber(42)}});
+    auto tbl_val = Value::table({{Value::fromNumber(123), Value::fromNumber(42)}});
     ASSERT_EQ("[123 -> 42]", tbl_val->describe());
     ASSERT_EQ("bind(empty, dup)", Value::fromBind(std::make_shared<PartialBind>(Value::empty(), std::make_shared<Dup>()))->describe());
+    auto set_val = Value::set({Value::empty()});
+    ASSERT_EQ("[empty]", set_val->describe());
 }
 
 TEST(Value, String) {
@@ -205,4 +208,24 @@ TEST(Value, Bind) {
     auto val_bind = Value::fromBind(std::make_shared<PartialBind>(Value::empty(), std::make_shared<Dup>()));
     ASSERT_TRUE(val_bind->isOfClass<Value_Operation>());
     ASSERT_TRUE(val_bind->equals(val_bind->clone()));
+}
+
+TEST(Value, Set) {
+    auto set = Value::set({});
+    ASSERT_EQ(0, set->size());
+    set->append(Value::fromNumber(123))->append(Value::fromNumber(42));
+    ASSERT_EQ(2, set->size());
+    ASSERT_TRUE(set->valueAt(0)->isOfClass<Value_Number>());
+    ASSERT_TRUE(set->find(Value::fromNumber(123)));
+    ASSERT_FALSE(set->find(Value::fromNumber(555)));
+    set->append(Value::fromNumber(456));
+    ASSERT_EQ(3, set->size());
+    ASSERT_TRUE(set->find(Value::fromNumber(123)));
+    ASSERT_TRUE(set->find(Value::fromNumber(456)));
+
+    Parser p("set [number 1, number 2, number 3]");
+    auto v = p.parseValuePayload();
+    ASSERT_NE(nullptr, v);
+    ASSERT_TRUE(v->isOfClass<Value_Set>());
+    ASSERT_TRUE(v->equals(v->clone()));
 }

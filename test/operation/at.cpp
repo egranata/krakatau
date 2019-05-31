@@ -23,6 +23,7 @@
 #include <value/error.h>
 #include <value/string.h>
 #include <value/table.h>
+#include <value/set.h>
 #include <value/empty.h>
 
 TEST(At, ZeroArgs) {
@@ -125,4 +126,15 @@ TEST(At, MissingTable) {
     ASSERT_EQ(Operation::Result::SUCCESS, at.execute(s));
     ASSERT_EQ(1, s.stack().size());
     ASSERT_TRUE(s.stack().pop()->isOfClass<Value_Empty>());
+}
+
+TEST(At, Set) {
+    MachineState s;
+    At at;
+    auto val = Value::set({Value::fromBoolean(false)});
+    s.stack().push(val);
+    s.stack().push(Value::fromNumber(0));
+    ASSERT_EQ(Operation::Result::SUCCESS, at.execute(s));
+    ASSERT_EQ(1, s.stack().size());
+    ASSERT_TRUE(s.stack().peek()->equals(Value::fromBoolean(false)));
 }

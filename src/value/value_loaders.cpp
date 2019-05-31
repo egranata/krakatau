@@ -22,6 +22,7 @@
 #include <value/error.h>
 #include <value/number.h>
 #include <value/operation.h>
+#include <value/set.h>
 #include <value/string.h>
 #include <value/table.h>
 #include <value/tuple.h>

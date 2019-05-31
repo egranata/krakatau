@@ -35,6 +35,7 @@
 #include <value/table.h>
 #include <value/bind.h>
 #include <value/type.h>
+#include <value/set.h>
 
 TEST(ValueSerialize, Boolean) {
     auto val = Value::fromBoolean(true);
@@ -144,4 +145,17 @@ TEST(ValueSerialize, Bind) {
     auto dv = Value::fromByteStream(bs.get());
     ASSERT_NE(nullptr, dv);
     ASSERT_TRUE(val->equals(dv));
+}
+
+TEST(ValueSerialize, Set) {
+    auto val = Value::set({ Value::fromString("one two three"), Value::fromNumber(457) });
+    Serializer s;
+    val->serialize(&s);
+    auto bs = ByteStream::anonymous(s.data(), s.size());
+    auto dv = Value::fromByteStream(bs.get());
+    ASSERT_NE(nullptr, dv);
+    ASSERT_TRUE(val->isOfClass<Value_Set>());
+    ASSERT_TRUE(val->equals(dv));
+    ASSERT_EQ(2, val->size());
+    ASSERT_EQ(runtime_ptr_cast<Value_Set>(dv)->size(), val->size());
 }

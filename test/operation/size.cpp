@@ -23,6 +23,7 @@
 #include <value/string.h>
 #include <value/table.h>
 #include <value/empty.h>
+#include <value/set.h>
 
 TEST(Size, EmptyStack) {
     MachineState s;
@@ -76,4 +77,14 @@ TEST(Size, Table) {
     ASSERT_EQ(Operation::Result::SUCCESS, sz.execute(s));
     ASSERT_TRUE(s.stack().peek()->isOfClass<Value_Number>());
     ASSERT_EQ(2, runtime_ptr_cast<Value_Number>(s.stack().pop())->value());
+}
+
+TEST(Size, Set) {
+    MachineState s;
+    Size sz;
+    auto val = Value::set({Value::empty(), Value::fromBoolean(false), Value::error(ErrorCode::NOT_FOUND)});
+    s.stack().push(val);
+    ASSERT_EQ(Operation::Result::SUCCESS, sz.execute(s));
+    ASSERT_TRUE(s.stack().peek()->isOfClass<Value_Number>());
+    ASSERT_EQ(3, runtime_ptr_cast<Value_Number>(s.stack().pop())->value());
 }

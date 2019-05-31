@@ -19,6 +19,7 @@
 #include <value/table.h>
 #include <machine/state.h>
 #include <value/number.h>
+#include <value/set.h>
 
 Operation::Result Size::execute(MachineState& s) {
     if (!s.stack().hasAtLeast(1)) {
@@ -30,12 +31,15 @@ Operation::Result Size::execute(MachineState& s) {
     auto tpl = runtime_ptr_cast<Value_Tuple>(value);
     auto str = runtime_ptr_cast<Value_String>(value);
     auto tbl = runtime_ptr_cast<Value_Table>(value);
+    auto set = runtime_ptr_cast<Value_Set>(value);
     if (tpl) {
         s.stack().push(Value::fromNumber(tpl->size()));
     } else if (str) {
         s.stack().push(Value::fromNumber(str->value().size()));
     } else if (tbl) {
         s.stack().push(Value::fromNumber(tbl->size()));
+    } else if (set) {
+        s.stack().push(Value::fromNumber(set->size()));
     } else {
         s.stack().push(Value::fromNumber(1));
     }

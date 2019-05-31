@@ -31,6 +31,7 @@
 #include <value/operation.h>
 #include <operation/resetstack.h>
 #include <value/type.h>
+#include <value/set.h>
 #include <value/string.h>
 #include <value/table.h>
 #include <stream/shared_file.h>
@@ -493,4 +494,22 @@ TEST(Parser, PreviousTokens) {
     ASSERT_EQ(Token(TokenKind::KW_VALUE, "value"), p.parsedTokenAt(2));
     ASSERT_FALSE(p.next());
     ASSERT_EQ(3, p.parsedTokensCount());
+}
+
+TEST(Parser, ParseSet) {
+    Parser p("value foobar set [number 123, boolean true]");
+    auto value = p.parseValue();
+    ASSERT_NE(nullptr, value);
+    ASSERT_TRUE(value->value->isOfClass<Value_Set>());
+    auto tbl = runtime_ptr_cast<Value_Set>(value->value);
+    ASSERT_NE(nullptr, tbl);
+    ASSERT_EQ(2, tbl->size());
+    ASSERT_TRUE(tbl->find(Value::fromBoolean(true)));
+    ASSERT_FALSE(tbl->find(Value::fromBoolean(false)));
+}
+
+TEST(Parser, ParseInvalidSet) {
+    Parser p("value foobar set [number 123 -> boolean false]");
+    auto value = p.parseValue();
+    ASSERT_EQ(nullptr, value);
 }
