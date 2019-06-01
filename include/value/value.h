@@ -54,6 +54,7 @@ class Value : public std::enable_shared_from_this<Value> {
         static std::shared_ptr<Value_Operation> fromBlock(std::shared_ptr<Block>);
         static std::shared_ptr<Value_Operation> fromOperation(std::shared_ptr<Operation>);
         static std::shared_ptr<Value_String> fromString(const std::string&);
+        static std::shared_ptr<Value_String> fromString(const std::u32string&);
         static std::shared_ptr<Value_Error> error(ErrorCode);
         static std::shared_ptr<Value_Type> type(ValueType);
         static std::shared_ptr<Value_Operation> fromBind(std::shared_ptr<PartialBind>);

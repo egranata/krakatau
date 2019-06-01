@@ -33,6 +33,8 @@
 #include <operation/bind.h>
 #include <parser/parser.h>
 #include <value/value_loader.h>
+#include <locale>
+#include <codecvt>
 
 Value::Value() = default;
 Value::~Value() = default;
@@ -61,8 +63,13 @@ std::shared_ptr<Value_Operation> Value::fromOperation(std::shared_ptr<Operation>
     return std::make_shared<Value_Operation>(b);
 }
 
-std::shared_ptr<Value_String> Value::fromString(const std::string& s) {
+std::shared_ptr<Value_String> Value::fromString(const std::u32string& s) {
     return std::make_shared<Value_String>(s);
+}
+
+std::shared_ptr<Value_String> Value::fromString(const std::string& s) {
+    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> convert;
+    return std::make_shared<Value_String>(convert.from_bytes(s));
 }
 
 std::shared_ptr<Value_Error> Value::error(ErrorCode ec) {

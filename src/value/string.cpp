@@ -19,15 +19,22 @@
 #include <parser/parser.h>
 #include <string>
 #include <functional>
+#include <locale>
+#include <codecvt>
 
-Value_String::Value_String(const std::string& s) : mValue(s) {}
+Value_String::Value_String(const std::u32string& s) : mValue(s) {}
 
-std::string Value_String::value() const {
+std::u32string Value_String::value() const {
     return mValue;
 }
 
+std::string Value_String::utf8() const {
+    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> convert;
+    return convert.to_bytes(value());
+}
+
 std::string Value_String::describe() const {
-    return value();
+    return utf8();
 }
 
 bool Value_String::equals(std::shared_ptr<Value> v) const {
@@ -38,7 +45,7 @@ bool Value_String::equals(std::shared_ptr<Value> v) const {
 }
 
 size_t Value_String::serialize(Serializer* s) {
-    const auto& val(value());
+    const auto& val(utf8());
     const auto sz = val.size();
 
     size_t wr = s->writeNumber(MARKER, 1);
@@ -62,7 +69,7 @@ std::shared_ptr<Value> Value_String::fromParser(Parser* p) {
 }
 
 size_t Value_String::hash() const {
-    return std::hash<std::string>()(value());
+    return std::hash<std::u32string>()(value());
 }
 
 std::shared_ptr<Value> Value_String::clone() const {

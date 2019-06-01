@@ -27,8 +27,9 @@ class Value_String : public Value {
         static std::shared_ptr<Value> fromByteStream(ByteStream* bs);
         static std::shared_ptr<Value> fromParser(Parser*);
 
-        Value_String(const std::string&);
-        std::string value() const;
+        Value_String(const std::u32string&);
+        std::u32string value() const;
+        std::string utf8() const;
         virtual std::string describe() const override;
         bool equals(std::shared_ptr<Value>) const override;
         size_t serialize(Serializer*) override;
@@ -38,7 +39,7 @@ class Value_String : public Value {
 
         VALUE_SUBCLASS(ValueType::STRING, Value);
     private:
-        std::string mValue;
+        std::u32string mValue;
 };
 
 #endif

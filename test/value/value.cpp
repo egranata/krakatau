@@ -114,7 +114,7 @@ TEST(Value, Print) {
 TEST(Value, String) {
     auto v(Value::fromString("hello world"));
     ASSERT_TRUE(v->isOfClass<Value_String>());
-    ASSERT_EQ("hello world", runtime_ptr_cast<Value_String>(v)->value());
+    ASSERT_EQ(U"hello world", runtime_ptr_cast<Value_String>(v)->value());
 
     ASSERT_FALSE(v->equals(Value::fromBoolean(true)));
     ASSERT_FALSE(v->equals(Value::fromString("   abc   ")));
@@ -131,7 +131,7 @@ TEST(Value, StringFromParserIsUnquoted) {
     auto val = nv->value;
     ASSERT_TRUE(val->isOfClass<Value_String>());
     auto vs = val->asClass<Value_String>();
-    ASSERT_EQ("hello world", vs->value());
+    ASSERT_EQ(U"hello world", vs->value());
 }
 
 TEST(Value, Error) {

@@ -32,7 +32,7 @@ Operation::Result Parse::execute(MachineState& s) {
     Value_String* str = runtime_ptr_cast<Value_String>(val);
 
     if (str) {
-        Parser p(str->value());
+        Parser p(str->utf8());
         auto res = p.parseValuePayload();
         if (!res) {
             s.stack().push(val);

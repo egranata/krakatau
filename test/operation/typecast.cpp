@@ -35,7 +35,7 @@ TEST(Typecast, BooleanToString) {
     ms.execute();
     ASSERT_EQ(1, ms.stack().size());
     ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_String>());
-    ASSERT_EQ("true", runtime_ptr_cast<Value_String>(ms.stack().peek())->value());
+    ASSERT_EQ(U"true", runtime_ptr_cast<Value_String>(ms.stack().peek())->value());
 }
 
 TEST(Typecast, BooleanToSelf) {
