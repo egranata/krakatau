@@ -20,8 +20,9 @@
 #include <value/value.h>
 #include <value/value_set.h>
 #include <initializer_list>
+#include <value/iterable.h>
 
-class Value_Set : public Value {
+class Value_Set : public Value, public IterableValue {
     public:
         static constexpr uint8_t MARKER = 'U';
 
@@ -31,8 +32,9 @@ class Value_Set : public Value {
         Value_Set();
         Value_Set(std::initializer_list<std::shared_ptr<Value>>);
         Value_Set *append(std::shared_ptr<Value>);
-        size_t size() const;
+        size_t size() const override;
         std::shared_ptr<Value> valueAt(size_t i) const;
+        std::shared_ptr<Value> at(size_t i) const override { return valueAt(i); }
         bool find(std::shared_ptr<Value>) const;
         virtual std::string describe() const override;
         bool equals(std::shared_ptr<Value>) const override;

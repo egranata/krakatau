@@ -21,8 +21,9 @@
 #include <memory>
 #include <vector>
 #include <initializer_list>
+#include <value/iterable.h>
 
-class Value_Tuple : public Value {
+class Value_Tuple : public Value, public IterableValue {
     public:
         static constexpr uint8_t MARKER = '(';
 
@@ -32,8 +33,8 @@ class Value_Tuple : public Value {
         Value_Tuple();
         Value_Tuple(std::initializer_list<std::shared_ptr<Value>>);
         Value_Tuple *append(std::shared_ptr<Value>);
-        size_t size() const;
-        std::shared_ptr<Value> at(size_t i) const;
+        size_t size() const override;
+        std::shared_ptr<Value> at(size_t i) const override;
         virtual std::string describe() const override;
         bool equals(std::shared_ptr<Value>) const override;
         size_t serialize(Serializer*) override;

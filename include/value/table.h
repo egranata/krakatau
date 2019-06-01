@@ -21,8 +21,9 @@
 #include <value/value_table.h>
 #include <initializer_list>
 #include <utility>
+#include <value/iterable.h>
 
-class Value_Table : public Value {
+class Value_Table : public Value, public IterableValue {
     public:
         static constexpr uint8_t MARKER = '[';
 
@@ -32,10 +33,11 @@ class Value_Table : public Value {
         Value_Table();
         Value_Table(std::initializer_list<std::pair<std::shared_ptr<Value>,std::shared_ptr<Value>>>);
         Value_Table *append(std::shared_ptr<Value>, std::shared_ptr<Value>);
-        size_t size() const;
+        size_t size() const override;
         std::shared_ptr<Value> pairAt(size_t i) const;
         std::shared_ptr<Value> keyAt(size_t i) const;
         std::shared_ptr<Value> valueAt(size_t i) const;
+        std::shared_ptr<Value> at(size_t i) const override { return pairAt(i); }
         std::shared_ptr<Value> find(std::shared_ptr<Value>, std::shared_ptr<Value>) const;
         virtual std::string describe() const override;
         bool equals(std::shared_ptr<Value>) const override;
