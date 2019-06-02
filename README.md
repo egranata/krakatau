@@ -14,9 +14,10 @@ A value is an immutable box that contains one specific kind of datum.
 
 Values can be of one of the following types:
 
-* number (64-bit);
+* number (unsigned, 64-bit);
 * boolean;
-* string;
+* string (UTF-32 encoded);
+* character (a UTF-32 Unicode codepoint);
 * tuple (an indexable list of other values);
 * table (a key-value store of other values);
 * operation (any Krakatau instruction);

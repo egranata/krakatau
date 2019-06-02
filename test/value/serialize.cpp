@@ -34,6 +34,7 @@
 #include <value/string.h>
 #include <value/table.h>
 #include <value/bind.h>
+#include <value/character.h>
 #include <value/type.h>
 #include <value/set.h>
 
@@ -45,6 +46,17 @@ TEST(ValueSerialize, Boolean) {
     auto dv = Value::fromByteStream(bs.get());
     ASSERT_NE(nullptr, dv);
     ASSERT_TRUE(dv->isOfClass<Value_Boolean>());
+    ASSERT_TRUE(val->equals(dv));
+}
+
+TEST(ValueSerialize, Character) {
+    auto val = Value::fromCharacter(0x1234);
+    Serializer s;
+    val->serialize(&s);
+    auto bs = ByteStream::anonymous(s.data(), s.size());
+    auto dv = Value::fromByteStream(bs.get());
+    ASSERT_NE(nullptr, dv);
+    ASSERT_TRUE(dv->isOfClass<Value_Character>());
     ASSERT_TRUE(val->equals(dv));
 }
 

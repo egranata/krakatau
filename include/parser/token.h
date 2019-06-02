@@ -32,6 +32,7 @@ enum class TokenKind {
     IDENTIFIER,
     NUMBER,
     BOOLEAN,
+    UNICODE,
     STRING,
     SEMICOLON,
     KW_SLOTS,

@@ -32,6 +32,7 @@
 #include <operation/resetstack.h>
 #include <value/type.h>
 #include <value/set.h>
+#include <value/character.h>
 #include <value/string.h>
 #include <value/table.h>
 #include <stream/shared_file.h>
@@ -159,6 +160,30 @@ TEST(Parser, ParseBoolean) {
 
 TEST(Parser, ParseIllegalBoolean) {
     Parser p("value foobar boolean 123");
+    auto value = p.parseValue();
+    ASSERT_EQ(nullptr, value);
+}
+
+TEST(Parser, ParseNumericCharacter) {
+    Parser p("value foobar character 1257");
+    auto value = p.parseValue();
+    ASSERT_NE(nullptr, value);
+    ASSERT_EQ(value->name, "foobar");
+    ASSERT_TRUE(value->value->isOfClass<Value_Character>());
+    ASSERT_EQ(1257, value->value->asClass<Value_Character>()->value());
+}
+
+TEST(Parser, ParseUnicodeCharacter) {
+    Parser p("value foobar character \\uab15");
+    auto value = p.parseValue();
+    ASSERT_NE(nullptr, value);
+    ASSERT_EQ(value->name, "foobar");
+    ASSERT_TRUE(value->value->isOfClass<Value_Character>());
+    ASSERT_EQ(0xab15, value->value->asClass<Value_Character>()->value());
+}
+
+TEST(Parser, ParseIllegalCharacter) {
+    Parser p("value foobar character false");
     auto value = p.parseValue();
     ASSERT_EQ(nullptr, value);
 }

@@ -42,6 +42,7 @@ class Value_Boolean;
 class Value_Tuple;
 class Value_Table;
 class Value_Type;
+class Value_Character;
 class Value_Error;
 class Value_Set;
 class Value_String;
@@ -55,6 +56,7 @@ class Value : public std::enable_shared_from_this<Value> {
         static std::shared_ptr<Value_Operation> fromOperation(std::shared_ptr<Operation>);
         static std::shared_ptr<Value_String> fromString(const std::string&);
         static std::shared_ptr<Value_String> fromString(const std::u32string&);
+        static std::shared_ptr<Value_Character> fromCharacter(char32_t);
         static std::shared_ptr<Value_Error> error(ErrorCode);
         static std::shared_ptr<Value_Type> type(ValueType);
         static std::shared_ptr<Value_Operation> fromBind(std::shared_ptr<PartialBind>);

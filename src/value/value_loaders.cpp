@@ -18,6 +18,7 @@
 #include <value/bind.h>
 #include <value/block.h>
 #include <value/boolean.h>
+#include <value/character.h>
 #include <value/empty.h>
 #include <value/error.h>
 #include <value/number.h>

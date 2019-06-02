@@ -25,6 +25,7 @@
 #include <value/table.h>
 #include <value/set.h>
 #include <value/bind.h>
+#include <value/character.h>
 #include <operation/op.h>
 #include <value/error.h>
 #include <value/type.h>
@@ -65,6 +66,10 @@ std::shared_ptr<Value_Operation> Value::fromOperation(std::shared_ptr<Operation>
 
 std::shared_ptr<Value_String> Value::fromString(const std::u32string& s) {
     return std::make_shared<Value_String>(s);
+}
+
+std::shared_ptr<Value_Character> Value::fromCharacter(char32_t c) {
+    return std::make_shared<Value_Character>(c);
 }
 
 std::shared_ptr<Value_String> Value::fromString(const std::string& s) {

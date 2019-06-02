@@ -23,6 +23,7 @@
 #include <value/operation.h>
 #include <operation/dup.h>
 #include <value/error.h>
+#include <value/character.h>
 #include <value/tuple.h>
 #include <value/type.h>
 #include <rtti/rtti.h>
@@ -53,6 +54,19 @@ TEST(Value, Empty) {
 
     ASSERT_FALSE(v->equals(Value::fromNumber(4)));
     ASSERT_TRUE(v->equals(Value::empty()));
+
+    ASSERT_TRUE(v->equals(v->clone()));
+}
+
+TEST(Value, Character) {
+    auto v(Value::fromCharacter('A'));
+    ASSERT_TRUE(v->isOfClass<Value_Character>());
+    ASSERT_EQ('A', runtime_ptr_cast<Value_Character>(v)->value());
+
+    ASSERT_FALSE(v->equals(Value::fromBoolean(true)));
+    ASSERT_FALSE(v->equals(Value::fromNumber(1221)));
+    ASSERT_FALSE(v->equals(Value::fromCharacter('B')));
+    ASSERT_TRUE(v->equals(Value::fromCharacter('A')));
 
     ASSERT_TRUE(v->equals(v->clone()));
 }
@@ -99,6 +113,7 @@ TEST(Value, Print) {
     ASSERT_EQ("4556", Value::fromNumber(4556)->describe());
     ASSERT_EQ("empty", Value::empty()->describe());
     ASSERT_EQ("true", Value::fromBoolean(true)->describe());
+    ASSERT_EQ("0x65", Value::fromCharacter(0x65)->describe());
     ASSERT_EQ("false", Value::fromBoolean(false)->describe());
     ASSERT_EQ(" hello ", Value::fromString(" hello ")->describe());
     auto tpl_val = Value::tuple({Value::empty(), Value::fromString("hello"), Value::fromNumber(12)});

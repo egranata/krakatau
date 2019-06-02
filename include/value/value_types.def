@@ -13,12 +13,13 @@ VALUE_TYPE(OPERATION, operation, "operation", 9, Value_Operation)
 VALUE_TYPE(TABLE, table, "table", 10, Value_Table)
 VALUE_TYPE(BIND, bind, "bind", 11, Value_Bind)
 VALUE_TYPE(SET, set, "set", 12, Value_Set)
+VALUE_TYPE(CHARACTER, character, "character", 13, Value_Character)
 #undef VALUE_TYPE
 #endif
 
 #ifdef VALUE_TYPE_ALIAS
 VALUE_TYPE_ALIAS(NONE, 0)
 VALUE_TYPE_ALIAS(MIN_VALUE, NONE)
-VALUE_TYPE_ALIAS(MAX_VALUE, SET)
+VALUE_TYPE_ALIAS(MAX_VALUE, CHARACTER)
 #undef VALUE_TYPE_ALIAS
 #endif

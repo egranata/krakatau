@@ -23,13 +23,14 @@ TEST(Lexer, LexString) {
         {TokenKind::STRING, "test string"},
         {TokenKind::IDENTIFIER, "_is_a_valid_prefix"},
         {TokenKind::IDENTIFIER, "$he:llo"},
+        {TokenKind::UNICODE, "ab01"},
         {TokenKind::NUMBER, "123456"},
         {TokenKind::IDENTIFIER, "hello::1234"},
         {TokenKind::KW_SLOTS, "slots"},
     };
     yyscan_t scanner;
     yylex_init(&scanner);
-    YY_BUFFER_STATE buf = yy_scan_string("slots hello::1234 123456 $he:llo _is_a_valid_prefix \"test string\"", scanner);
+    YY_BUFFER_STATE buf = yy_scan_string("slots hello::1234 123456 \\uab01 $he:llo _is_a_valid_prefix \"test string\"", scanner);
     while(!expected.empty()) {
         auto parsed = yylex(scanner);
         ASSERT_NE(parsed, nullptr);

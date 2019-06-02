@@ -23,12 +23,16 @@
 
 %option nounput reentrant
 
+HDIGIT	[0-9A-Fa-f]
 DIGIT	[0-9] 
 ALPHA	[a-zA-Z_$] 
 IDENT	[0-9a-zA-Z$_:]
 %%
 {DIGIT}+        {
                     return std::make_unique<Token>(TokenKind::NUMBER, yytext);
+                }
+\\u{HDIGIT}+    {
+                    return std::make_unique<Token>(TokenKind::UNICODE, yytext+2);
                 }
 value           {
                     return std::make_unique<Token>(TokenKind::KW_VALUE, yytext);
