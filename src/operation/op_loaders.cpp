@@ -27,6 +27,7 @@
 #include <operation/equals.h>
 #include <operation/exec.h>
 #include <operation/filter.h>
+#include <operation/find.h>
 #include <operation/halt.h>
 #include <operation/iftrue.h>
 #include <operation/load.h>
