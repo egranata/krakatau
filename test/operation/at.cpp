@@ -14,6 +14,7 @@
 
 #include <machine/state.h>
 #include <operation/at.h>
+#include <value/character.h>
 #include <value/value.h>
 #include <value/tuple.h>
 #include <value/number.h>
@@ -99,7 +100,7 @@ TEST(At, ValidString) {
     s.stack().push(Value::fromNumber(2));
     ASSERT_EQ(Operation::Result::SUCCESS, at.execute(s));
     ASSERT_EQ(1, s.stack().size());
-    ASSERT_EQ(3, runtime_ptr_cast<Value_Number>(s.stack().pop())->value());
+    ASSERT_EQ(3, runtime_ptr_cast<Value_Character>(s.stack().pop())->value());
 }
 
 TEST(At, Table) {
@@ -107,25 +108,27 @@ TEST(At, Table) {
     At at;
     auto val = Value::table({});
     auto tbl = runtime_ptr_cast<Value_Table>(val);
-    tbl->append(Value::fromBoolean(false), Value::fromNumber(123));
-    tbl->append(Value::fromBoolean(true), Value::fromBoolean(456));
+    tbl->append(Value::fromBoolean(true), Value::fromNumber(456));
     s.stack().push(val);
-    s.stack().push(Value::fromBoolean(false));
+    s.stack().push(Value::fromNumber(0));
     ASSERT_EQ(Operation::Result::SUCCESS, at.execute(s));
     ASSERT_EQ(1, s.stack().size());
-    ASSERT_EQ(123, runtime_ptr_cast<Value_Number>(s.stack().pop())->value());
+    ASSERT_TRUE(s.stack().peek()->isOfClass<Value_Tuple>());
+    auto tpl = s.stack().peek()->asClass<Value_Tuple>();
+    ASSERT_EQ(2, tpl->size());
+    ASSERT_TRUE(Value::fromBoolean(true)->equals(tpl->at(0)));
+    ASSERT_TRUE(Value::fromNumber(456)->equals(tpl->at(1)));
 }
 
 TEST(At, MissingTable) {
     MachineState s;
     At at;
     auto val = Value::table({ {Value::fromBoolean(false), Value::fromNumber(123)} });
-    runtime_ptr_cast<Value_Table>(val)->append(Value::fromBoolean(true), Value::fromBoolean(456));
+    val->append(Value::fromBoolean(true), Value::fromBoolean(456));
     s.stack().push(val);
-    s.stack().push(Value::fromString("false"));
-    ASSERT_EQ(Operation::Result::SUCCESS, at.execute(s));
-    ASSERT_EQ(1, s.stack().size());
-    ASSERT_TRUE(s.stack().pop()->isOfClass<Value_Empty>());
+    s.stack().push(Value::fromNumber(12));
+    ASSERT_EQ(Operation::Result::ERROR, at.execute(s));
+    ASSERT_EQ(ErrorCode::OUT_OF_BOUNDS, runtime_ptr_cast<Value_Error>(s.stack().peek())->value());
 }
 
 TEST(At, Set) {

@@ -17,6 +17,7 @@
 #include <value/tuple.h>
 #include <value/number.h>
 #include <value/string.h>
+#include <value/iterable.h>
 #include <value/table.h>
 #include <machine/state.h>
 #include <value/empty.h>
@@ -32,52 +33,22 @@ Operation::Result At::execute(MachineState& s) {
     auto obj = s.stack().pop();
 
     auto n = runtime_ptr_cast<Value_Number>(nval);
-    auto tpl = runtime_ptr_cast<Value_Tuple>(obj);
-    auto str = runtime_ptr_cast<Value_String>(obj);
-    auto tbl = runtime_ptr_cast<Value_Table>(obj);
-    auto set = runtime_ptr_cast<Value_Set>(obj);
 
-    if (n && tpl) {
-        if (n->value() >= tpl->size()) {
+    auto iter = IterableValue::asIterable(obj);
+
+    if (n && iter) {
+        if (n->value() >= iter->size()) {
             s.stack().push(obj);
             s.stack().push(nval);
             s.stack().push(Value::error(ErrorCode::OUT_OF_BOUNDS));
             return Operation::Result::ERROR;
         }
-        s.stack().push(tpl->at(n->value()));
+        s.stack().push(iter->at(n->value()));
         return Operation::Result::SUCCESS;
+    } else {
+        s.stack().push(obj);
+        s.stack().push(nval);
+        s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
+        return Operation::Result::ERROR;
     }
-
-    if (n && str) {
-        if (n->value() >= str->value().size()) {
-            s.stack().push(obj);
-            s.stack().push(nval);
-            s.stack().push(Value::error(ErrorCode::OUT_OF_BOUNDS));
-            return Operation::Result::ERROR;
-        }
-        auto ch = str->value().at(n->value());
-        s.stack().push(Value::fromNumber(ch));
-        return Operation::Result::SUCCESS;
-    }
-
-    if (n && set) {
-        if (n->value() >= set->size()) {
-            s.stack().push(obj);
-            s.stack().push(nval);
-            s.stack().push(Value::error(ErrorCode::OUT_OF_BOUNDS));
-            return Operation::Result::ERROR;
-        }
-        s.stack().push(set->valueAt(n->value()));
-        return Operation::Result::SUCCESS;
-    }
-
-    if (tbl) {
-        s.stack().push(tbl->find(nval, Value::empty()));
-        return Operation::Result::SUCCESS;
-    }
-
-    s.stack().push(obj);
-    s.stack().push(nval);
-    s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
-    return Operation::Result::ERROR;
 }
