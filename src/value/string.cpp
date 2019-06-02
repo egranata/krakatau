@@ -21,6 +21,8 @@
 #include <functional>
 #include <locale>
 #include <codecvt>
+#include <value/empty.h>
+#include <value/character.h>
 
 Value_String::Value_String(const std::u32string& s) : mValue(s) {}
 
@@ -74,4 +76,13 @@ size_t Value_String::hash() const {
 
 std::shared_ptr<Value> Value_String::clone() const {
     return Value::fromString(value());
+}
+
+size_t Value_String::size() const {
+    return value().size();
+}
+
+std::shared_ptr<Value> Value_String::at(size_t i) const {
+    if (i >= size()) return Value::empty();
+    return Value::fromCharacter(value().at(i));
 }

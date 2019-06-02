@@ -19,8 +19,9 @@
 
 #include <value/value.h>
 #include <string>
+#include <value/iterable.h>
 
-class Value_String : public Value {
+class Value_String : public Value, public IterableValue {
     public:
         static constexpr uint8_t MARKER = '$';
 
@@ -33,6 +34,9 @@ class Value_String : public Value {
         virtual std::string describe() const override;
         bool equals(std::shared_ptr<Value>) const override;
         size_t serialize(Serializer*) override;
+
+        size_t size() const override;
+        std::shared_ptr<Value> at(size_t) const override;
 
         size_t hash() const override;
         std::shared_ptr<Value> clone() const override;

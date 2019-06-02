@@ -18,6 +18,8 @@
 #include <value/empty.h>
 #include <value/number.h>
 #include <gtest/gtest.h>
+#include <value/string.h>
+#include <value/character.h>
 #include <value/boolean.h>
 #include <value/iterator.h>
 
@@ -40,11 +42,13 @@ TEST(Iterable, Size) {
 }
 
 TEST(Iterable, Elements) {
-    auto tpl = Value::tuple({Value::empty(), Value::fromBoolean(false)});
+    auto tpl = Value::fromString("XY");
+    auto c0 = Value::fromCharacter('X');
+    auto c1 = Value::fromCharacter('Y');
     auto itr = IterableValue::asIterable(tpl);
     ASSERT_NE(nullptr, itr);
-    ASSERT_TRUE(tpl->at(0)->equals(itr->at(0)));
-    ASSERT_TRUE(tpl->at(1)->equals(itr->at(1)));
+    ASSERT_TRUE(c0->equals(itr->at(0)));
+    ASSERT_TRUE(c1->equals(itr->at(1)));
 }
 
 TEST(Iterable, Equality) {
