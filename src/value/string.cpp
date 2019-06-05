@@ -23,6 +23,7 @@
 #include <codecvt>
 #include <value/empty.h>
 #include <value/character.h>
+#include <rtti/visitor.h>
 
 Value_String::Value_String(const std::u32string& s) : mValue(s) {}
 
@@ -85,4 +86,27 @@ size_t Value_String::size() const {
 std::shared_ptr<Value> Value_String::at(size_t i) const {
     if (i >= size()) return Value::empty();
     return Value::fromCharacter(value().at(i));
+}
+
+Value_String* Value_String::append(char32_t n) {
+    mValue += n;
+    return this;
+}
+
+Value_String* Value_String::append(const std::u32string& s) {
+    mValue += s;
+    return this;
+}
+
+AppendableValue<Value_String*, std::shared_ptr<Value>>::RetType Value_String::tryAppend(std::shared_ptr<Value> val) {
+    if (auto chr = val->asClass<Value_Character>()) return append(chr->value());
+    else if (auto str = val->asClass<Value_String>()) return append(str->value());
+    else return ErrorCode::TYPE_MISMATCH;
+}
+
+Appendable::RetType Value_String::appendValue(std::shared_ptr<Value> val) {
+    return std::visit(overloaded {
+        [](Value_String* in) -> Appendable::RetType { return in; },
+        [](ErrorCode in) -> Appendable::RetType { return in; },
+    }, tryAppend(val));
 }

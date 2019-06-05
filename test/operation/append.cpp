@@ -18,6 +18,7 @@
 #include <value/tuple.h>
 #include <value/number.h>
 #include <gtest/gtest.h>
+#include <value/character.h>
 #include <value/boolean.h>
 #include <rtti/rtti.h>
 #include <value/error.h>
@@ -146,4 +147,47 @@ TEST(Append, ParseAndSerialize) {
     ASSERT_TRUE(dsz->isOfClass<Value_Operation>());
     ASSERT_TRUE(dsz->asClass<Value_Operation>()->value()->isOfClass<Append>());
     ASSERT_TRUE(dsz->equals(op->value));
+}
+
+TEST(Append, StringString) {
+    MachineState ms;
+    Append a;
+    auto str1 = Value::fromString("hello");
+    auto str2 = Value::fromString(" world");
+    ms.stack().push(str1);
+    ms.stack().push(str2);
+    ASSERT_EQ(Operation::Result::SUCCESS, a.execute(ms));
+    ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_String>());
+    ASSERT_EQ("hello world", ms.stack().peek()->asClass<Value_String>()->utf8());
+    ASSERT_EQ("hello", str1->utf8());
+    ASSERT_EQ(" world", str2->utf8());
+    ASSERT_EQ(1, ms.stack().size());
+}
+
+TEST(Append, StringCharacter) {
+    MachineState ms;
+    Append a;
+    auto str = Value::fromString("hello world");
+    auto chr = Value::fromCharacter('!');
+    ms.stack().push(str);
+    ms.stack().push(chr);
+    ASSERT_EQ(Operation::Result::SUCCESS, a.execute(ms));
+    ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_String>());
+    ASSERT_EQ("hello world!", ms.stack().peek()->asClass<Value_String>()->utf8());
+    ASSERT_EQ("hello world", str->utf8());
+    ASSERT_EQ('!', chr->value());
+    ASSERT_EQ(1, ms.stack().size());
+}
+
+TEST(Append, StringInvalid) {
+    MachineState ms;
+    Append a;
+    auto str = Value::fromString("hello world");
+    auto num = Value::fromNumber(555);
+    ms.stack().push(str);
+    ms.stack().push(num);
+    ASSERT_EQ(Operation::Result::ERROR, a.execute(ms));
+    ASSERT_EQ(3, ms.stack().size());
+    ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_Error>());
+    ASSERT_EQ(ErrorCode::TYPE_MISMATCH, ms.stack().peek()->asClass<Value_Error>()->value());
 }

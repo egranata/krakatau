@@ -20,8 +20,9 @@
 #include <value/value.h>
 #include <string>
 #include <value/iterable.h>
+#include <value/appendable.h>
 
-class Value_String : public Value, public IterableValue {
+class Value_String : public Value, public IterableValue, public AppendableValue<Value_String*, std::shared_ptr<Value>>, public Appendable {
     public:
         static constexpr uint8_t MARKER = '$';
 
@@ -34,6 +35,12 @@ class Value_String : public Value, public IterableValue {
         virtual std::string describe() const override;
         bool equals(std::shared_ptr<Value>) const override;
         size_t serialize(Serializer*) override;
+
+        Value_String* append(char32_t);
+        Value_String* append(const std::u32string&);
+
+        AppendableValue<Value_String*, std::shared_ptr<Value>>::RetType tryAppend(std::shared_ptr<Value>) override;
+        Appendable::RetType appendValue(std::shared_ptr<Value>) override;
 
         size_t size() const override;
         std::shared_ptr<Value> at(size_t) const override;
