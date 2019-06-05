@@ -22,8 +22,9 @@
 #include <vector>
 #include <initializer_list>
 #include <value/iterable.h>
+#include <value/appendable.h>
 
-class Value_Tuple : public Value, public IterableValue {
+class Value_Tuple : public Value, public IterableValue, public SafeAppendableValue<Value_Tuple*, std::shared_ptr<Value>>, public Appendable {
     public:
         static constexpr uint8_t MARKER = '(';
 
@@ -32,7 +33,10 @@ class Value_Tuple : public Value, public IterableValue {
 
         Value_Tuple();
         Value_Tuple(std::initializer_list<std::shared_ptr<Value>>);
-        Value_Tuple *append(std::shared_ptr<Value>);
+
+        SafeAppendableValue<Value_Tuple*, std::shared_ptr<Value>>::BaseRetType tryAppend(std::shared_ptr<Value>) override;
+        Appendable::RetType appendValue(std::shared_ptr<Value>) override;
+
         size_t size() const override;
         std::shared_ptr<Value> at(size_t i) const override;
         virtual std::string describe() const override;

@@ -16,6 +16,7 @@
 #include <rtti/rtti.h>
 #include <value/tuple.h>
 #include <value/table.h>
+#include <value/appendable.h>
 #include <machine/state.h>
 
 Operation::Result Append::execute(MachineState& s) {
@@ -26,34 +27,28 @@ Operation::Result Append::execute(MachineState& s) {
 
     auto item = s.stack().pop();
     auto container = s.stack().pop();
+    auto cloned = container->clone();
 
-    auto tpl = runtime_ptr_cast<Value_Tuple>(container);
-    auto tbl = runtime_ptr_cast<Value_Table>(container);
-
-    if (tbl) {
-        auto item_tpl = runtime_ptr_cast<Value_Tuple>(item);
-        if (item_tpl && item_tpl->size() == 2) {
-            container = container->clone();
-            tbl = runtime_ptr_cast<Value_Table>(container);
-            tbl->append(item_tpl->at(0), item_tpl->at(1));
+    if (auto app = Appendable::asAppendable(cloned)) {
+        auto ret = app->appendValue(item);
+        if (auto err = std::get_if<ErrorCode>(&ret)) {
             s.stack().push(container);
+            s.stack().push(item);
+            s.stack().push(Value::error(*err));
+            return Operation::Result::ERROR;
+        } else if (auto val = std::get_if<Value*>(&ret)) {
+            s.stack().push((*val)->shared_from_this());
             return Operation::Result::SUCCESS;
         } else {
             s.stack().push(container);
             s.stack().push(item);
-            s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
+            s.stack().push(Value::error(ErrorCode::NOT_IMPLEMENTED));
             return Operation::Result::ERROR;
         }
-    } else if (tpl) {
-        container = container->clone();
-        tpl = runtime_ptr_cast<Value_Tuple>(container);
-        tpl->append(item);
-        s.stack().push(container);
-        return Operation::Result::SUCCESS;
+    } else {
+            s.stack().push(container);
+            s.stack().push(item);
+            s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
+            return Operation::Result::ERROR;
     }
-
-    s.stack().push(container);
-    s.stack().push(item);
-    s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
-    return Operation::Result::ERROR;
 }

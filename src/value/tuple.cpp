@@ -35,10 +35,15 @@ Value_Tuple::Value_Tuple(std::initializer_list<std::shared_ptr<Value>> elems) {
     }
 }
 
-Value_Tuple* Value_Tuple::append(std::shared_ptr<Value> v) {
-    mValues.push_back(v);
+SafeAppendableValue<Value_Tuple*, std::shared_ptr<Value>>::BaseRetType Value_Tuple::tryAppend(std::shared_ptr<Value> val) {
+    mValues.push_back(val);
     return this;
 }
+
+Appendable::RetType Value_Tuple::appendValue(std::shared_ptr<Value> val) {
+    return append(val);
+}
+
 size_t Value_Tuple::size() const {
     return mValues.size();
 }

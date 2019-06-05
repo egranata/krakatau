@@ -24,6 +24,7 @@
 #include <value/string.h>
 #include <value/table.h>
 #include <value/empty.h>
+#include <value/set.h>
 #include <value/operation.h>
 
 TEST(Append, ZeroArgs) {
@@ -118,6 +119,19 @@ TEST(Append, Table) {
     ASSERT_TRUE(vtbl1->equals(s.stack().peek()));
     ASSERT_EQ(2, tbl0->size());
     ASSERT_FALSE(vtbl0->equals(vtbl1));
+}
+
+TEST(Append, Set) {
+    MachineState ms;
+    Append a;
+    auto set = Value::set({});
+    ms.stack().push(set);
+    ms.stack().push(Value::fromNumber(555));
+    ASSERT_EQ(Operation::Result::SUCCESS, a.execute(ms));
+    ASSERT_TRUE(ms.stack().peek()->isOfClass<Value_Set>());
+    ASSERT_EQ(1, ms.stack().peek()->asClass<Value_Set>()->size());
+    ASSERT_TRUE(ms.stack().peek()->asClass<Value_Set>()->at(0)->equals(Value::fromNumber(555)));
+    ASSERT_EQ(0, set->size());
 }
 
 TEST(Append, ParseAndSerialize) {

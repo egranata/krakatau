@@ -22,8 +22,9 @@
 #include <initializer_list>
 #include <utility>
 #include <value/iterable.h>
+#include <value/appendable.h>
 
-class Value_Table : public Value, public IterableValue {
+class Value_Table : public Value, public IterableValue, public SafeAppendableValue<Value_Table*, std::shared_ptr<Value>, std::shared_ptr<Value>>, public Appendable {
     public:
         static constexpr uint8_t MARKER = '[';
 
@@ -32,7 +33,10 @@ class Value_Table : public Value, public IterableValue {
 
         Value_Table();
         Value_Table(std::initializer_list<std::pair<std::shared_ptr<Value>,std::shared_ptr<Value>>>);
-        Value_Table *append(std::shared_ptr<Value>, std::shared_ptr<Value>);
+
+        SafeAppendableValue<Value_Table*, std::shared_ptr<Value>, std::shared_ptr<Value>>::BaseRetType tryAppend(std::shared_ptr<Value>, std::shared_ptr<Value>) override;
+        Appendable::RetType appendValue(std::shared_ptr<Value>) override;
+
         size_t size() const override;
         std::shared_ptr<Value> pairAt(size_t i) const;
         std::shared_ptr<Value> keyAt(size_t i) const;

@@ -21,8 +21,9 @@
 #include <value/value_set.h>
 #include <initializer_list>
 #include <value/iterable.h>
+#include <value/appendable.h>
 
-class Value_Set : public Value, public IterableValue {
+class Value_Set : public Value, public IterableValue, public SafeAppendableValue<Value_Set*, std::shared_ptr<Value>>, public Appendable {
     public:
         static constexpr uint8_t MARKER = 'U';
 
@@ -31,7 +32,10 @@ class Value_Set : public Value, public IterableValue {
 
         Value_Set();
         Value_Set(std::initializer_list<std::shared_ptr<Value>>);
-        Value_Set *append(std::shared_ptr<Value>);
+
+        SafeAppendableValue<Value_Set*, std::shared_ptr<Value>>::BaseRetType tryAppend(std::shared_ptr<Value>) override;
+        Appendable::RetType appendValue(std::shared_ptr<Value>) override;
+
         size_t size() const override;
         std::shared_ptr<Value> valueAt(size_t i) const;
         std::shared_ptr<Value> at(size_t i) const override { return valueAt(i); }

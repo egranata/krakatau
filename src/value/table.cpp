@@ -30,9 +30,18 @@ Value_Table::Value_Table(std::initializer_list<std::pair<std::shared_ptr<Value>,
     }
 }
 
-Value_Table* Value_Table::append(std::shared_ptr<Value> k, std::shared_ptr<Value> v) {
+SafeAppendableValue<Value_Table*, std::shared_ptr<Value>, std::shared_ptr<Value>>::BaseRetType Value_Table::tryAppend(std::shared_ptr<Value> k, std::shared_ptr<Value> v) {
     mTable.add(k, v);
     return this;
+}
+
+Appendable::RetType Value_Table::appendValue(std::shared_ptr<Value> val) {
+    if (auto tpl = val->asClass<Value_Tuple>()) {
+        if (tpl->size() != 2) return ErrorCode::TYPE_MISMATCH;
+        return append(tpl->at(0), tpl->at(1));
+    }
+
+    return ErrorCode::TYPE_MISMATCH;
 }
 
 size_t Value_Table::size() const {

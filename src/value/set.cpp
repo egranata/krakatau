@@ -30,9 +30,13 @@ Value_Set::Value_Set(std::initializer_list<std::shared_ptr<Value>> elems) {
     }
 }
 
-Value_Set* Value_Set::append(std::shared_ptr<Value> v) {
-    mSet.add(v);
+SafeAppendableValue<Value_Set*, std::shared_ptr<Value>>::BaseRetType Value_Set::tryAppend(std::shared_ptr<Value> val) {
+    mSet.add(val);
     return this;
+}
+
+Appendable::RetType Value_Set::appendValue(std::shared_ptr<Value> val) {
+    return append(val);
 }
 
 size_t Value_Set::size() const {
