@@ -26,7 +26,7 @@ class IfTrue : public BaseOperation<IfTrue, OperationType::IFTRUE> {
         static std::shared_ptr<Operation> fromParser(Parser*);
 
         IfTrue(std::shared_ptr<Operation>);
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
         virtual std::string describe() const override;
         size_t serialize(Serializer*) const override;
 

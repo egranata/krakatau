@@ -15,7 +15,7 @@
 #include <operation/dup.h>
 #include <machine/state.h>
 
-Operation::Result Dup::execute(MachineState& s) {
+Operation::Result Dup::doExecute(MachineState& s) {
     if (!s.stack().hasAtLeast(1)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;

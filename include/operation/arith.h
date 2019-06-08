@@ -26,14 +26,14 @@ template<typename T, OperationType OpType, typename P = Operation>
 class Binary_Arithmetic_Operation : public DefaultConstructibleOperation<T,OpType,P> {
     public:
         virtual std::shared_ptr<Value> eval(Value_Number* v1, Value_Number* v2) = 0;
-        Operation::Result execute(MachineState&) override;
+        Operation::Result doExecute(MachineState&) override;
 };
 
 template<typename T, OperationType OpType, typename P = Operation>
 class Unary_Arithmetic_Operation : public DefaultConstructibleOperation<T,OpType,P> {
     public:
         virtual std::shared_ptr<Value> eval(Value_Number* v1) = 0;
-        Operation::Result execute(MachineState&) override;
+        Operation::Result doExecute(MachineState&) override;
 };
 
 #define BINARY_ARITH_OPERATION(ClassName, OpType) \

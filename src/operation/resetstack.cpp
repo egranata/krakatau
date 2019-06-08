@@ -15,7 +15,7 @@
 #include <operation/resetstack.h>
 #include <machine/state.h>
 
-Operation::Result ResetStack::execute(MachineState& ms) {
+Operation::Result ResetStack::doExecute(MachineState& ms) {
     ms.stack().reset();
     return Operation::Result::SUCCESS;
 }

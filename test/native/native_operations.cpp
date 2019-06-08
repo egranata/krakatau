@@ -23,7 +23,7 @@ namespace {
     public:
         TestOp(std::shared_ptr<NativeOperations::Bucket> b) : Native(b, "testop") {}
 
-        Operation::Result execute(MachineState&) override {
+        Operation::Result doExecute(MachineState&) override {
             return Operation::Result::SUCCESS;
         }
         std::shared_ptr<Operation> clone() const override {

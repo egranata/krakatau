@@ -22,7 +22,7 @@
 #include <value/boolean.h>
 
 template<class T, OperationType OpType, class P>
-Operation::Result Binary_Arithmetic_Operation<T,OpType,P>::execute(MachineState& s) {
+Operation::Result Binary_Arithmetic_Operation<T,OpType,P>::doExecute(MachineState& s) {
     if (!s.stack().hasAtLeast(2)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;
@@ -50,7 +50,7 @@ Operation::Result Binary_Arithmetic_Operation<T,OpType,P>::execute(MachineState&
 }
 
 template<class T, OperationType OpType, class P>
-Operation::Result Unary_Arithmetic_Operation<T,OpType,P>::execute(MachineState& s) {
+Operation::Result Unary_Arithmetic_Operation<T,OpType,P>::doExecute(MachineState& s) {
     if (!s.stack().hasAtLeast(1)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;

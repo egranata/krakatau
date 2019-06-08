@@ -14,6 +14,6 @@
 
 #include <operation/halt.h>
 
-Operation::Result Halt::execute(MachineState&) {
+Operation::Result Halt::doExecute(MachineState&) {
     return Operation::Result::HALT;
 }

@@ -23,7 +23,7 @@
 #include <value/empty.h>
 #include <value/set.h>
 
-Operation::Result At::execute(MachineState& s) {
+Operation::Result At::doExecute(MachineState& s) {
     if (!s.stack().hasAtLeast(2)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;

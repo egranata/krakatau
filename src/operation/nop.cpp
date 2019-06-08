@@ -14,7 +14,7 @@
 
 #include <operation/nop.h>
 
-Operation::Result Nop::execute(MachineState&) {
+Operation::Result Nop::doExecute(MachineState&) {
     return Operation::Result::SUCCESS;
 }
 

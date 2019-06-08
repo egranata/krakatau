@@ -25,7 +25,7 @@
 Load::Load(const std::string& k) {
     mKey = k;
 }
-Operation::Result Load::execute(MachineState& ms) {
+Operation::Result Load::doExecute(MachineState& ms) {
     auto ptr = ms.value_store().retrieve(mKey);
     if (ptr == nullptr) {
         ms.stack().push(Value::error(ErrorCode::NOT_FOUND));

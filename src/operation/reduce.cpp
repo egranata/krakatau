@@ -24,7 +24,7 @@
 #include <value/boolean.h>
 #include <machine/state.h>
 
-Operation::Result Reduce::execute(MachineState& s) {
+Operation::Result Reduce::doExecute(MachineState& s) {
     if (!s.stack().hasAtLeast(3)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;

@@ -33,7 +33,7 @@ class PartialBind : public BaseOperation<PartialBind, OperationType::PARTIALBIND
         static std::shared_ptr<PartialBind> fromByteStream(ByteStream* bs);
         static std::shared_ptr<PartialBind> fromParser(Parser*);
 
-        Operation::Result execute(MachineState&) override;
+        Operation::Result doExecute(MachineState&) override;
 
         std::shared_ptr<Value> value() const;
         std::shared_ptr<Operation> callable() const;

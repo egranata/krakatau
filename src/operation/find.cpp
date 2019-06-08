@@ -20,7 +20,7 @@
 #include <value/empty.h>
 #include <value/boolean.h>
 
-Operation::Result Find::execute(MachineState& s) {
+Operation::Result Find::doExecute(MachineState& s) {
     if (!s.stack().hasAtLeast(2)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;

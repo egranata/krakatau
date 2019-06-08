@@ -34,7 +34,7 @@ class Block : public DefaultConstructibleOperation<Block, OperationType::BLOCK> 
         static std::shared_ptr<Block> fromByteStream(ByteStream*);
         static std::shared_ptr<Block> fromParser(Parser*);
 
-        Operation::Result execute(MachineState&) override;
+        Operation::Result doExecute(MachineState&) override;
         void add(std::shared_ptr<Operation>);
         size_t size() const;
         std::shared_ptr<Operation> at(size_t) const;

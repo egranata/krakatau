@@ -42,7 +42,7 @@ decltype(Block::mOperations)::const_iterator Block::end() const {
     return mOperations.end();
 }
 
-Operation::Result Block::execute(MachineState& ms) {
+Operation::Result Block::doExecute(MachineState& ms) {
     ms.onEnteringBlock(std::static_pointer_cast<Block>(shared_from_this()));
     size_t i = 0;
     Operation::Result res = Operation::Result::SUCCESS;

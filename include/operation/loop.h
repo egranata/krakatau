@@ -23,7 +23,7 @@ class ByteStream;
 
 class Loop : public DefaultConstructibleOperation<Loop, OperationType::LOOP> {
     public:
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
 };
 
 #endif

@@ -21,7 +21,7 @@
 
 class Exec : public DefaultConstructibleOperation<Exec, OperationType::EXEC> {
     public:
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
 };
 
 #endif

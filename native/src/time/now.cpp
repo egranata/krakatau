@@ -22,7 +22,7 @@
 
 Now::Now(std::shared_ptr<NativeOperations::Bucket> b) : Native(b, "now") {}
 
-Operation::Result Now::execute(MachineState& ms) {
+Operation::Result Now::doExecute(MachineState& ms) {
     ms.stack().push(Value::fromNumber(::time(nullptr)));
     return Operation::Result::SUCCESS;
 }

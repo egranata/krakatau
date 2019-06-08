@@ -27,7 +27,7 @@ class Call : public BaseOperation<Call, OperationType::CALL> {
         static std::shared_ptr<Operation> fromParser(Parser*);
 
         Call(std::string, std::shared_ptr<Value_Tuple>);
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
         virtual std::string describe() const override;
         size_t serialize(Serializer*) const override;
         bool equals(std::shared_ptr<Operation>) const override;

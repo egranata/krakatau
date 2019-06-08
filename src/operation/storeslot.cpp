@@ -26,7 +26,7 @@
 Storeslot::Storeslot(const std::string& k) {
     mKey = k;
 }
-Operation::Result Storeslot::execute(MachineState& ms) {
+Operation::Result Storeslot::doExecute(MachineState& ms) {
     if (!ms.stack().hasAtLeast(1)) {
         ms.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;

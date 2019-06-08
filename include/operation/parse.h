@@ -21,7 +21,7 @@
 
 class Parse : public DefaultConstructibleOperation<Parse, OperationType::PARSE> {
     public:
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
 };
 
 #endif

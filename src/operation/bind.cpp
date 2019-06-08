@@ -22,7 +22,7 @@
 
 PartialBind::PartialBind(std::shared_ptr<Value> v, std::shared_ptr<Operation> c) : mValue(v), mCallable(c) {}
 
-Operation::Result PartialBind::execute(MachineState& ms) {
+Operation::Result PartialBind::doExecute(MachineState& ms) {
     ms.stack().push(value());
     return callable()->execute(ms);
 }

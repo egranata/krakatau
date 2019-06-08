@@ -28,7 +28,7 @@ Select::Select(std::shared_ptr<Value_Table> cases, std::shared_ptr<Value_Operati
     mDefault = orelse;
 }
 
-Operation::Result Select::execute(MachineState& ms) {
+Operation::Result Select::doExecute(MachineState& ms) {
     auto val = ms.stack().pop();
 
     auto op = mCases->find(val, nullptr);

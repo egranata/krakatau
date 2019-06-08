@@ -15,7 +15,7 @@
 #include <operation/pop.h>
 #include <machine/state.h>
 
-Operation::Result Pop::execute(MachineState& s) {
+Operation::Result Pop::doExecute(MachineState& s) {
     if (!s.stack().hasAtLeast(1)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;

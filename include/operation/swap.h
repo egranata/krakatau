@@ -21,7 +21,7 @@
 
 class Swap : public DefaultConstructibleOperation<Swap, OperationType::SWAP> {
     public:
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
 };
 
 #endif

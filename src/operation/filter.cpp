@@ -24,7 +24,7 @@
 #include <value/boolean.h>
 #include <machine/state.h>
 
-Operation::Result Filter::execute(MachineState& s) {
+Operation::Result Filter::doExecute(MachineState& s) {
     if (!s.stack().hasAtLeast(2)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;

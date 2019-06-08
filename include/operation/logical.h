@@ -26,14 +26,14 @@ template<typename T, OperationType OpType, typename P = Operation>
 class Binary_Logical_Operation : public DefaultConstructibleOperation<T,OpType,P> {
     public:
         virtual std::shared_ptr<Value> eval(Value_Boolean* v1, Value_Boolean* v2) = 0;
-        Operation::Result execute(MachineState&) override;
+        Operation::Result doExecute(MachineState&) override;
 };
 
 template<typename T, OperationType OpType, typename P = Operation>
 class Unary_Logical_Operation : public DefaultConstructibleOperation<T,OpType,P> {
     public:
         virtual std::shared_ptr<Value> eval(Value_Boolean* v1) = 0;
-        Operation::Result execute(MachineState&) override;
+        Operation::Result doExecute(MachineState&) override;
 };
 
 #define BINARY_LOGICAL_OPERATION(ClassName, OpType) \

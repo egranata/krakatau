@@ -21,7 +21,7 @@
 
 class Find : public DefaultConstructibleOperation<Find, OperationType::FIND> {
     public:
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
 };
 
 #endif

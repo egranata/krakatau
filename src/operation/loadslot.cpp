@@ -26,7 +26,7 @@
 Loadslot::Loadslot(const std::string& k) {
     mKey = k;
 }
-Operation::Result Loadslot::execute(MachineState& ms) {
+Operation::Result Loadslot::doExecute(MachineState& ms) {
     auto vkey = Value::fromString(key());
     auto ptr = ms.currentSlot()->find(vkey);
     if (ptr == nullptr) {

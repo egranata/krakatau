@@ -24,7 +24,7 @@ class ByteStream;
 
 class At : public DefaultConstructibleOperation<At, OperationType::AT> {
     public:
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
 };
 
 #endif

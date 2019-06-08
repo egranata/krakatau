@@ -21,7 +21,7 @@
 
 class Size : public DefaultConstructibleOperation<Size, OperationType::SIZE> {
     public:
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
 };
 
 #endif

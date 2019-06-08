@@ -25,7 +25,7 @@ class ByteStream;
 
 class Break : public DefaultConstructibleOperation<Break, OperationType::BREAK> {
     public:
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
 };
 
 #endif

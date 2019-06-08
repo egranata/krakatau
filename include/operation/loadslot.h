@@ -26,7 +26,7 @@ class Loadslot : public BaseOperation<Loadslot, OperationType::LOADSLOT> {
         static std::shared_ptr<Operation> fromParser(Parser*);
 
         Loadslot(const std::string&);
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
         virtual std::string describe() const override;
         size_t serialize(Serializer*) const override;
         bool equals(std::shared_ptr<Operation>) const override;

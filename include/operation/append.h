@@ -21,7 +21,7 @@
 
 class Append : public DefaultConstructibleOperation<Append, OperationType::APPEND> {
     public:
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
 };
 
 #endif

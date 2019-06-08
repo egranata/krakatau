@@ -19,7 +19,7 @@
 #include <value/appendable.h>
 #include <machine/state.h>
 
-Operation::Result Append::execute(MachineState& s) {
+Operation::Result Append::doExecute(MachineState& s) {
     if (!s.stack().hasAtLeast(2)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;

@@ -25,7 +25,7 @@
 #include <machine/state.h>
 #include <value/set.h>
 
-Operation::Result Map::execute(MachineState& s) {
+Operation::Result Map::doExecute(MachineState& s) {
     if (!s.stack().hasAtLeast(2)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;

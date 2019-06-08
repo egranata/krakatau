@@ -20,7 +20,7 @@
 #include <value/type.h>
 #include <machine/state.h>
 
-Operation::Result Typecast::execute(MachineState& s) {
+Operation::Result Typecast::doExecute(MachineState& s) {
     if (!s.stack().hasAtLeast(2)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;

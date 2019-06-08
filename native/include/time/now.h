@@ -23,6 +23,6 @@ class Now : public Native {
     public:
         Now(std::shared_ptr<NativeOperations::Bucket>);
 
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
         std::shared_ptr<Operation> clone() const override;
 };

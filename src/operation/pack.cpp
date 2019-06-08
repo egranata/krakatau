@@ -18,7 +18,7 @@
 #include <rtti/rtti.h>
 #include <machine/state.h>
 
-Operation::Result Pack::execute(MachineState& ms) {
+Operation::Result Pack::doExecute(MachineState& ms) {
     if (!ms.stack().hasAtLeast(1)) {
         ms.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;

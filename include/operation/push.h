@@ -26,7 +26,7 @@ class Push : public BaseOperation<Push, OperationType::PUSH> {
         static std::shared_ptr<Operation> fromParser(Parser*);
 
         Push(std::shared_ptr<Value>);
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
         virtual std::string describe() const override;
         size_t serialize(Serializer*) const override;
         bool equals(std::shared_ptr<Operation>) const override;

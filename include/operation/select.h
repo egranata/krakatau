@@ -31,7 +31,7 @@ class Select : public BaseOperation<Select, OperationType::SELECT> {
         Select(std::shared_ptr<Value_Table>);
         Select(std::shared_ptr<Value_Table>, std::shared_ptr<Value_Operation>);
 
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
 
         virtual std::string describe() const override;
         size_t serialize(Serializer*) const override;

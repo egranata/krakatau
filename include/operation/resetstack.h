@@ -21,7 +21,7 @@
 
 class ResetStack : public DefaultConstructibleOperation<ResetStack, OperationType::RESETSTACK> {
     public:
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
 };
 
 #endif

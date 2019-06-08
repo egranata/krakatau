@@ -19,7 +19,7 @@
 #include <machine/state.h>
 
 template<class T, OperationType OpType, class P>
-Operation::Result Binary_Logical_Operation<T,OpType,P>::execute(MachineState& s) {
+Operation::Result Binary_Logical_Operation<T,OpType,P>::doExecute(MachineState& s) {
     if (!s.stack().hasAtLeast(2)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;
@@ -47,7 +47,7 @@ Operation::Result Binary_Logical_Operation<T,OpType,P>::execute(MachineState& s)
 }
 
 template<class T, OperationType OpType, class P>
-Operation::Result Unary_Logical_Operation<T,OpType,P>::execute(MachineState& s) {
+Operation::Result Unary_Logical_Operation<T,OpType,P>::doExecute(MachineState& s) {
     if (!s.stack().hasAtLeast(1)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;

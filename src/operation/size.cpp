@@ -21,7 +21,7 @@
 #include <value/number.h>
 #include <value/set.h>
 
-Operation::Result Size::execute(MachineState& s) {
+Operation::Result Size::doExecute(MachineState& s) {
     if (!s.stack().hasAtLeast(1)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;

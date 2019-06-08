@@ -26,7 +26,7 @@ class Storeslot : public BaseOperation<Storeslot, OperationType::STORESLOT> {
         static std::shared_ptr<Operation> fromParser(Parser*);
 
         Storeslot(const std::string&);
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
         virtual std::string describe() const override;
         size_t serialize(Serializer*) const override;
         bool equals(std::shared_ptr<Operation>) const override;

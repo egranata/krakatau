@@ -17,7 +17,7 @@
 #include <machine/state.h>
 #include <value/boolean.h>
 
-Operation::Result Equals::execute(MachineState& s) {
+Operation::Result Equals::doExecute(MachineState& s) {
     if (!s.stack().hasAtLeast(2)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;

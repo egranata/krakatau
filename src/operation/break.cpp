@@ -14,6 +14,6 @@
 
 #include <operation/break.h>
 
-Operation::Result Break::execute(MachineState&) {
+Operation::Result Break::doExecute(MachineState&) {
     return Operation::Result::EXIT_BLOCK;
 }

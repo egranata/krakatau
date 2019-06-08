@@ -76,6 +76,11 @@ class BaseOperation : public Operation {
         bool isOfType(OperationType aID) const override {
             return (aID == OpType) || this->Parent::isOfType(aID);
         }
+        Result execute(MachineState& ms) {
+            return doExecute(ms);
+        }
+    protected:
+        virtual Result doExecute(MachineState&) = 0;
 };
 
 template<typename T, OperationType OpType, typename Parent = Operation>

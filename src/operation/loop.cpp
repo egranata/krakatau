@@ -14,7 +14,7 @@
 
 #include <operation/loop.h>
 
-Operation::Result Loop::execute(MachineState&) {
+Operation::Result Loop::doExecute(MachineState&) {
     return Operation::Result::RESTART_BLOCK;
 }
 

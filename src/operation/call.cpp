@@ -51,7 +51,7 @@ std::shared_ptr<Operation> Call::clone() const {
                                   std::dynamic_pointer_cast<Value_Tuple>(arguments()->clone()));
 }
 
-Operation::Result Call::execute(MachineState& ms) {
+Operation::Result Call::doExecute(MachineState& ms) {
     auto op = ms.value_store().retrieve(name());
     if (op == nullptr) {
         ms.stack().push(Value::error(ErrorCode::NOT_FOUND));

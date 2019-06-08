@@ -26,7 +26,7 @@ Clear::Clear(const std::string& k) {
     mKey = k;
 }
 
-Operation::Result Clear::execute(MachineState& ms) {
+Operation::Result Clear::doExecute(MachineState& ms) {
     auto ok = ms.value_store().clear(mKey);
     if (!ok) {
         ms.stack().push(Value::error(ErrorCode::NOT_FOUND));

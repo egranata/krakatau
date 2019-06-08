@@ -27,7 +27,7 @@ IfTrue::IfTrue(std::shared_ptr<Operation> op) {
     mOperation = op;
 }
 
-Operation::Result IfTrue::execute(MachineState& ms) {
+Operation::Result IfTrue::doExecute(MachineState& ms) {
     if (!ms.stack().hasAtLeast(1)) {
         ms.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;

@@ -27,7 +27,7 @@ Loadnative::Loadnative(const std::string& k) {
     mKey = k;
 }
 
-Operation::Result Loadnative::execute(MachineState& ms) {
+Operation::Result Loadnative::doExecute(MachineState& ms) {
     if (ms.loadNativeLibrary(key().c_str())) return Operation::Result::SUCCESS;
     else return Operation::Result::ERROR;
 }

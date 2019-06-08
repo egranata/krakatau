@@ -21,7 +21,7 @@
 
 Push::Push(std::shared_ptr<Value> v) : mValue(v) {}
 
-Operation::Result Push::execute(MachineState& s) {
+Operation::Result Push::doExecute(MachineState& s) {
     s.stack().push(mValue);
     return Operation::Result::SUCCESS;
 }

@@ -17,7 +17,7 @@
 #include <value/value_types.h>
 #include <machine/state.h>
 
-Operation::Result Typeof::execute(MachineState& s) {
+Operation::Result Typeof::doExecute(MachineState& s) {
     if (!s.stack().hasAtLeast(1)) {
         s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
         return Operation::Result::ERROR;

@@ -21,7 +21,7 @@
 
 class Pack : public DefaultConstructibleOperation<Pack, OperationType::PACK> {
     public:
-        virtual Operation::Result execute(MachineState&) override;
+        virtual Operation::Result doExecute(MachineState&) override;
 };
 
 #endif
