@@ -73,4 +73,6 @@ std::string operationResultToString(Operation::Result);
 std::ostream& operator<<(std::ostream&, std::shared_ptr<Operation>);
 std::ostream& operator<<(std::ostream&, Operation*);
 
+std::ostream& operator<<(std::ostream&, Operation::Result);
+
 #endif

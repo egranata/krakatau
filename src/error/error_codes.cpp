@@ -41,3 +41,7 @@ std::optional<ErrorCode> errorCodeFromString(const std::string& s) {
 #include <error/error_codes.def>
 return std::nullopt;
 }
+
+std::ostream& operator<<(std::ostream& os, ErrorCode ec) {
+    return (os << errorCodeToString(ec));
+}

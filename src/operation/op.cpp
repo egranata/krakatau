@@ -50,3 +50,7 @@ std::ostream& operator<<(std::ostream& os, Operation* v) {
     if (v) return (os << v->describe());
     return (os << "(null) operation");
 }
+
+std::ostream& operator<<(std::ostream& os, Operation::Result opr) {
+    return (os << operationResultToString(opr));
+}

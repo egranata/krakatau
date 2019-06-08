@@ -21,6 +21,7 @@
 #include <limits>
 #include <rtti/enum.h>
 #include <optional>
+#include <ostream>
 
 class ByteStream;
 
@@ -38,5 +39,7 @@ NUMERIC_LIMITS(ErrorCode);
 std::string errorCodeToString(ErrorCode);
 std::optional<ErrorCode> errorCodeFromByteStream(ByteStream*);
 std::optional<ErrorCode> errorCodeFromString(const std::string&);
+
+std::ostream& operator<<(std::ostream&, ErrorCode);
 
 #endif
