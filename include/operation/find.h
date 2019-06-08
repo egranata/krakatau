@@ -17,9 +17,9 @@
 #ifndef STUFF_OPERATION_FIND
 #define STUFF_OPERATION_FIND
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 
-class Find : public DefaultConstructibleOperation<Find, OperationType::FIND> {
+class Find : public DefaultConstructibleOperation<Find, OperationType::FIND, PreconditionArgc<2>> {
     public:
         virtual Operation::Result doExecute(MachineState&) override;
 };

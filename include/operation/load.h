@@ -17,7 +17,7 @@
 #ifndef STUFF_OPERATION_LOAD
 #define STUFF_OPERATION_LOAD
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 #include <string>
 
 class Load : public BaseOperation<Load, OperationType::LOAD> {

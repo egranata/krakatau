@@ -18,17 +18,18 @@
 #define STUFF_MACHINE_STATE
 
 #include <stack/stack.h>
-#include <value/value_store.h>
 #include <stream/byte_stream.h>
 #include <stream/serializer.h>
 #include <parser/parser.h>
-#include <operation/op.h>
 #include <vector>
 #include <optional>
-#include <value/value_table.h>
 #include <stack>
+#include <value/value_store.h>
 #include <native/native_operations.h>
 
+class Operation;
+class Value;
+class ValueTable;
 class Block;
 class MachineEventsListener;
 

@@ -17,9 +17,9 @@
 #ifndef STUFF_OPERATION_EXEC
 #define STUFF_OPERATION_EXEC
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 
-class Exec : public DefaultConstructibleOperation<Exec, OperationType::EXEC> {
+class Exec : public DefaultConstructibleOperation<Exec, OperationType::EXEC, PreconditionArgc<1>> {
     public:
         virtual Operation::Result doExecute(MachineState&) override;
 };

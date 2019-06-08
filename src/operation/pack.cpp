@@ -19,11 +19,6 @@
 #include <machine/state.h>
 
 Operation::Result Pack::doExecute(MachineState& ms) {
-    if (!ms.stack().hasAtLeast(1)) {
-        ms.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
-
     auto val_cnt = ms.stack().pop();
     auto num_cnt = runtime_ptr_cast<Value_Number>(val_cnt);
     if (num_cnt == nullptr) {

@@ -17,12 +17,11 @@
 #ifndef STUFF_OPERATION_AT
 #define STUFF_OPERATION_AT
 
-#include <operation/op.h>
-#include <operation/op_loader.h>
+#include <operation/base_op.h>
 
 class ByteStream;
 
-class At : public DefaultConstructibleOperation<At, OperationType::AT> {
+class At : public DefaultConstructibleOperation<At, OperationType::AT, PreconditionArgc<2>> {
     public:
         virtual Operation::Result doExecute(MachineState&) override;
 };

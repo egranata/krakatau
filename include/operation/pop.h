@@ -17,9 +17,9 @@
 #ifndef STUFF_OPERATION_POP
 #define STUFF_OPERATION_POP
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 
-class Pop : public DefaultConstructibleOperation<Pop, OperationType::POP> {
+class Pop : public DefaultConstructibleOperation<Pop, OperationType::POP, PreconditionArgc<1>> {
     public:
         virtual Operation::Result doExecute(MachineState&) override;
 };

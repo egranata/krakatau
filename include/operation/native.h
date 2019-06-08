@@ -17,7 +17,7 @@
 #ifndef STUFF_OPERATION_NATIVE
 #define STUFF_OPERATION_NATIVE
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 #include <string>
 #include <native/native_operations.h>
 

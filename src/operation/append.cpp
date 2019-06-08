@@ -20,11 +20,6 @@
 #include <machine/state.h>
 
 Operation::Result Append::doExecute(MachineState& s) {
-    if (!s.stack().hasAtLeast(2)) {
-        s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
-
     auto item = s.stack().pop();
     auto container = s.stack().pop();
     auto cloned = container->clone();

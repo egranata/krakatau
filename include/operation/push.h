@@ -17,8 +17,10 @@
 #ifndef STUFF_OPERATION_PUSH
 #define STUFF_OPERATION_PUSH
 
-#include <operation/op.h>
-#include <value/value.h>
+#include <operation/base_op.h>
+#include <memory>
+
+class Value;
 
 class Push : public BaseOperation<Push, OperationType::PUSH> {
     public:

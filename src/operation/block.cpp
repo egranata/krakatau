@@ -20,6 +20,7 @@
 #include <parser/parser.h>
 #include <rtti/rtti.h>
 #include <value/string.h>
+#include <value/table.h>
 
 void Block::add(std::shared_ptr<Operation> op) {
     mOperations.push_back(op);

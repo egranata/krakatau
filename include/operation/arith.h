@@ -17,20 +17,20 @@
 #ifndef STUFF_OPERATION_ARITH
 #define STUFF_OPERATION_ARITH
 
-#include <operation/op.h>
-#include <value/number.h>
+#include <operation/base_op.h>
 #include <memory>
-#include <operation/op_loader.h>
 
-template<typename T, OperationType OpType, typename P = Operation>
-class Binary_Arithmetic_Operation : public DefaultConstructibleOperation<T,OpType,P> {
+class Value_Number;
+
+template<typename T, OperationType OpType>
+class Binary_Arithmetic_Operation : public DefaultConstructibleOperation<T,OpType,PreconditionArgc<2>> {
     public:
         virtual std::shared_ptr<Value> eval(Value_Number* v1, Value_Number* v2) = 0;
         Operation::Result doExecute(MachineState&) override;
 };
 
-template<typename T, OperationType OpType, typename P = Operation>
-class Unary_Arithmetic_Operation : public DefaultConstructibleOperation<T,OpType,P> {
+template<typename T, OperationType OpType>
+class Unary_Arithmetic_Operation : public DefaultConstructibleOperation<T,OpType,PreconditionArgc<1>> {
     public:
         virtual std::shared_ptr<Value> eval(Value_Number* v1) = 0;
         Operation::Result doExecute(MachineState&) override;

@@ -17,9 +17,9 @@
 #ifndef STUFF_OPERATION_TYPEOF
 #define STUFF_OPERATION_TYPEOF
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 
-class Typeof : public DefaultConstructibleOperation<Typeof, OperationType::TYPEOF> {
+class Typeof : public DefaultConstructibleOperation<Typeof, OperationType::TYPEOF, PreconditionArgc<1>> {
     public:
         virtual Operation::Result doExecute(MachineState&) override;
 };

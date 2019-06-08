@@ -17,7 +17,7 @@
 #ifndef STUFF_OPERATION_LOADNATIVE
 #define STUFF_OPERATION_LOADNATIVE
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 #include <string>
 
 class Loadnative : public BaseOperation<Loadnative, OperationType::LOADNATIVE> {

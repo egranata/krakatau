@@ -23,11 +23,6 @@
 #include <machine/state.h>
 
 Operation::Result Parse::doExecute(MachineState& s) {
-    if (!s.stack().hasAtLeast(1)) {
-        s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
-
     auto val = s.stack().pop();
     Value_String* str = runtime_ptr_cast<Value_String>(val);
 

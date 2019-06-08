@@ -17,9 +17,9 @@
 #ifndef STUFF_OPERATION_PARSE
 #define STUFF_OPERATION_PARSE
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 
-class Parse : public DefaultConstructibleOperation<Parse, OperationType::PARSE> {
+class Parse : public DefaultConstructibleOperation<Parse, OperationType::PARSE, PreconditionArgc<1>> {
     public:
         virtual Operation::Result doExecute(MachineState&) override;
 };

@@ -14,6 +14,7 @@
 
 #include <operation/op.h>
 #include <stream/serializer.h>
+#include <machine/state.h>
 #include <rtti/enum.h>
 
 Operation::Operation() = default;

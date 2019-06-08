@@ -17,12 +17,9 @@
 #ifndef STUFF_OPERATION_TYPECAST
 #define STUFF_OPERATION_TYPECAST
 
-#include <operation/op.h>
-#include <operation/op_loader.h>
+#include <operation/base_op.h>
 
-class ByteStream;
-
-class Typecast : public DefaultConstructibleOperation<Typecast, OperationType::TYPECAST> {
+class Typecast : public DefaultConstructibleOperation<Typecast, OperationType::TYPECAST, PreconditionArgc<2>> {
     public:
         virtual Operation::Result doExecute(MachineState&) override;
 };

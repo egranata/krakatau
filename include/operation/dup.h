@@ -17,9 +17,9 @@
 #ifndef STUFF_OPERATION_DUP
 #define STUFF_OPERATION_DUP
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 
-class Dup : public DefaultConstructibleOperation<Dup, OperationType::DUP> {
+class Dup : public DefaultConstructibleOperation<Dup, OperationType::DUP, PreconditionArgc<1>> {
     public:
         virtual Operation::Result doExecute(MachineState&) override;
 };

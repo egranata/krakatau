@@ -24,11 +24,6 @@
 #include <value/set.h>
 
 Operation::Result At::doExecute(MachineState& s) {
-    if (!s.stack().hasAtLeast(2)) {
-        s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
-
     auto nval = s.stack().pop();
     auto obj = s.stack().pop();
 

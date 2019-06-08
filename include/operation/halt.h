@@ -17,8 +17,7 @@
 #ifndef STUFF_OPERATION_HALT
 #define STUFF_OPERATION_HALT
 
-#include <operation/op.h>
-#include <operation/op_loader.h>
+#include <operation/base_op.h>
 
 class Halt : public DefaultConstructibleOperation<Halt, OperationType::HALT> {
     public:

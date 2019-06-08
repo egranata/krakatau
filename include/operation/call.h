@@ -17,9 +17,10 @@
 #ifndef STUFF_OPERATION_CALL
 #define STUFF_OPERATION_CALL
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 #include <string>
-#include <value/tuple.h>
+
+class Value_Tuple;
 
 class Call : public BaseOperation<Call, OperationType::CALL> {
     public:

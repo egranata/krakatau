@@ -21,11 +21,6 @@
 #include <machine/state.h>
 
 Operation::Result Exec::doExecute(MachineState& s) {
-    if (!s.stack().hasAtLeast(1)) {
-        s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
-
     auto val = s.stack().pop();
 
     if (auto oper = runtime_ptr_cast<Value_Operation>(val)) {

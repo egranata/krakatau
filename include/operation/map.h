@@ -17,9 +17,9 @@
 #ifndef STUFF_OPERATION_MAP
 #define STUFF_OPERATION_MAP
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 
-class Map : public DefaultConstructibleOperation<Map, OperationType::MAP> {
+class Map : public DefaultConstructibleOperation<Map, OperationType::MAP, PreconditionArgc<2>> {
     public:
         virtual Operation::Result doExecute(MachineState&) override;
 };

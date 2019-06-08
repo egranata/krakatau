@@ -17,7 +17,7 @@
 #ifndef STUFF_OPERATION_NOP
 #define STUFF_OPERATION_NOP
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 
 class Nop : public DefaultConstructibleOperation<Nop, OperationType::NOP> {
     public:

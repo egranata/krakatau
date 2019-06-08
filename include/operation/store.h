@@ -17,10 +17,10 @@
 #ifndef STUFF_OPERATION_STORE
 #define STUFF_OPERATION_STORE
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 #include <string>
 
-class Store : public BaseOperation<Store, OperationType::STORE> {
+class Store : public BaseOperation<Store, OperationType::STORE, PreconditionArgc<1>> {
     public:
         static std::shared_ptr<Operation> fromByteStream(ByteStream*);
         static std::shared_ptr<Operation> fromParser(Parser*);

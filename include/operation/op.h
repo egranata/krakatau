@@ -68,39 +68,6 @@ class Operation : public std::enable_shared_from_this<Operation> {
         Operation& operator=(const Operation&) = delete;
 };
 
-template<typename T, OperationType OpType, typename Parent = Operation>
-class BaseOperation : public Operation {
-    public:
-        virtual OperationType getClassId() const override { return OpType; }
-        static OperationType getStaticClassId() { return OpType; }
-        bool isOfType(OperationType aID) const override {
-            return (aID == OpType) || this->Parent::isOfType(aID);
-        }
-        Result execute(MachineState& ms) override {
-            return doExecute(ms);
-        }
-    protected:
-        virtual Result doExecute(MachineState&) = 0;
-};
-
-template<typename T, OperationType OpType, typename Parent = Operation>
-class DefaultConstructibleOperation : public BaseOperation<T,OpType,Parent> {
-    private:
-        std::shared_ptr<T> ensureDefaultConstructible() {
-            return std::make_shared<T>();
-        }
-    public:
-        std::shared_ptr<Operation> clone() const override {
-            return std::make_shared<T>();
-        }
-        static std::shared_ptr<Operation> fromByteStream(ByteStream*) {
-            return std::make_shared<T>();
-        }
-        static std::shared_ptr<Operation> fromParser(Parser*) {
-            return std::make_shared<T>();
-        }
-};
-
 std::string operationResultToString(Operation::Result);
 
 std::ostream& operator<<(std::ostream&, std::shared_ptr<Operation>);

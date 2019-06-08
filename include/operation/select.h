@@ -17,8 +17,7 @@
 #ifndef STUFF_OPERATION_SELECT
 #define STUFF_OPERATION_SELECT
 
-#include <operation/op.h>
-#include <value/value.h>
+#include <operation/base_op.h>
 
 class Value_Table;
 class Value_Operation;

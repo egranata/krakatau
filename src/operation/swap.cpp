@@ -16,11 +16,6 @@
 #include <machine/state.h>
 
 Operation::Result Swap::doExecute(MachineState& s) {
-    if (!s.stack().hasAtLeast(2)) {
-        s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
-
     auto a = s.stack().pop();
     auto b = s.stack().pop();
     

@@ -22,11 +22,6 @@
 #include <value/set.h>
 
 Operation::Result Size::doExecute(MachineState& s) {
-    if (!s.stack().hasAtLeast(1)) {
-        s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
-
     auto value = s.stack().pop();
     auto tpl = runtime_ptr_cast<Value_Tuple>(value);
     auto str = runtime_ptr_cast<Value_String>(value);

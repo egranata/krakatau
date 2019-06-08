@@ -17,7 +17,7 @@
 #ifndef STUFF_OPERATION_CLEAR
 #define STUFF_OPERATION_CLEAR
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 #include <string>
 
 class Clear : public BaseOperation<Clear, OperationType::CLEAR> {

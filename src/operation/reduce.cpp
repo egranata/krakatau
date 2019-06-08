@@ -25,11 +25,6 @@
 #include <machine/state.h>
 
 Operation::Result Reduce::doExecute(MachineState& s) {
-    if (!s.stack().hasAtLeast(3)) {
-        s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
-
     auto v0 = s.stack().pop();
     auto v0_0 = v0;
     auto vpred = s.stack().pop();

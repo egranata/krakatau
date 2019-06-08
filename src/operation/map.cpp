@@ -26,11 +26,6 @@
 #include <value/set.h>
 
 Operation::Result Map::doExecute(MachineState& s) {
-    if (!s.stack().hasAtLeast(2)) {
-        s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
-
     auto vpred = s.stack().pop();
     auto vcnt = s.stack().pop();
 

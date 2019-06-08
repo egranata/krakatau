@@ -28,11 +28,6 @@ IfTrue::IfTrue(std::shared_ptr<Operation> op) {
 }
 
 Operation::Result IfTrue::doExecute(MachineState& ms) {
-    if (!ms.stack().hasAtLeast(1)) {
-        ms.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
-
     auto vcnd = ms.stack().pop();
 
     Value_Boolean* cnd = runtime_ptr_cast<Value_Boolean>(vcnd);

@@ -17,9 +17,9 @@
 #ifndef STUFF_OPERATION_EQUALS
 #define STUFF_OPERATION_EQUALS
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 
-class Equals : public DefaultConstructibleOperation<Equals, OperationType::EQUALS> {
+class Equals : public DefaultConstructibleOperation<Equals, OperationType::EQUALS, PreconditionArgc<2>> {
     public:
         virtual Operation::Result doExecute(MachineState&) override;
 };

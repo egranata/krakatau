@@ -18,11 +18,6 @@
 #include <machine/state.h>
 
 Operation::Result Typeof::doExecute(MachineState& s) {
-    if (!s.stack().hasAtLeast(1)) {
-        s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
-
     std::shared_ptr<Value> val = s.stack().pop();
     s.stack().push(Value::type(val->getClassId()));
     return Operation::Result::SUCCESS;

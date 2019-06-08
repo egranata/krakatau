@@ -16,11 +16,6 @@
 #include <machine/state.h>
 
 Operation::Result Dup::doExecute(MachineState& s) {
-    if (!s.stack().hasAtLeast(1)) {
-        s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
-
     s.stack().push(s.stack().peek());
     return Operation::Result::SUCCESS;
 }

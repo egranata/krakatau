@@ -17,9 +17,9 @@
 #ifndef STUFF_OPERATION_PACK
 #define STUFF_OPERATION_PACK
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 
-class Pack : public DefaultConstructibleOperation<Pack, OperationType::PACK> {
+class Pack : public DefaultConstructibleOperation<Pack, OperationType::PACK, PreconditionArgc<1>> {
     public:
         virtual Operation::Result doExecute(MachineState&) override;
 };

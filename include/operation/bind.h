@@ -17,10 +17,11 @@
 #ifndef STUFF_OPERATION_BIND
 #define STUFF_OPERATION_BIND
 
-#include <operation/op.h>
-#include <value/value.h>
+#include <operation/base_op.h>
+#include <memory>
 #include <string>
 
+class Value;
 class MachineState;
 class Parser;
 class Serializer;

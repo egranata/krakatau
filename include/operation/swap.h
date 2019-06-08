@@ -17,9 +17,9 @@
 #ifndef STUFF_OPERATION_SWAP
 #define STUFF_OPERATION_SWAP
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 
-class Swap : public DefaultConstructibleOperation<Swap, OperationType::SWAP> {
+class Swap : public DefaultConstructibleOperation<Swap, OperationType::SWAP, PreconditionArgc<2>> {
     public:
         virtual Operation::Result doExecute(MachineState&) override;
 };

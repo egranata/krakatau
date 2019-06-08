@@ -17,9 +17,7 @@
 #ifndef STUFF_OPERATION_BREAK
 #define STUFF_OPERATION_BREAK
 
-#include <operation/op.h>
-#include <operation/op_loader.h>
-#include <type_traits>
+#include <operation/base_op.h>
 
 class ByteStream;
 

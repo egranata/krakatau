@@ -17,9 +17,9 @@
 #ifndef STUFF_OPERATION_REDUCE
 #define STUFF_OPERATION_REDUCE
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 
-class Reduce : public DefaultConstructibleOperation<Reduce, OperationType::REDUCE> {
+class Reduce : public DefaultConstructibleOperation<Reduce, OperationType::REDUCE, PreconditionArgc<3>> {
     public:
         virtual Operation::Result doExecute(MachineState&) override;
 };

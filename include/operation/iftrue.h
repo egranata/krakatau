@@ -17,10 +17,9 @@
 #ifndef STUFF_OPERATION_IFTRUE
 #define STUFF_OPERATION_IFTRUE
 
-#include <operation/op.h>
-#include <string>
+#include <operation/base_op.h>
 
-class IfTrue : public BaseOperation<IfTrue, OperationType::IFTRUE> {
+class IfTrue : public BaseOperation<IfTrue, OperationType::IFTRUE, PreconditionArgc<1>> {
     public:
         static std::shared_ptr<Operation> fromByteStream(ByteStream*);
         static std::shared_ptr<Operation> fromParser(Parser*);

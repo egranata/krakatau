@@ -17,20 +17,20 @@
 #ifndef STUFF_OPERATION_LOGICAL
 #define STUFF_OPERATION_LOGICAL
 
-#include <operation/op.h>
-#include <value/boolean.h>
+#include <operation/base_op.h>
 #include <memory>
-#include <operation/op_loader.h>
 
-template<typename T, OperationType OpType, typename P = Operation>
-class Binary_Logical_Operation : public DefaultConstructibleOperation<T,OpType,P> {
+class Value_Boolean;
+
+template<typename T, OperationType OpType>
+class Binary_Logical_Operation : public DefaultConstructibleOperation<T,OpType,PreconditionArgc<2>> {
     public:
         virtual std::shared_ptr<Value> eval(Value_Boolean* v1, Value_Boolean* v2) = 0;
         Operation::Result doExecute(MachineState&) override;
 };
 
-template<typename T, OperationType OpType, typename P = Operation>
-class Unary_Logical_Operation : public DefaultConstructibleOperation<T,OpType,P> {
+template<typename T, OperationType OpType>
+class Unary_Logical_Operation : public DefaultConstructibleOperation<T,OpType,PreconditionArgc<1>> {
     public:
         virtual std::shared_ptr<Value> eval(Value_Boolean* v1) = 0;
         Operation::Result doExecute(MachineState&) override;

@@ -18,13 +18,12 @@
 #define STUFF_OPERATION_BLOCK
 
 #include <memory>
-#include <operation/op.h>
-#include <machine/state.h>
+#include <operation/base_op.h>
 #include <vector>
 #include <string>
 #include <optional>
-#include <value/value_table.h>
 
+class ValueTable;
 class Serializer;
 class ByteStream;
 class Parser;

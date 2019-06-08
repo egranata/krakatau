@@ -19,11 +19,6 @@
 #include <machine/state.h>
 
 Operation::Result Unpack::doExecute(MachineState& ms) {
-    if (!ms.stack().hasAtLeast(1)) {
-        ms.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
-
     auto val_tpl = ms.stack().pop();
     auto tpl = runtime_ptr_cast<Value_Tuple>(val_tpl);
     if (tpl == nullptr) {

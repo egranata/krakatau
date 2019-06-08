@@ -17,7 +17,7 @@
 #ifndef STUFF_OPERATION_LOADSLOT
 #define STUFF_OPERATION_LOADSLOT
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 #include <string>
 
 class Loadslot : public BaseOperation<Loadslot, OperationType::LOADSLOT> {

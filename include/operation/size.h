@@ -17,9 +17,9 @@
 #ifndef STUFF_OPERATION_SIZE
 #define STUFF_OPERATION_SIZE
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 
-class Size : public DefaultConstructibleOperation<Size, OperationType::SIZE> {
+class Size : public DefaultConstructibleOperation<Size, OperationType::SIZE, PreconditionArgc<1>> {
     public:
         virtual Operation::Result doExecute(MachineState&) override;
 };

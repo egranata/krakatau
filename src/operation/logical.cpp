@@ -15,16 +15,12 @@
 #include <operation/logical.h>
 #include <value/error.h>
 #include <error/error_codes.h>
+#include <value/boolean.h>
 #include <rtti/rtti.h>
 #include <machine/state.h>
 
-template<class T, OperationType OpType, class P>
-Operation::Result Binary_Logical_Operation<T,OpType,P>::doExecute(MachineState& s) {
-    if (!s.stack().hasAtLeast(2)) {
-        s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
-
+template<class T, OperationType OpType>
+Operation::Result Binary_Logical_Operation<T,OpType>::doExecute(MachineState& s) {
     auto p1 = s.stack().pop();
     auto p2 = s.stack().pop();
 
@@ -46,13 +42,8 @@ Operation::Result Binary_Logical_Operation<T,OpType,P>::doExecute(MachineState& 
     }
 }
 
-template<class T, OperationType OpType, class P>
-Operation::Result Unary_Logical_Operation<T,OpType,P>::doExecute(MachineState& s) {
-    if (!s.stack().hasAtLeast(1)) {
-        s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
-
+template<class T, OperationType OpType>
+Operation::Result Unary_Logical_Operation<T,OpType>::doExecute(MachineState& s) {
     auto p = s.stack().pop();
 
     if (p->isOfClass<Value_Boolean>()) {

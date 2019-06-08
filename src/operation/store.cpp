@@ -26,10 +26,6 @@ Store::Store(const std::string& k) {
     mKey = k;
 }
 Operation::Result Store::doExecute(MachineState& ms) {
-    if (!ms.stack().hasAtLeast(1)) {
-        ms.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
     auto ptr = ms.stack().peek();
     if (ms.value_store().store(mKey, ptr)) {
         ms.stack().pop();

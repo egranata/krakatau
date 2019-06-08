@@ -21,13 +21,8 @@
 #include <machine/state.h>
 #include <value/boolean.h>
 
-template<class T, OperationType OpType, class P>
-Operation::Result Binary_Arithmetic_Operation<T,OpType,P>::doExecute(MachineState& s) {
-    if (!s.stack().hasAtLeast(2)) {
-        s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
-
+template<class T, OperationType OpType>
+Operation::Result Binary_Arithmetic_Operation<T,OpType>::doExecute(MachineState& s) {
     auto p1 = s.stack().pop();
     auto p2 = s.stack().pop();
 
@@ -49,13 +44,8 @@ Operation::Result Binary_Arithmetic_Operation<T,OpType,P>::doExecute(MachineStat
     }
 }
 
-template<class T, OperationType OpType, class P>
-Operation::Result Unary_Arithmetic_Operation<T,OpType,P>::doExecute(MachineState& s) {
-    if (!s.stack().hasAtLeast(1)) {
-        s.stack().push(Value::error(ErrorCode::INSUFFICIENT_ARGUMENTS));
-        return Operation::Result::ERROR;
-    }
-
+template<class T, OperationType OpType>
+Operation::Result Unary_Arithmetic_Operation<T,OpType>::doExecute(MachineState& s) {
     auto p = s.stack().pop();
 
     if (p->isOfClass<Value_Number>()) {

@@ -17,10 +17,10 @@
 #ifndef STUFF_OPERATION_STORESLOT
 #define STUFF_OPERATION_STORESLOT
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 #include <string>
 
-class Storeslot : public BaseOperation<Storeslot, OperationType::STORESLOT> {
+class Storeslot : public BaseOperation<Storeslot, OperationType::STORESLOT, PreconditionArgc<1>> {
     public:
         static std::shared_ptr<Operation> fromByteStream(ByteStream*);
         static std::shared_ptr<Operation> fromParser(Parser*);

@@ -17,9 +17,9 @@
 #ifndef STUFF_OPERATION_UNPACK
 #define STUFF_OPERATION_UNPACK
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 
-class Unpack : public DefaultConstructibleOperation<Unpack, OperationType::UNPACK> {
+class Unpack : public DefaultConstructibleOperation<Unpack, OperationType::UNPACK, PreconditionArgc<1>> {
     public:
         virtual Operation::Result doExecute(MachineState&) override;
 };

@@ -17,9 +17,9 @@
 #ifndef STUFF_OPERATION_FILTER
 #define STUFF_OPERATION_FILTER
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 
-class Filter : public DefaultConstructibleOperation<Filter, OperationType::FILTER> {
+class Filter : public DefaultConstructibleOperation<Filter, OperationType::FILTER, PreconditionArgc<2>> {
     public:
         virtual Operation::Result doExecute(MachineState&) override;
 };

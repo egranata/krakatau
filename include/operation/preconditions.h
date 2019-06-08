@@ -14,14 +14,25 @@
  * limitations under the License.
  */
 
-#ifndef STUFF_OPERATION_RESETSTACK
-#define STUFF_OPERATION_RESETSTACK
+#ifndef STUFF_OPERATION_PRECONDITIONS
+#define STUFF_OPERATION_PRECONDITIONS
 
-#include <operation/base_op.h>
+#include <error/error_codes.h>
+#include <optional>
+#include <machine/state.h>
 
-class ResetStack : public DefaultConstructibleOperation<ResetStack, OperationType::RESETSTACK> {
-    public:
-        virtual Operation::Result doExecute(MachineState&) override;
+struct PreconditionAllowAll {
+    std::optional<ErrorCode> operator()(MachineState&) {
+            return std::nullopt;
+    }
+};
+
+template<size_t N>
+struct PreconditionArgc {
+    std::optional<ErrorCode> operator()(MachineState& ms) {
+        if (ms.stack().hasAtLeast(N)) return std::nullopt;
+        return ErrorCode::INSUFFICIENT_ARGUMENTS;
+    }
 };
 
 #endif

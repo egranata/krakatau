@@ -21,6 +21,7 @@
 #include <value/operation.h>
 #include <stream/serializer.h>
 #include <stream/byte_stream.h>
+#include <value/tuple.h>
 
 Call::Call(std::string name, std::shared_ptr<Value_Tuple> args) : mName(name), mArguments(args) {}
 

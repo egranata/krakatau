@@ -22,6 +22,7 @@
 #include <rtti/rtti.h>
 #include <machine/state.h>
 #include <value/string.h>
+#include <value/table.h>
 
 Loadslot::Loadslot(const std::string& k) {
     mKey = k;

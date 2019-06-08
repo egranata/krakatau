@@ -17,7 +17,7 @@
 #ifndef STUFF_OPERATION_LOOP
 #define STUFF_OPERATION_LOOP
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 
 class ByteStream;
 

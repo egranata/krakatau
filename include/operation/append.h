@@ -17,9 +17,9 @@
 #ifndef STUFF_OPERATION_APPEND
 #define STUFF_OPERATION_APPEND
 
-#include <operation/op.h>
+#include <operation/base_op.h>
 
-class Append : public DefaultConstructibleOperation<Append, OperationType::APPEND> {
+class Append : public DefaultConstructibleOperation<Append, OperationType::APPEND, PreconditionArgc<2>> {
     public:
         virtual Operation::Result doExecute(MachineState&) override;
 };
