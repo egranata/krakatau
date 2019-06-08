@@ -76,7 +76,7 @@ class BaseOperation : public Operation {
         bool isOfType(OperationType aID) const override {
             return (aID == OpType) || this->Parent::isOfType(aID);
         }
-        Result execute(MachineState& ms) {
+        Result execute(MachineState& ms) override {
             return doExecute(ms);
         }
     protected:
