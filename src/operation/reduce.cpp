@@ -14,10 +14,9 @@
 
 #include <operation/reduce.h>
 #include <rtti/rtti.h>
-#include <value/tuple.h>
+#include <value/iterable.h>
 #include <value/number.h>
 #include <value/string.h>
-#include <value/table.h>
 #include <value/operation.h>
 #include <value/block.h>
 #include <operation/block.h>
@@ -30,8 +29,8 @@ Operation::Result Reduce::doExecute(MachineState& s) {
     auto vpred = s.stack().pop();
     auto vcnt = s.stack().pop();
 
-    auto tpl = runtime_ptr_cast<Value_Tuple>(vcnt);
-    auto tbl = runtime_ptr_cast<Value_Table>(vcnt);
+    auto iter = IterableValue::asIterable(vcnt);
+
     auto cbk = vpred->asClass<Value_Operation>();
 
     if(cbk == nullptr) {
@@ -42,7 +41,7 @@ Operation::Result Reduce::doExecute(MachineState& s) {
         return Operation::Result::ERROR;
     }
 
-    if(tpl == nullptr && tbl == nullptr) {
+    if(iter == nullptr) {
         s.stack().push(vcnt);
         s.stack().push(vpred);
         s.stack().push(v0);
@@ -50,37 +49,20 @@ Operation::Result Reduce::doExecute(MachineState& s) {
         return Operation::Result::ERROR;
     }
 
-    if (tpl) {
-        for(size_t i = 0; i < tpl->size(); ++i) {
-            auto itm = tpl->at(i);
-            s.stack().push(itm);
-            s.stack().push(v0);
-            auto ok = cbk->execute(s);
-            if (ok != Operation::Result::SUCCESS) {
-                s.stack().push(vcnt);
-                s.stack().push(vpred);
-                s.stack().push(v0_0);
-                s.stack().push(Value::error(ErrorCode::UNEXPECTED_RESULT));
-                return Operation::Result::ERROR;
-            } v0 = s.stack().pop();
-        }
+    for(size_t i = 0; i < iter->size(); ++i) {
+        auto itm = iter->at(i);
+        s.stack().push(itm);
         s.stack().push(v0);
-        return Operation::Result::SUCCESS;
-    } else {
-        for(size_t i = 0; i < tbl->size(); ++i) {
-            auto itm = tbl->pairAt(i);
-            s.stack().push(itm);
-            s.stack().push(v0);
-            auto ok = cbk->execute(s);
-            if (ok != Operation::Result::SUCCESS) {
-                s.stack().push(vcnt);
-                s.stack().push(vpred);
-                s.stack().push(v0_0);
-                s.stack().push(Value::error(ErrorCode::UNEXPECTED_RESULT));
-                return Operation::Result::ERROR;
-            } v0 = s.stack().pop();
-        }
-        s.stack().push(v0);
-        return Operation::Result::SUCCESS;
+        auto ok = cbk->execute(s);
+        if (ok != Operation::Result::SUCCESS) {
+            s.stack().push(vcnt);
+            s.stack().push(vpred);
+            s.stack().push(v0_0);
+            s.stack().push(Value::error(ErrorCode::UNEXPECTED_RESULT));
+            return Operation::Result::ERROR;
+        } else v0 = s.stack().pop();
     }
+
+    s.stack().push(v0);
+    return Operation::Result::SUCCESS;
 }

@@ -28,6 +28,7 @@
 #include <parser/parser.h>
 #include <value/number.h>
 #include <value/empty.h>
+#include <value/set.h>
 
 TEST(Reduce, ZeroArgs) {
     MachineState s;
@@ -89,6 +90,19 @@ TEST(Reduce, TableBlock) {
     s.stack().push(val_tpl);
     s.stack().push(val_blk);
     s.stack().push(Value::fromNumber(5));
+    ASSERT_EQ(Operation::Result::SUCCESS, r.execute(s));
+    ASSERT_TRUE(res_val->equals(s.stack().peek()));
+}
+
+TEST(Reduce, Set) {
+    MachineState s;
+    Reduce r;
+    auto val_set = Parser("set [number 3, number 12, number 0]").parseValuePayload();
+    auto val_blk = Parser("block { add }").parseValuePayload();
+    auto res_val = Parser("number 16").parseValuePayload();
+    s.stack().push(val_set);
+    s.stack().push(val_blk);
+    s.stack().push(Value::fromNumber(1));
     ASSERT_EQ(Operation::Result::SUCCESS, r.execute(s));
     ASSERT_TRUE(res_val->equals(s.stack().peek()));
 }
