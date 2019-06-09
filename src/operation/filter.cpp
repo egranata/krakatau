@@ -65,7 +65,7 @@ Operation::Result Filter::doExecute(MachineState& s) {
                 s.stack().push(vpred);
                 s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
                 return Operation::Result::ERROR;
-            } else if (res->value()) tpl_result->append(itm);
+            } else if (res->value()) tpl_result->appendValue(itm);
         }
         s.stack().push(vtpl_result);
         return Operation::Result::SUCCESS;
@@ -88,7 +88,7 @@ Operation::Result Filter::doExecute(MachineState& s) {
                 s.stack().push(vpred);
                 s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
                 return Operation::Result::ERROR;
-            } else if (res->value()) tbl_result->append(tbl->keyAt(i), tbl->valueAt(i));
+            } else if (res->value()) tbl_result->appendValue(itm);
         }
         s.stack().push(vtbl_result);
         return Operation::Result::SUCCESS;

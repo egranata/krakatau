@@ -59,7 +59,7 @@ Operation::Result Map::doExecute(MachineState& s) {
                 s.stack().push(vpred);
                 s.stack().push(Value::error(ErrorCode::UNEXPECTED_RESULT));
                 return Operation::Result::ERROR;
-            } else tpl_result->append(s.stack().pop());
+            } else tpl_result->appendValue(s.stack().pop());
         }
         s.stack().push(vtpl_result);
         return Operation::Result::SUCCESS;
@@ -83,7 +83,7 @@ Operation::Result Map::doExecute(MachineState& s) {
                 s.stack().push(vpred);
                 s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
                 return Operation::Result::ERROR;
-            } else tbl_result->append(res->at(0), res->at(1));
+            } else tbl_result->appendValue(vres);
         }
         s.stack().push(vtbl_result);
         return Operation::Result::SUCCESS;
