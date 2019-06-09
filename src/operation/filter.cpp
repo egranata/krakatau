@@ -22,14 +22,14 @@
 #include <value/block.h>
 #include <operation/block.h>
 #include <value/boolean.h>
+#include <value/appendable.h>
+#include <value/iterable.h>
 #include <machine/state.h>
 
 Operation::Result Filter::doExecute(MachineState& s) {
     auto vpred = s.stack().pop();
     auto vcnt = s.stack().pop();
 
-    auto tpl = runtime_ptr_cast<Value_Tuple>(vcnt);
-    auto tbl = runtime_ptr_cast<Value_Table>(vcnt);
     auto cbk = vpred->asClass<Value_Operation>();
 
     if(cbk == nullptr) {
@@ -39,58 +39,44 @@ Operation::Result Filter::doExecute(MachineState& s) {
         return Operation::Result::ERROR;
     }
 
-    if(tpl == nullptr && tbl == nullptr) {
+    auto iter = IterableValue::asIterable(vcnt);
+
+    if(iter == nullptr) {
         s.stack().push(vcnt);
         s.stack().push(vpred);
         s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
         return Operation::Result::ERROR;
     }
 
-    if (tpl) {
-        auto vtpl_result = Value::tuple({});
-        auto tpl_result = runtime_ptr_cast<Value_Tuple>(vtpl_result);
-        for(size_t i = 0; i < tpl->size(); ++i) {
-            auto itm = tpl->at(i);
-            s.stack().push(itm);
-            auto ok = cbk->execute(s);
-            if (ok != Operation::Result::SUCCESS) {
-                s.stack().push(vcnt);
-                s.stack().push(vpred);
-                s.stack().push(Value::error(ErrorCode::UNEXPECTED_RESULT));
-                return Operation::Result::ERROR;
-            }
-            auto res = runtime_ptr_cast<Value_Boolean>(s.stack().pop());
-            if (res == nullptr) {
-                s.stack().push(vcnt);
-                s.stack().push(vpred);
-                s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
-                return Operation::Result::ERROR;
-            } else if (res->value()) tpl_result->appendValue(itm);
-        }
-        s.stack().push(vtpl_result);
-        return Operation::Result::SUCCESS;
-    } else {
-        auto vtbl_result = Value::table({});
-        auto tbl_result = runtime_ptr_cast<Value_Table>(vtbl_result);
-        for(size_t i = 0; i < tbl->size(); ++i) {
-            auto itm = tbl->pairAt(i);
-            s.stack().push(itm);
-            auto ok = cbk->execute(s);
-            if (ok != Operation::Result::SUCCESS) {
-                s.stack().push(vcnt);
-                s.stack().push(vpred);
-                s.stack().push(Value::error(ErrorCode::UNEXPECTED_RESULT));
-                return Operation::Result::ERROR;
-            }
-            auto res = runtime_ptr_cast<Value_Boolean>(s.stack().pop());
-            if (res == nullptr) {
-                s.stack().push(vcnt);
-                s.stack().push(vpred);
-                s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
-                return Operation::Result::ERROR;
-            } else if (res->value()) tbl_result->appendValue(itm);
-        }
-        s.stack().push(vtbl_result);
-        return Operation::Result::SUCCESS;
+    auto newval = Appendable::asAppendable(iter->asValue())->newEmptyOfSameType();
+    auto newapp = Appendable::asAppendable(newval);
+
+    if (newapp == nullptr) {
+        s.stack().push(vcnt);
+        s.stack().push(vpred);
+        s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
+        return Operation::Result::ERROR;
     }
+
+    for(size_t i = 0; i < iter->size(); ++i) {
+        auto itm = iter->at(i);
+        s.stack().push(itm);
+        auto ok = cbk->execute(s);
+        if (ok != Operation::Result::SUCCESS) {
+            s.stack().push(vcnt);
+            s.stack().push(vpred);
+            s.stack().push(Value::error(ErrorCode::UNEXPECTED_RESULT));
+            return Operation::Result::ERROR;
+        }
+        auto res = runtime_ptr_cast<Value_Boolean>(s.stack().pop());
+        if (res == nullptr) {
+            s.stack().push(vcnt);
+            s.stack().push(vpred);
+            s.stack().push(Value::error(ErrorCode::TYPE_MISMATCH));
+            return Operation::Result::ERROR;
+        } else if (res->value()) newapp->appendValue(itm);
+    }
+
+    s.stack().push(newval);
+    return Operation::Result::SUCCESS;
 }

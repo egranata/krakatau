@@ -29,6 +29,7 @@
 #include <value/number.h>
 #include <value/empty.h>
 #include <value/string.h>
+#include <value/set.h>
 
 TEST(Filter, ZeroArgs) {
     MachineState s;
@@ -172,4 +173,29 @@ TEST(Filter, TableBlock) {
     ASSERT_EQ(1, runtime_ptr_cast<Value_Table>(s.stack().peek())->size());
     ASSERT_TRUE(Value::fromNumber(2)->equals(runtime_ptr_cast<Value_Table>(s.stack().peek())->keyAt(0)));
     ASSERT_TRUE(Value::fromString("two")->equals(runtime_ptr_cast<Value_Table>(s.stack().peek())->valueAt(0)));
+}
+
+TEST(Filter, StringTakeL) {
+    MachineState s;
+    Filter flt;
+    auto vstr = Value::fromString("hello world");
+    auto vblk = Parser("block { push character 108 eq }").parseValuePayload();
+    s.stack().push(vstr);
+    s.stack().push(vblk);
+    ASSERT_EQ(Operation::Result::SUCCESS, flt.execute(s));
+    ASSERT_TRUE(s.stack().peek()->isOfClass<Value_String>());
+    ASSERT_TRUE(s.stack().peek()->equals(Value::fromString("lll")));
+}
+
+TEST(Filter, Set) {
+    MachineState s;
+    Filter flt;
+    auto vset = Value::set( {Value::fromNumber(1), Value::fromNumber(2), Value::fromNumber(3)} );
+    auto vblk = Parser("block { push number 2 eq not }").parseValuePayload();
+    s.stack().push(vset);
+    s.stack().push(vblk);
+    ASSERT_EQ(Operation::Result::SUCCESS, flt.execute(s));
+    ASSERT_TRUE(s.stack().peek()->isOfClass<Value_Set>());
+    ASSERT_EQ(2, s.stack().peek()->asClass<Value_Set>()->size());
+    ASSERT_EQ(3, vset->size());
 }

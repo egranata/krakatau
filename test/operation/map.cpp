@@ -27,6 +27,8 @@
 #include <rtti/rtti.h>
 #include <parser/parser.h>
 #include <value/number.h>
+#include <value/set.h>
+#include <value/string.h>
 #include <value/empty.h>
 
 TEST(Map, ZeroArgs) {
@@ -112,4 +114,19 @@ TEST(Map, BlockTypeMismatch) {
     s.stack().push(val_blk);
     ASSERT_EQ(Operation::Result::ERROR, mp.execute(s));
     ASSERT_EQ(ErrorCode::TYPE_MISMATCH, runtime_ptr_cast<Value_Error>(s.stack().pop())->value());
+}
+
+TEST(Map, Set) {
+    MachineState s;
+    Map mp;
+    auto vset = Value::set( {Value::fromNumber(1), Value::fromNumber(2), Value::fromNumber(3)} );
+    auto vblk = Parser("block { push number 3 mul }").parseValuePayload();
+    auto fset = Value::set( {Value::fromNumber(3), Value::fromNumber(6), Value::fromNumber(9)} );
+    s.stack().push(vset);
+    s.stack().push(vblk);
+    ASSERT_EQ(Operation::Result::SUCCESS, mp.execute(s));
+    ASSERT_TRUE(s.stack().peek()->isOfClass<Value_Set>());
+    ASSERT_EQ(3, s.stack().peek()->asClass<Value_Set>()->size());
+    ASSERT_EQ(3, vset->size());
+    ASSERT_TRUE(fset->equals(s.stack().peek()));
 }
