@@ -38,6 +38,8 @@ class IterableValue {
         static std::shared_ptr<IterableValue> asIterable(std::shared_ptr<T> val) {
             return std::dynamic_pointer_cast<IterableValue>(val);
         }
+
+        std::shared_ptr<Value> asValue();
     protected:
         IterableValue();
 };

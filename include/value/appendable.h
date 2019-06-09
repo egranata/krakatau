@@ -70,6 +70,7 @@ class Appendable {
             return std::dynamic_pointer_cast<Appendable>(val);
         }
 
+        std::shared_ptr<Value> asValue();
     protected:
         Appendable();
 };

@@ -15,8 +15,17 @@
 #include <value/iterable.h>
 #include <value/value.h>
 #include <value/iterator.h>
+#include <type_traits>
 
-IterableValue::IterableValue() = default;
+IterableValue::IterableValue() {
+    using SelfType = std::remove_reference<decltype(*this)>::type;
+    using IsAbstract = std::is_abstract<SelfType>;
+    using IsValue = std::is_base_of<Value, SelfType>;
+
+    using IsValid = std::disjunction<IsAbstract, IsValue>;
+
+    static_assert(IsValid::value);
+}
 
 IterableValue::~IterableValue() = default;
 
@@ -31,4 +40,8 @@ ValueIterator IterableValue::begin() {
 }
 ValueIterator IterableValue::end() {
     return ValueIterator(this, size());
+}
+
+std::shared_ptr<Value> IterableValue::asValue() {
+    return dynamic_cast<Value*>(this)->shared_from_this();
 }

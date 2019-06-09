@@ -75,3 +75,11 @@ TEST(Iterable, Iterator) {
     }
     ASSERT_EQ(2, i);
 }
+
+TEST(Iterable, AsValue) {
+    auto tpl = Value::tuple({Value::empty(), Value::fromBoolean(false)});
+    auto itpl = IterableValue::asIterable(tpl);
+
+    ASSERT_NE(nullptr, itpl->asValue());
+    ASSERT_TRUE(tpl->equals(itpl->asValue()));
+}

@@ -12,20 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <value/appendable.h>
-#include <type_traits>
 #include <value/value.h>
+#include <value/appendable.h>
+#include <value/tuple.h>
+#include <value/empty.h>
+#include <value/boolean.h>
+#include <gtest/gtest.h>
 
-Appendable::Appendable() {
-    using SelfType = std::remove_reference<decltype(*this)>::type;
-    using IsAbstract = std::is_abstract<SelfType>;
-    using IsValue = std::is_base_of<Value, SelfType>;
+TEST(Appendable, AsValue) {
+    auto tpl = Value::tuple({Value::empty(), Value::fromBoolean(false)});
+    auto itpl = Appendable::asAppendable(tpl);
 
-    using IsValid = std::disjunction<IsAbstract, IsValue>;
-
-    static_assert(IsValid::value);
-}
-
-std::shared_ptr<Value> Appendable::asValue() {
-    return dynamic_cast<Value*>(this)->shared_from_this();
+    ASSERT_NE(nullptr, itpl->asValue());
+    ASSERT_TRUE(tpl->equals(itpl->asValue()));
 }
