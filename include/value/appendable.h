@@ -71,6 +71,8 @@ class Appendable {
         }
 
         std::shared_ptr<Value> asValue();
+
+        virtual std::shared_ptr<Value> newEmptyOfSameType() = 0;
     protected:
         Appendable();
 };

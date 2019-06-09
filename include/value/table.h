@@ -31,6 +31,8 @@ class Value_Table : public Value, public IterableValue, public SafeAppendableVal
         static std::shared_ptr<Value> fromByteStream(ByteStream* bs);
         static std::shared_ptr<Value> fromParser(Parser*);
 
+        std::shared_ptr<Value> newEmptyOfSameType() override;
+
         Value_Table();
         Value_Table(std::initializer_list<std::pair<std::shared_ptr<Value>,std::shared_ptr<Value>>>);
 

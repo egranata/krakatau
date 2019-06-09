@@ -110,3 +110,7 @@ Appendable::RetType Value_String::appendValue(std::shared_ptr<Value> val) {
         [](ErrorCode in) -> Appendable::RetType { return in; },
     }, tryAppend(val));
 }
+
+std::shared_ptr<Value> Value_String::newEmptyOfSameType() {
+    return Value::fromString("");
+}

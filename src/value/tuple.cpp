@@ -179,3 +179,7 @@ std::shared_ptr<Value> Value_Tuple::doTypecast(ValueType vt) {
         return Value::fromOperation(std::shared_ptr<Operation>(new PartialBind(val, opr)));
     }).doTypecast(this, vt);
 }
+
+std::shared_ptr<Value> Value_Tuple::newEmptyOfSameType() {
+    return Value::tuple({});
+}

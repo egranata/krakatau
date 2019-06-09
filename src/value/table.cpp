@@ -190,3 +190,7 @@ std::shared_ptr<Value> Value_Table::doTypecast(ValueType vt) {
         return val_tpl;
     }).doTypecast(this, vt);
 }
+
+std::shared_ptr<Value> Value_Table::newEmptyOfSameType() {
+    return Value::table({});
+}

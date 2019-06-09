@@ -18,6 +18,9 @@
 #include <value/empty.h>
 #include <value/boolean.h>
 #include <gtest/gtest.h>
+#include <value/string.h>
+#include <value/set.h>
+#include <value/table.h>
 
 TEST(Appendable, AsValue) {
     auto tpl = Value::tuple({Value::empty(), Value::fromBoolean(false)});
@@ -25,4 +28,23 @@ TEST(Appendable, AsValue) {
 
     ASSERT_NE(nullptr, itpl->asValue());
     ASSERT_TRUE(tpl->equals(itpl->asValue()));
+}
+
+TEST(Appendable, NewEmpty) {
+    auto set = Value::set({});
+    auto table = Value::table({});
+    auto tuple = Value::tuple({});
+    auto string = Value::fromString("");
+
+    ASSERT_TRUE(set->newEmptyOfSameType()->isOfClass<Value_Set>());
+    ASSERT_EQ(0, set->size());
+
+    ASSERT_TRUE(table->newEmptyOfSameType()->isOfClass<Value_Table>());
+    ASSERT_EQ(0, table->size());
+
+    ASSERT_TRUE(tuple->newEmptyOfSameType()->isOfClass<Value_Tuple>());
+    ASSERT_EQ(0, tuple->size());
+
+    ASSERT_TRUE(string->newEmptyOfSameType()->isOfClass<Value_String>());
+    ASSERT_EQ(0, string->size());
 }

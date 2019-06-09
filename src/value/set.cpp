@@ -157,3 +157,7 @@ std::shared_ptr<Value> Value_Set::doTypecast(ValueType vt) {
         return val_tpl;
     }).doTypecast(this, vt);
 }
+
+std::shared_ptr<Value> Value_Set::newEmptyOfSameType() {
+    return Value::set({});
+}

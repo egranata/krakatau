@@ -29,6 +29,8 @@ class Value_String : public Value, public IterableValue, public AppendableValue<
         static std::shared_ptr<Value> fromByteStream(ByteStream* bs);
         static std::shared_ptr<Value> fromParser(Parser*);
 
+        std::shared_ptr<Value> newEmptyOfSameType() override;
+
         Value_String(const std::u32string&);
         std::u32string value() const;
         std::string utf8() const;

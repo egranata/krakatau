@@ -30,6 +30,8 @@ class Value_Set : public Value, public IterableValue, public SafeAppendableValue
         static std::shared_ptr<Value> fromByteStream(ByteStream* bs);
         static std::shared_ptr<Value> fromParser(Parser*);
 
+        std::shared_ptr<Value> newEmptyOfSameType() override;
+
         Value_Set();
         Value_Set(std::initializer_list<std::shared_ptr<Value>>);
 

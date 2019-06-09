@@ -31,6 +31,8 @@ class Value_Tuple : public Value, public IterableValue, public SafeAppendableVal
         static std::shared_ptr<Value> fromByteStream(ByteStream* bs);
         static std::shared_ptr<Value> fromParser(Parser*);
 
+        std::shared_ptr<Value> newEmptyOfSameType() override;
+
         Value_Tuple();
         Value_Tuple(std::initializer_list<std::shared_ptr<Value>>);
 
