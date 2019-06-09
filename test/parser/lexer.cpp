@@ -20,6 +20,7 @@
 
 TEST(Lexer, LexString) {
     std::vector<Token> expected = {
+        {TokenKind::LITCHAR, "W"},
         {TokenKind::STRING, "test string"},
         {TokenKind::IDENTIFIER, "_is_a_valid_prefix"},
         {TokenKind::IDENTIFIER, "$he:llo"},
@@ -30,7 +31,7 @@ TEST(Lexer, LexString) {
     };
     yyscan_t scanner;
     yylex_init(&scanner);
-    YY_BUFFER_STATE buf = yy_scan_string("slots hello::1234 123456 \\uab01 $he:llo _is_a_valid_prefix \"test string\"", scanner);
+    YY_BUFFER_STATE buf = yy_scan_string("slots hello::1234 123456 \\uab01 $he:llo _is_a_valid_prefix \"test string\" 'W'", scanner);
     while(!expected.empty()) {
         auto parsed = yylex(scanner);
         ASSERT_NE(parsed, nullptr);

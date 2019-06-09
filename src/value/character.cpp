@@ -53,12 +53,14 @@ size_t Value_Character::serialize(Serializer* s) {
 }
 
 std::shared_ptr<Value> Value_Character::fromParser(Parser* p) {
-    char* ep;
+    char* ep = nullptr;
     uint64_t value;
     if (auto valunicode = p->nextIf(TokenKind::UNICODE)) {
         value = strtoull(valunicode->value().c_str(), &ep, 16);
     } else if (auto valstr = p->nextIf(TokenKind::NUMBER)) {
         value = strtoull(valstr->value().c_str(), &ep, 0);
+    } else if (auto vallit = p->nextIf(TokenKind::LITCHAR)) {
+        value = (char32_t)vallit->value().at(0);
     } else {
         p->error("expected number or unicode");
         return nullptr;

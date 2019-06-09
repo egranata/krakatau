@@ -32,6 +32,7 @@ std::string tokenKindToString(TokenKind tk) {
         case TokenKind::ARROW: return "->";
         case TokenKind::SEMICOLON: return ";";
         case TokenKind::UNICODE: return "unicode value";
+        case TokenKind::LITCHAR: return "character value";
         case TokenKind::KW_SLOTS: return "slots";
     }
 

@@ -182,6 +182,15 @@ TEST(Parser, ParseUnicodeCharacter) {
     ASSERT_EQ(0xab15, value->value->asClass<Value_Character>()->value());
 }
 
+TEST(Parser, ParseLiteralCharacter) {
+    Parser p("value foobar character 'X'");
+    auto value = p.parseValue();
+    ASSERT_NE(nullptr, value);
+    ASSERT_EQ(value->name, "foobar");
+    ASSERT_TRUE(value->value->isOfClass<Value_Character>());
+    ASSERT_EQ('X', value->value->asClass<Value_Character>()->value());
+}
+
 TEST(Parser, ParseIllegalCharacter) {
     Parser p("value foobar character false");
     auto value = p.parseValue();

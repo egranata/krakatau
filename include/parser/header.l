@@ -34,6 +34,10 @@ IDENT	[0-9a-zA-Z$_:]
 \\u{HDIGIT}+    {
                     return std::make_unique<Token>(TokenKind::UNICODE, yytext+2);
                 }
+'.'             {
+                    std::string s(yytext+1, 1);
+                    return std::make_unique<Token>(TokenKind::LITCHAR, s);
+                }
 value           {
                     return std::make_unique<Token>(TokenKind::KW_VALUE, yytext);
                 }
