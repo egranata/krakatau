@@ -14,9 +14,6 @@
 
 #include <operation/typecast.h>
 #include <rtti/rtti.h>
-#include <value/tuple.h>
-#include <value/number.h>
-#include <value/string.h>
 #include <value/type.h>
 #include <machine/state.h>
 

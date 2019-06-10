@@ -13,15 +13,11 @@
 // limitations under the License.
 
 #include <operation/loadnative.h>
-#include <value/value_store.h>
-#include <value/value.h>
 #include <stream/indenting_stream.h>
-#include <error/error_codes.h>
 #include <stream/serializer.h>
 #include <parser/parser.h>
 #include <rtti/rtti.h>
 #include <machine/state.h>
-#include <value/string.h>
 
 Loadnative::Loadnative(const std::string& k) {
     mKey = k;

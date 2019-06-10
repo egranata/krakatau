@@ -13,9 +13,6 @@
 // limitations under the License.
 
 #include <operation/append.h>
-#include <rtti/rtti.h>
-#include <value/tuple.h>
-#include <value/table.h>
 #include <value/appendable.h>
 #include <machine/state.h>
 

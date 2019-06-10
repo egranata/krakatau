@@ -14,16 +14,8 @@
 
 #include <operation/map.h>
 #include <rtti/rtti.h>
-#include <value/tuple.h>
-#include <value/number.h>
-#include <value/string.h>
-#include <value/table.h>
 #include <value/operation.h>
-#include <value/block.h>
-#include <operation/block.h>
-#include <value/boolean.h>
 #include <machine/state.h>
-#include <value/set.h>
 #include <value/appendable.h>
 #include <value/iterable.h>
 #include <error/error_codes.h>

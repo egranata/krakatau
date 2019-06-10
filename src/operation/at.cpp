@@ -14,14 +14,9 @@
 
 #include <operation/at.h>
 #include <rtti/rtti.h>
-#include <value/tuple.h>
-#include <value/number.h>
-#include <value/string.h>
 #include <value/iterable.h>
-#include <value/table.h>
 #include <machine/state.h>
-#include <value/empty.h>
-#include <value/set.h>
+#include <value/number.h>
 
 Operation::Result At::doExecute(MachineState& s) {
     auto nval = s.stack().pop();

@@ -15,12 +15,7 @@
 #include <operation/reduce.h>
 #include <rtti/rtti.h>
 #include <value/iterable.h>
-#include <value/number.h>
-#include <value/string.h>
 #include <value/operation.h>
-#include <value/block.h>
-#include <operation/block.h>
-#include <value/boolean.h>
 #include <machine/state.h>
 
 Operation::Result Reduce::doExecute(MachineState& s) {

@@ -14,12 +14,11 @@
 
 #include <operation/arith.h>
 #include <value/number.h>
-#include <value/empty.h>
+#include <value/boolean.h>
 #include <value/error.h>
 #include <error/error_codes.h>
 #include <rtti/rtti.h>
 #include <machine/state.h>
-#include <value/boolean.h>
 
 template<class T, OperationType OpType>
 Operation::Result Binary_Arithmetic_Operation<T,OpType>::doExecute(MachineState& s) {

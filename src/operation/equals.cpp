@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #include <operation/equals.h>
-#include <value/value.h>
 #include <machine/state.h>
 #include <value/boolean.h>
 

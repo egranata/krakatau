@@ -17,7 +17,6 @@
 #include <value/table.h>
 #include <value/set.h>
 #include <machine/state.h>
-#include <value/empty.h>
 #include <value/boolean.h>
 
 Operation::Result Find::doExecute(MachineState& s) {

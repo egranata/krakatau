@@ -14,7 +14,6 @@
 
 #include <operation/exec.h>
 #include <rtti/rtti.h>
-#include <value/boolean.h>
 #include <error/error_codes.h>
 #include <value/operation.h>
 #include <operation/op.h>

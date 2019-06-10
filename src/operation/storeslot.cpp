@@ -13,8 +13,6 @@
 // limitations under the License.
 
 #include <operation/storeslot.h>
-#include <value/value_store.h>
-#include <value/value.h>
 #include <stream/indenting_stream.h>
 #include <error/error_codes.h>
 #include <stream/serializer.h>
