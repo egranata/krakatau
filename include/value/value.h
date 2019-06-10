@@ -43,6 +43,7 @@ class Value_Tuple;
 class Value_Table;
 class Value_Type;
 class Value_Character;
+class Value_Atom;
 class Value_Error;
 class Value_Set;
 class Value_String;
@@ -63,6 +64,7 @@ class Value : public std::enable_shared_from_this<Value> {
         static std::shared_ptr<Value_Tuple> tuple(std::initializer_list<std::shared_ptr<Value>>);
         static std::shared_ptr<Value_Table> table(std::initializer_list<std::pair<std::shared_ptr<Value>,std::shared_ptr<Value>>>);
         static std::shared_ptr<Value_Set> set(std::initializer_list<std::shared_ptr<Value>>);
+        static std::shared_ptr<Value_Atom> atom(const std::string&);
 
         static std::shared_ptr<Value> fromByteStream(ByteStream*);
         static std::shared_ptr<Value> fromParser(Parser*);

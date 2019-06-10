@@ -24,6 +24,7 @@
 #include <value/tuple.h>
 #include <value/table.h>
 #include <value/set.h>
+#include <value/atom.h>
 #include <value/bind.h>
 #include <value/character.h>
 #include <operation/op.h>
@@ -87,6 +88,10 @@ std::shared_ptr<Value_Type> Value::type(ValueType vt) {
 
 std::shared_ptr<Value_Operation> Value::fromBind(std::shared_ptr<PartialBind> pb) {
     return std::make_shared<Value_Operation>(pb);
+}
+
+std::shared_ptr<Value_Atom> Value::atom(const std::string& a) {
+    return std::make_shared<Value_Atom>(a);
 }
 
 std::shared_ptr<Value> Value::fromByteStream(ByteStream* bs) {

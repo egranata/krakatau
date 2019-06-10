@@ -28,6 +28,7 @@
 #include <stream/serializer.h>
 #include <stream/byte_stream.h>
 #include <operation/op_loader.h>
+#include <value/atom.h>
 
 TEST(Select, Match) {
     MachineState ms;
@@ -123,4 +124,24 @@ TEST(Select, Parse) {
     auto dp2 = opl->fromParser(&p2);
     ASSERT_NE(dp2, nullptr);
     ASSERT_TRUE(s2.equals(dp2));
+}
+
+TEST(Select, WithAtoms) {
+    MachineState ms;
+    ms.stack().push(Value::atom("atom2"));
+    ms.stack().push(Value::atom("atom1"));
+
+    Parser p1("select table [atom atom2 -> operation push number 8, atom atom1 -> block { push number 2 dup mul }]");
+    auto opl = OperationLoader::loader();
+
+    auto dp1 = opl->fromParser(&p1);
+    ASSERT_NE(dp1, nullptr);
+
+    dp1->execute(ms);
+    ASSERT_TRUE(Value::fromNumber(4)->equals(ms.stack().peek()));
+
+    ms.stack().pop();
+
+    dp1->execute(ms);
+    ASSERT_TRUE(Value::fromNumber(8)->equals(ms.stack().peek()));
 }

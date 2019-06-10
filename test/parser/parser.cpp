@@ -19,6 +19,7 @@
 #include <value/number.h>
 #include <value/boolean.h>
 #include <value/tuple.h>
+#include <value/atom.h>
 #include <rtti/rtti.h>
 #include <value/block.h>
 #include <operation/block.h>
@@ -544,6 +545,21 @@ TEST(Parser, ParseSet) {
 
 TEST(Parser, ParseInvalidSet) {
     Parser p("value foobar set [number 123 -> boolean false]");
+    auto value = p.parseValue();
+    ASSERT_EQ(nullptr, value);
+}
+
+TEST(Parser, ParseAtom) {
+    Parser p("value foobar atom a_long_atom");
+    auto value = p.parseValue();
+    ASSERT_NE(nullptr, value);
+    ASSERT_EQ(value->name, "foobar");
+    ASSERT_TRUE(value->value->isOfClass<Value_Atom>());
+    ASSERT_EQ("a_long_atom", value->value->asClass<Value_Atom>()->value());
+}
+
+TEST(Parser, ParseIllegalAtom) {
+    Parser p("value foobar atom ->");
     auto value = p.parseValue();
     ASSERT_EQ(nullptr, value);
 }

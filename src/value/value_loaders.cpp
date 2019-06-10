@@ -15,6 +15,7 @@
 #include <value/value_loader.h>
 #include <value/value_types.h>
 
+#include <value/atom.h>
 #include <value/bind.h>
 #include <value/block.h>
 #include <value/boolean.h>

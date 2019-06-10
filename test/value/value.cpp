@@ -27,6 +27,7 @@
 #include <value/tuple.h>
 #include <value/type.h>
 #include <rtti/rtti.h>
+#include <value/atom.h>
 #include <value/table.h>
 #include <operation/at.h>
 #include <error/error_codes.h>
@@ -83,6 +84,17 @@ TEST(Value, Boolean) {
     ASSERT_TRUE(v->equals(v->clone()));
 }
 
+TEST(Value, Atom) {
+    auto v(Value::atom("true"));
+    ASSERT_TRUE(v->isOfClass<Value_Atom>());
+    ASSERT_EQ("true", v->asClass<Value_Atom>()->value());
+
+    ASSERT_TRUE(v->equals(v));
+    ASSERT_TRUE(v->equals(Value::atom("true")));
+    ASSERT_FALSE(v->equals(Value::atom("false")));
+    ASSERT_FALSE(v->equals(Value::fromNumber(1221)));
+}
+
 TEST(Value, TypeMismatch) {
     std::shared_ptr<Value> v = Value::fromNumber(123);
     ASSERT_FALSE(v->isOfClass<Value_Boolean>());
@@ -124,6 +136,7 @@ TEST(Value, Print) {
     ASSERT_EQ("bind(empty, dup)", Value::fromBind(std::make_shared<PartialBind>(Value::empty(), std::make_shared<Dup>()))->describe());
     auto set_val = Value::set({Value::empty()});
     ASSERT_EQ("[empty]", set_val->describe());
+    ASSERT_EQ("atom(true)", Value::atom("true")->describe());
 }
 
 TEST(Value, String) {

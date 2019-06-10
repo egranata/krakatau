@@ -33,6 +33,7 @@
 #include <value/operation.h>
 #include <value/string.h>
 #include <value/table.h>
+#include <value/atom.h>
 #include <value/bind.h>
 #include <value/character.h>
 #include <value/type.h>
@@ -170,4 +171,15 @@ TEST(ValueSerialize, Set) {
     ASSERT_TRUE(val->equals(dv));
     ASSERT_EQ(2, val->size());
     ASSERT_EQ(runtime_ptr_cast<Value_Set>(dv)->size(), val->size());
+}
+
+TEST(ValueSerialize, Atom) {
+    auto val = Value::atom("true");
+    Serializer s;
+    val->serialize(&s);
+    auto bs = ByteStream::anonymous(s.data(), s.size());
+    auto dv = Value::fromByteStream(bs.get());
+    ASSERT_NE(nullptr, dv);
+    ASSERT_TRUE(dv->isOfClass<Value_Atom>());
+    ASSERT_TRUE(val->equals(dv));
 }
