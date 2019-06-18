@@ -22,9 +22,10 @@
 #include <initializer_list>
 #include <utility>
 #include <value/iterable.h>
+#include <value/findable.h>
 #include <value/appendable.h>
 
-class Value_Table : public Value, public IterableValue, public SafeAppendableValue<Value_Table*, std::shared_ptr<Value>, std::shared_ptr<Value>>, public Appendable {
+class Value_Table : public Value, public IterableValue, public SafeAppendableValue<Value_Table*, std::shared_ptr<Value>, std::shared_ptr<Value>>, public Appendable, public FindableValue {
     public:
         static constexpr uint8_t MARKER = '[';
 
@@ -44,7 +45,11 @@ class Value_Table : public Value, public IterableValue, public SafeAppendableVal
         std::shared_ptr<Value> keyAt(size_t i) const;
         std::shared_ptr<Value> valueAt(size_t i) const;
         std::shared_ptr<Value> at(size_t i) const override { return pairAt(i); }
+
         std::shared_ptr<Value> find(std::shared_ptr<Value>, std::shared_ptr<Value>) const;
+        bool contains(std::shared_ptr<Value>) const override;
+        std::shared_ptr<Value> retrieve(std::shared_ptr<Value>) const override;
+
         virtual std::string describe() const override;
         bool equals(std::shared_ptr<Value>) const override;
         size_t serialize(Serializer*) override;

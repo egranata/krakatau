@@ -14,26 +14,22 @@
 
 #include <operation/find.h>
 #include <rtti/rtti.h>
-#include <value/table.h>
-#include <value/set.h>
 #include <machine/state.h>
 #include <value/boolean.h>
+#include <value/findable.h>
+#include <value/error.h>
 
 Operation::Result Find::doExecute(MachineState& s) {
     auto key = s.stack().pop();
     auto obj = s.stack().pop();
 
-    auto tbl = runtime_ptr_cast<Value_Table>(obj);
-    auto set = runtime_ptr_cast<Value_Set>(obj);
+    auto fnd = FindableValue::asFindable(obj);
 
-    if (key && tbl) {
-        if (auto val = tbl->find(key, nullptr)) s.stack().push(val);
-        else s.stack().push(Value::error(ErrorCode::NOT_FOUND));
+    if (fnd && key) {
+        const bool there = fnd->contains(key);
 
-        return Operation::Result::SUCCESS;
-    } else if (key && set) {
-        if (set->find(key)) s.stack().push(Value::fromBoolean(true));
-        else s.stack().push(Value::error(ErrorCode::NOT_FOUND));
+        if (!there) s.stack().push(Value::error(ErrorCode::NOT_FOUND));
+        else s.stack().push(fnd->retrieve(key));
 
         return Operation::Result::SUCCESS;
     } else {

@@ -16,6 +16,7 @@
 #include <value/empty.h>
 #include <stream/indenting_stream.h>
 #include <rtti/rtti.h>
+#include <value/boolean.h>
 #include <stream/byte_stream.h>
 #include <stream/serializer.h>
 #include <parser/parser.h>
@@ -50,6 +51,14 @@ std::shared_ptr<Value> Value_Set::valueAt(size_t i) const {
 
 bool Value_Set::find(std::shared_ptr<Value> k) const {
     return mSet.find(k);
+}
+
+bool Value_Set::contains(std::shared_ptr<Value> key) const {
+    return find(key);
+}
+
+std::shared_ptr<Value> Value_Set::retrieve(std::shared_ptr<Value> key) const {
+    return Value::fromBoolean(contains(key));
 }
 
 std::string Value_Set::describe() const {

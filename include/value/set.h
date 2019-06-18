@@ -21,9 +21,10 @@
 #include <value/value_set.h>
 #include <initializer_list>
 #include <value/iterable.h>
+#include <value/findable.h>
 #include <value/appendable.h>
 
-class Value_Set : public Value, public IterableValue, public SafeAppendableValue<Value_Set*, std::shared_ptr<Value>>, public Appendable {
+class Value_Set : public Value, public IterableValue, public SafeAppendableValue<Value_Set*, std::shared_ptr<Value>>, public Appendable, public FindableValue {
     public:
         static constexpr uint8_t MARKER = 'U';
 
@@ -41,7 +42,11 @@ class Value_Set : public Value, public IterableValue, public SafeAppendableValue
         size_t size() const override;
         std::shared_ptr<Value> valueAt(size_t i) const;
         std::shared_ptr<Value> at(size_t i) const override { return valueAt(i); }
+
         bool find(std::shared_ptr<Value>) const;
+        bool contains(std::shared_ptr<Value>) const override;
+        std::shared_ptr<Value> retrieve(std::shared_ptr<Value>) const override;
+
         virtual std::string describe() const override;
         bool equals(std::shared_ptr<Value>) const override;
         size_t serialize(Serializer*) override;

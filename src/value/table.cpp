@@ -61,8 +61,15 @@ std::shared_ptr<Value> Value_Table::valueAt(size_t i) const {
     return v ? v : Value::empty();
 }
 std::shared_ptr<Value> Value_Table::find(std::shared_ptr<Value> k, std::shared_ptr<Value> deft) const {
-    auto v = mTable.find(k);
+    auto v = retrieve(k);
     return v ? v : deft;
+}
+
+bool Value_Table::contains(std::shared_ptr<Value> key) const {
+    return retrieve(key) != nullptr;
+}
+std::shared_ptr<Value> Value_Table::retrieve(std::shared_ptr<Value> key) const {
+    return mTable.find(key);
 }
 
 std::string Value_Table::describe() const {
